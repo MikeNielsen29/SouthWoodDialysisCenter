@@ -1,6 +1,8 @@
+"use client"
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/lib/auth'
+import { useAuth } from '@/lib/useAuth'
 
 export default function DashboardPage() {
   const router = useRouter()

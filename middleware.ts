@@ -1,4 +1,3 @@
-import { withAuth } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 
 const publicPages = ['/login', '/register', '/']
@@ -49,11 +48,4 @@ export function middleware(request) {
   }
 
   return response
-}
-
-// Export for Next.js component routing
-export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
 }

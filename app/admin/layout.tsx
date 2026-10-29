@@ -1,6 +1,13 @@
-import Sidebar from '@/components/admin/sidebar'
-import { useAuth } from '@/lib/auth'
-import { Image } from 'next/image'
+"use client"
+
+export const dynamic = 'force-dynamic'
+
+import { Sidebar } from '@/components/admin/sidebar'
+import { useAuth } from '@/lib/useAuth'
+import Image from 'next/image'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export default function AdminLayout({
   children,

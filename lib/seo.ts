@@ -147,8 +147,8 @@ export const contactSeo = generateSeoMetadata({
 })
 
 // Export a function to get SEO metadata by page
-export function getPageSeo(page: keyof typeof homeSeo): Metadata {
-  const seoMap: Record<keyof typeof homeSeo, Metadata> = {
+export function getPageSeo(page: string): Metadata {
+  const seoMap: Record<string, Metadata> = {
     home: homeSeo,
     about: aboutSeo,
     services: servicesSeo,

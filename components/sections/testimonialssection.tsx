@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export function TestimonialsSection() {
   return (
     <section className="py-24 sm:py-32 lg:py-48 bg-[linear-gradient(135deg,var(--kidney-gradient))] text-white">

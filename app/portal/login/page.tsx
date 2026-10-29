@@ -1,8 +1,10 @@
+"use client"
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/lib/auth'
+import { useAuth } from '@/lib/useAuth'
 
 export default function LoginPage() {
   const [controlNumber, setControlNumber] = useState('')

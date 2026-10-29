@@ -1,5 +1,8 @@
+"use client"
+
 import Link from 'next/link'
-import { useAuth } from '@/lib/auth'
+import Image from 'next/image'
+import { useAuth } from '@/lib/useAuth'
 
 export function Sidebar() {
   const { user, session } = useAuth()
@@ -15,7 +18,7 @@ export function Sidebar() {
   ]
 
   return (
-    <aside className="bg-neutral-950 h-screen w-64 lg:w-auto border-right border-neutral-700">
+    <nav className="bg-neutral-950 h-screen w-64 lg:w-auto border-right border-neutral-700">
       <div className="p-4 border-b border-neutral-700">
         <Image
           src="/logo.svg"
@@ -33,13 +36,9 @@ export function Sidebar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className`
-                  flex items-center gap-3 rounded-md px-3 py-2 text-sm text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors ${
-                    session?.route === item.href
-                      ? 'bg-orange-500 text-white'
-                      : ''
-                  }
-                `
+                className={`
+                  flex items-center gap-3 rounded-md px-3 py-2 text-sm text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors ${session?.route === item.href ? 'bg-orange-500 text-white' : ''}
+                `}
                 onClick={() => session?.setRoute?.(item.href)}
               >
                 <svg
@@ -67,6 +66,6 @@ export function Sidebar() {
           Version 1.0
         </a>
       </div>
-    </aside>
+    </nav>
   )
 }

@@ -1,4 +1,7 @@
-import { useAuth } from '@/lib/auth'
+"use client"
+
+import { useAuth } from '@/lib/useAuth'
+import { Button } from '@/components/ui/button'
 
 export default function AnalyticsPage() {
   const { analyticsData, isLoading } = useAuth()
