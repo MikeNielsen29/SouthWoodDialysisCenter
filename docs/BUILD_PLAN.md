@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Last updated:** 2026-10-30
-**Current phase:** Phase 0 complete (design site shipped and frozen at tag `v1.0-design`)
+**Current phase:** Phase 0 complete, Phase 1 auth started, Phase 3+ admin UI still compiling
 **Owner:** Mike Nielsen (repo owner)
 
 ---
@@ -362,9 +362,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [x] `zod` installed (`^3.25`)
 - [x] Delete nothing yet; no UI change
 - **Verified:** `npm run build` passes (14 routes, public pages still 2 kB first-load); the new modules pass a strict standalone `tsc` run; `node --check` on `Code.gs` is clean.
-- **Accept (user side):** deploy the `.gs`, run setup, confirm 18 tabs exist and `system.health` answers over HTTP.
+- **Accept (user side):** deploy the `.gs`, run setup, confirm 18 tabs exist and `system.health` answers over HTTP.### Phase 1 — Auth & roles
 
-### Phase 1 — Auth & roles
 - [ ] Replace `lib/auth.ts` + delete `lib/useAuth.ts`; add `lib/auth/{session,password,otp,guards}.ts`
 - [ ] Routes: `POST /api/auth/login`, `/verify-otp`, `/logout`, `GET /api/auth/me`, `POST /api/auth/change-password`
 - [ ] bcryptjs + jose + zod installed; session cookie; `ver` invalidation
@@ -373,14 +372,15 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] `/admin/login` and `/portal/login` pages in brand style (these are *new* files; they do not touch public chrome)
 - **Accept:** wrong password 5× locks the CN; correct credentials need the email OTP; a patient JWT gets 403 on `/admin/*`; expired/forged JWT redirects to login; audit rows appear.
 
+Status this resume: session stub (`jwt.ts`/`session.ts`) added to unblock builds; login actions import from `session.ts`; auth API routes/stub modules still need the real implementations before this phase is accepted.
+
 ### Phase 2 — Content layer
 - [ ] Seed `Pages`/`Sections`/`Services`/`News` from the current hardcoded copy (script, not by hand)
 - [ ] `lib/content.ts` with defaults + zod merge
 - [ ] Convert the 5 public pages + 9 sections to read from it (markup untouched)
 - [ ] `POST /api/revalidate`; ISR (`revalidate = 3600` as a safety net)
-- **Accept:** with Sheets empty → pixel-identical to v1.0-design; with published edits → text changes within ~2 s; build output has no per-request Sheet calls on public routes.
+- **Accept:** with Sheets empty → pixel-identical to v1.0-design; with published edits → text changes within ~2 s; build output has no per-request Sheet calls on public routes.### Phase 3 — Admin dashboard
 
-### Phase 3 — Admin dashboard
 - [ ] `app/(admin)/layout.tsx`: collapsible sidebar (drawer <lg), top bar, brand tokens, no public header/footer
 - [ ] Content editor: fields per §8, image upload, alt-text required, meta/H1/og fields, draft/publish, section reorder
 - [ ] Users (roles, activate/deactivate, reset password, force change), Inquiries inbox, Testimonials moderation
@@ -389,7 +389,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] Audit log (Super Admin only), Backup button
 - **Accept:** a Page Editor cannot open Users/Settings; creating a news post publishes it to `/news`; mobile 360px has no horizontal scroll.
 
-### Phase 4 — Patient portal
+Status this resume: admin pages (`page.tsx`, `settings`, `operations`, `user-management`, `audit`, `content`, `files-page`) and admin actions/ui/layout/nav created; build is not green yet because several auth/lib stubs and public/layout/seo imports still need real exports.### Phase 4 — Patient portal
+
 - [ ] `app/(portal)/layout.tsx` mobile-first; dashboard with 2-column desktop grid
 - [ ] Appointments: book, reschedule, cancel, reminder status
 - [ ] Lab results list + `/api/files/[id]/download` (signed 60 s token, decrypt, stream)
@@ -397,6 +398,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] Emergency hotline `tel:` button from `Settings.hotline`; map shortcut
 - [ ] Consent capture on first login → `Consents`
 - **Accept:** patient A cannot fetch patient B's PDF (403, audited); expired token fails; no Telegram/bot token in any client bundle.
+
+Status this resume: portal routes/pages/actions + portal API endpoints + portal shared UI created; real Apps Script action names still need the backend side + `lib/sheets/client.ts` support.
 
 ### Phase 5 — Files & uploads
 - [ ] `lib/files/telegram.ts`: upload (encrypt → `sendDocument`), download (`getFile` → decrypt)
@@ -409,9 +412,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] Billing records (create, mark paid) + patient view
 - [ ] Staff shifts (assign, week view)
 - [ ] Reminders: Vercel cron → appointments in 24 h & 2 h → Resend, idempotent via `reminder_sent_at`
-- **Accept:** reminders never send twice; queue reorder persists; no PHI in email bodies beyond date/time/clinic.
+- **Accept:** reminders never send twice; queue reorder persists; no PHI in email bodies beyond date/time/clinic.### Phase 7 — SEO & legal
 
-### Phase 7 — SEO & legal
 - [ ] `app/sitemap.ts`, `app/robots.ts`, per-page canonical (`alternates.canonical`)
 - [ ] JSON-LD `MedicalClinic` + `WebSite` + `BreadcrumbList`
 - [ ] One `<h1>` per page; heading-order audit; alt text required by the CMS; internal-link pass
@@ -422,7 +424,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] Fix `lib/seo.ts` or delete it in favour of `generateMetadata` per page
 - **Accept:** all 20 checks either pass or are explicitly reported as requiring a user account (GSC, analytics).
 
-### Phase 8 — Hardening & cleanup
+Status this resume: sitemap/robots/llms.txt/privacy/terms/error/not-found started; public pages were rewritten to use `@/lib/content` + `pageMeta`/`getSiteContent` + `seoMeta`; public layouts import `components/layout/header` + `components/layout/footer` which still need correct barrel exports.### Phase 8 — Hardening & cleanup
+
 - [ ] Remove `typescript.ignoreBuildErrors` / `eslint.ignoreDuringBuilds`; fix every real error
 - [ ] Security headers + CSP + HSTS in `next.config.js`; `poweredByHeader: false`
 - [ ] Generic `error.tsx` / `not-found.tsx`; no stack traces to users
@@ -431,6 +434,8 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 - [ ] Failed-login alert email to admin; daily backup verification
 - [ ] `docs/RUNBOOK.md`: backup/restore, secret rotation, disaster recovery, incident steps
 - **Accept:** production build with type checking on; zero critical/high audit findings; restore rehearsed from a backup copy.
+
+Status this resume: `next.config.js` already had `typescript.ignoreBuildErrors` and `eslint.ignoreDuringBuilds` removed; ESLint config is currently a separate blocker because it references an uninstalled `@typescript-eslint` plugin, so the build will not be green until that config is fixed.
 
 ### Phase 9 (optional) — EN/TL toggle
 Only if the user asks. Dictionary-based, cookie-persisted, no route duplication.

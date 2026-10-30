@@ -1,7 +1,6 @@
 import { createHmac, randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { canonicalJson } from './canonical'
-import { HealthSchema, type Health } from './types'
 
 /**
  * Signed client for the Google Apps Script backend (google-apps-script/Code.gs).
@@ -35,6 +34,21 @@ export class SheetsConfigError extends Error {
     this.name = 'SheetsConfigError'
   }
 }
+
+/** Shape returned by `health_()` in Code.gs. */
+const HealthSchema = z.object({
+  schemaVersion: z.union([z.string(), z.number(), z.null()]).optional().nullable(),
+  installedAt: z.string().nullable().optional(),
+  lastSetupAt: z.string().nullable().optional(),
+  lastBackupAt: z.string().nullable().optional(),
+  spreadsheet: z.string().optional(),
+  timeZone: z.string().optional(),
+  tabs: z.record(z.union([z.number(), z.null()])).optional(),
+  missingTabs: z.array(z.string()).optional(),
+  configured: z.record(z.boolean()).optional(),
+})
+
+export type Health = z.infer<typeof HealthSchema>
 
 function getConfig(): { url: string; secret: string } {
   const url = process.env.GS_WEBAPP_URL?.trim()
@@ -177,7 +191,24 @@ export async function callSheets<T>(
   throw new SheetsError('NETWORK', 'Could not reach the backend')
 }
 
+/**
+ * Read helper for admin/portal screens: returns `null` while the backend is
+ * not configured so pages can fall back to their local defaults.
+ */
+export async function load(
+  action: string,
+  _schema?: unknown,
+  options?: { limit?: number }
+): Promise<unknown> {
+  if (!isSheetsConfigured()) return null
+  const payload: Record<string, unknown> = {}
+  if (options?.limit) payload.limit = options.limit
+  return await callSheets(action, payload)
+}
+
 /** Diagnostics for the admin dashboard: schema version, tab counts, backup age. */
 export function getSystemHealth(): Promise<Health> {
   return callSheets('system.health', {}, HealthSchema)
 }
+
+export { isSheetsConfigured as isConfigured }

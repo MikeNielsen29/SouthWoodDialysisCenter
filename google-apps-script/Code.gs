@@ -292,6 +292,8 @@ var TABS = [
       col('mime', 180),
       col('size_bytes', 110),
       col('checksum_sha256', 340),
+      col('iv', 220),
+      col('auth_tag', 220),
       col('encrypted', 100),
       col('uploaded_by', 170),
       col('uploaded_at', 170),
@@ -307,6 +309,7 @@ var TABS = [
 
 var SETTINGS_SEED = [
   'hotline',
+  'email',
   'address',
   'hours',
   'map_lat',
@@ -369,6 +372,10 @@ function doPost(e) {
   }
 }
 
+/*
+ * Action registry. Handlers live in Actions.gs as properties of `A`; they are
+ * only dereferenced at request time, so file load order does not matter.
+ */
 var ACTIONS = {
   'system.setup': function () {
     return setup_();
@@ -379,6 +386,66 @@ var ACTIONS = {
   'system.backup': function () {
     return backup_();
   },
+
+  'public.content': function (p, a) {
+    return A.publicContent(p, a);
+  },
+
+  'content.listPages': function (p, a) { return A.listPages(p, a); },
+  'content.upsertPage': function (p, a) { return A.upsertPage(p, a); },
+  'content.listSections': function (p, a) { return A.listSections(p, a); },
+  'content.upsertSection': function (p, a) { return A.upsertSection(p, a); },
+  'content.listServices': function (p, a) { return A.listServices(p, a); },
+  'content.upsertService': function (p, a) { return A.upsertService(p, a); },
+  'content.deleteService': function (p, a) { return A.deleteService(p, a); },
+  'content.listNews': function (p, a) { return A.listNews(p, a); },
+  'content.upsertNews': function (p, a) { return A.upsertNews(p, a); },
+  'content.getSettings': function (p, a) { return A.getSettings(p, a); },
+  'content.updateSettings': function (p, a) { return A.updateSettings(p, a); },
+
+  'auth.findUser': function (p, a) { return A.findUser(p, a); },
+  'auth.setOtp': function (p, a) { return A.setOtp(p, a); },
+  'auth.consumeOtp': function (p, a) { return A.consumeOtp(p, a); },
+  'auth.recordAttempt': function (p, a) { return A.recordAttempt(p, a); },
+  'auth.registerFailure': function (p, a) { return A.registerFailure(p, a); },
+  'auth.clearFailures': function (p, a) { return A.clearFailures(p, a); },
+  'auth.touchLogin': function (p, a) { return A.touchLogin(p, a); },
+  'auth.setPasswordHash': function (p, a) { return A.setPasswordHash(p, a); },
+
+  'users.list': function (p, a) { return A.listUsers(p, a); },
+  'users.create': function (p, a) { return A.createUser(p, a); },
+  'users.update': function (p, a) { return A.updateUser(p, a); },
+
+  'inquiries.create': function (p, a) { return A.createInquiry(p, a); },
+  'inquiries.list': function (p, a) { return A.listInquiries(p, a); },
+  'inquiries.update': function (p, a) { return A.updateInquiry(p, a); },
+
+  'testimonials.create': function (p, a) { return A.createTestimonial(p, a); },
+  'testimonials.list': function (p, a) { return A.listTestimonials(p, a); },
+  'testimonials.moderate': function (p, a) { return A.moderateTestimonial(p, a); },
+
+  'appointments.list': function (p, a) { return A.listAppointments(p, a); },
+  'appointments.create': function (p, a) { return A.createAppointment(p, a); },
+  'appointments.update': function (p, a) { return A.updateAppointment(p, a); },
+
+  'files.list': function (p, a) { return A.listFiles(p, a); },
+  'files.register': function (p, a) { return A.registerFile(p, a); },
+  'files.release': function (p, a) { return A.releaseFile(p, a); },
+
+  'billing.list': function (p, a) { return A.listBilling(p, a); },
+  'billing.create': function (p, a) { return A.createBilling(p, a); },
+  'billing.update': function (p, a) { return A.updateBilling(p, a); },
+
+  'queue.list': function (p, a) { return A.listQueue(p, a); },
+  'queue.update': function (p, a) { return A.updateQueue(p, a); },
+
+  'shifts.list': function (p, a) { return A.listShifts(p, a); },
+  'shifts.create': function (p, a) { return A.createShift(p, a); },
+
+  'audit.append': function (p, a) { return A.appendAudit(p, a); },
+  'audit.list': function (p, a) { return A.listAudit(p, a); },
+
+  'analytics.summary': function (p, a) { return A.analyticsSummary(p, a); },
 };
 
 /* ------------------------------------------------------------------ */
