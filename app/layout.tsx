@@ -1,15 +1,19 @@
 import './globals.css'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'Southwood Dialysis Center',
   description: 'Southwood Dialysis Center - Comprehensive dialysis treatment and patient care',
   keywords: 'dialysis, kidney disease, treatment, medical, healthcare',
-  viewport: 'width=device-width, initial-scale=1.0',
   generator: 'Southwood Dialysis Center Website',
 }
 
-export const notFound = () => null
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,
@@ -18,8 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-white text-neutral-900">
-        {children}
+      <body className="font-sans antialiased bg-white text-neutral-900 flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   )

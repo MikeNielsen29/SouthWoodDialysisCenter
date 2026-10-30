@@ -10,6 +10,7 @@
 /* Custom Variables */
 :root {
   --radius: 0.5rem;
+  --kidney-gradient: linear-gradient(135deg, #f97316, #eab308);
 }
 
 /* Custom Animations */

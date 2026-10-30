@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import { Facebook, Instagram, Twitter, LinkedIn } from 'lucide-react'
 import { FooterLinks } from './footer-part1'
 import { FooterBottom } from './footer-part2'
 

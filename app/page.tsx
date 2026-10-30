@@ -28,13 +28,13 @@ export const metadata = generateSeoMetadata({
   title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
   description:
     'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024. State-of-art facilities and expert medical team.',
-  canonical: '/home',
+  canonical: '/',
   openGraph: {
     title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
     description:
       'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024.',
     images: ['/og-home.jpg'],
-    url: '/home',
+    url: '/',
     siteName: 'Southwood Dialysis Center',
   },
   twitterCard: 'summary_large_image',
