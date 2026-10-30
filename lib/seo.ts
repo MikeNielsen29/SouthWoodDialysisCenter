@@ -12,7 +12,7 @@ interface SeoData {
     url?: string
     siteName?: string
   }
-  twitterCard?: 'summary' | 'summary_large_image' | 'large_image' | 'player'
+  twitterCard?: 'summary' | 'summary_large_image'
 }
 
 /**
@@ -42,14 +42,16 @@ export function generateSeoMetadata(data: SeoData): Metadata {
       siteName: openGraph?.siteName || 'Southwood Dialysis Center',
       images: openGraph?.images || [],
     },
-    tweets: twitterCard,
+    twitter:
+      twitterCard === 'summary'
+        ? { card: 'summary' }
+        : { card: 'summary_large_image' },
     icons,
   }
 
   // Add canonical tag if provided
   if (canonical) {
-    baseMetadata.appLinks = {
-      ...baseMetadata.appLinks,
+    baseMetadata.alternates = {
       canonical,
     }
   }
