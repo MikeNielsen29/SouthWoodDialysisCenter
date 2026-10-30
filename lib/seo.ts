@@ -4,11 +4,7 @@ interface SeoData {
   title: string
   description: string
   canonical?: string
-  icons?: {
-    favicon: string
-    apple?: string
-    twitter?: string
-  }
+  icons?: Metadata['icons']
   openGraph?: {
     title?: string
     description?: string
@@ -30,7 +26,7 @@ export function generateSeoMetadata(data: SeoData): Metadata {
     description,
     canonical,
     icons = {
-      favicon: '/favicon.ico',
+      icon: '/SBDC.png',
     },
     openGraph,
     twitterCard = 'summary_large_image',

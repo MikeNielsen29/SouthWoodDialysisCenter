@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   description: 'Southwood Dialysis Center - Comprehensive dialysis treatment and patient care',
   keywords: 'dialysis, kidney disease, treatment, medical, healthcare',
   generator: 'Southwood Dialysis Center Website',
+  icons: {
+    icon: '/SBDC.png',
+  },
 }
 
 export const viewport: Viewport = {

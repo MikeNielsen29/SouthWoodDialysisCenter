@@ -24,7 +24,7 @@ export default function DashboardPage() {
       <header className="border-b border-neutral-200 bg-orange-50 py-3 px-4 sm:px-6">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Southwood" width={30} height={30} className="object-contain" />
+            <Image src="/SBDC.png" alt="Southwood" width={30} height={30} className="object-contain" />
             <span className="font-bold text-orange-600">{user.name || 'Patient Portal'}</span>
           </div>
           <div className="flex items-center gap-3">

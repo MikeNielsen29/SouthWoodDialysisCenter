@@ -35,7 +35,7 @@ export default function AdminLayout({
         {/* Header */}
         <header className="bg-orange-50 border-b border-neutral-200 px-6 py-3 lg:hidden">
           <div className="flex items-center gap-4">
-            <Image src="/logo.svg" alt="Southwood" width={30} height={30} className="blur-lg" />
+            <Image src="/SBDC.png" alt="Southwood" width={30} height={30} className="blur-lg" />
             <span className="font-bold text-orange-600">Southwood Dialysis</span>
             <button
               onClick={() => session ? session.collapsed ? 'show' : 'hide' : ''}
@@ -53,7 +53,7 @@ export default function AdminLayout({
         <div className="bg-white border-b border-neutral-200 lg:block px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Image src="/logo.svg" alt="Southwood" width={30} height={30} className="blur-lg" />
+              <Image src="/SBDC.png" alt="Southwood" width={30} height={30} className="blur-lg" />
               <span className="font-bold text-orange-600">Admin</span>
             </div>
             <div className="flex items-center gap-3">

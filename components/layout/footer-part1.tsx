@@ -9,7 +9,7 @@ export function FooterLinks() {
       <div className="md:col-span-1">
         <div className="flex items-center gap-2 mb-4">
           <Image
-            src="/logo.svg"
+            src="/SBDC.png"
             alt="Southwood Dialysis Center logo"
             width={40}
             height={40}

@@ -21,7 +21,7 @@ export function Sidebar() {
     <nav className="bg-neutral-950 h-screen w-64 lg:w-auto border-right border-neutral-700">
       <div className="p-4 border-b border-neutral-700">
         <Image
-          src="/logo.svg"
+          src="/SBDC.png"
           alt="Southwood Dialysis"
           width={28}
           height={28}

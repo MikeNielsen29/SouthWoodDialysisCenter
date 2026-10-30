@@ -12,7 +12,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/logo.svg"
+                src="/SBDC.png"
                 alt="Southwood Dialysis Center logo"
                 width={40}
                 height={40}
