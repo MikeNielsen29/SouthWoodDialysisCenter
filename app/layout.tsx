@@ -9,13 +9,14 @@ export const metadata: Metadata = {
   keywords: 'dialysis, kidney disease, treatment, medical, healthcare',
   generator: 'Southwood Dialysis Center Website',
   icons: {
-    icon: '/SBDC.png',
+    icon: '/favicon.svg',
   },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#0B2C26',
 }
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-white text-neutral-900 flex flex-col min-h-screen">
+      <body className="flex min-h-screen flex-col antialiased">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

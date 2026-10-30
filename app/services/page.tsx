@@ -1,16 +1,25 @@
+import { PageHeader } from '@/components/sections/pageheader'
 import { ServicesSection } from '@/components/sections/servicessection'
-import { generateSeoMetadata, getPageSeo } from '@/lib/seo'
+import { ProcessSection } from '@/components/sections/processsection'
+import { CtaSection } from '@/components/sections/ctasection'
+import { generateSeoMetadata } from '@/lib/seo'
 
 export default function ServicesPage() {
-  const seo = getPageSeo('services')
   return (
-    <main className="min-h-screen bg-white text-neutral-900">
+    <main>
+      <PageHeader
+        eyebrow="Services"
+        title="Treatment that fits "
+        emphasis="your week."
+        lead="From in-centre hemodialysis to at-home programmes, each service comes with the same care team and the same clear answers."
+      />
       <ServicesSection />
+      <ProcessSection />
+      <CtaSection />
     </main>
   )
 }
 
-// Export metadata for Next.js metadata injector
 export const metadata = generateSeoMetadata({
   title: 'Services | Southwood Dialysis Center',
   description:

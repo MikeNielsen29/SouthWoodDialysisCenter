@@ -1,16 +1,23 @@
+import { PageHeader } from '@/components/sections/pageheader'
 import { NewsSection } from '@/components/sections/newsection'
-import { generateSeoMetadata, getPageSeo } from '@/lib/seo'
+import { CtaSection } from '@/components/sections/ctasection'
+import { generateSeoMetadata } from '@/lib/seo'
 
 export default function NewsPage() {
-  const seo = getPageSeo('news')
   return (
-    <main className="min-h-screen bg-white text-neutral-900">
+    <main>
+      <PageHeader
+        eyebrow="News"
+        title="What's happening at "
+        emphasis="Southwood."
+        lead="Centre updates, patient workshops, and practical health notes from our clinical team."
+      />
       <NewsSection />
+      <CtaSection />
     </main>
   )
 }
 
-// Export metadata for Next.js metadata injector
 export const metadata = generateSeoMetadata({
   title: 'News & Updates | Southwood Dialysis Center',
   description:

@@ -1,24 +1,24 @@
-import Image from 'next/image'
-import { generateSeoMetadata, getPageSeo } from '@/lib/seo'
-import { Button } from '@/components/ui/button'
+import { generateSeoMetadata } from '@/lib/seo'
 import { Section } from '@/components/sections/herosection'
 import { AboutSection } from '@/components/sections/aboutsection'
 import { ServicesSection } from '@/components/sections/servicessection'
+import { ProcessSection } from '@/components/sections/processsection'
 import { NewsSection } from '@/components/sections/newsection'
 import { TestimonialsSection } from '@/components/sections/testimonialssection'
+import { CtaSection } from '@/components/sections/ctasection'
 
 export const revalidate = 60 // SEO: sitemap-friendly
 
 export default function HomePage() {
-  const seo = getPageSeo('home')
   return (
-    <main className="min-h-screen">
-      {/* SEO Metadata is injected via Next.js metadata */}
+    <main>
       <Section />
-      <AboutSection />
       <ServicesSection />
-      <NewsSection />
+      <AboutSection />
+      <ProcessSection />
       <TestimonialsSection />
+      <NewsSection />
+      <CtaSection />
     </main>
   )
 }

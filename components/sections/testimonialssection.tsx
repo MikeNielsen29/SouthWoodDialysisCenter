@@ -1,91 +1,81 @@
-import Image from 'next/image'
+import { Quote, Star } from 'lucide-react'
+import { Reveal } from '@/components/ui/reveal'
+
+const testimonials = [
+  {
+    quote:
+      'Since starting hemodialysis at Southwood my energy has come back. The team explains everything, and the bay is always spotless.',
+    name: 'Maria S.',
+    detail: 'Patient since 2024',
+    initials: 'MS',
+    tone: 'bg-brand-700',
+  },
+  {
+    quote:
+      'The home peritoneal programme gave me my mornings back. I train, I work, and I still see my family in the evening.',
+    name: 'James W.',
+    detail: 'Patient since 2023',
+    initials: 'JW',
+    tone: 'bg-ember-500',
+  },
+  {
+    quote:
+      'What stayed with me is how unhurried they are. Nobody rushes you out, and the same nurses greet you by name.',
+    name: 'Robert K.',
+    detail: 'Patient since 2024',
+    initials: 'RK',
+    tone: 'bg-brand-500',
+  },
+]
 
 export function TestimonialsSection() {
   return (
-    <section className="py-24 sm:py-32 lg:py-48 bg-[linear-gradient(135deg,var(--kidney-gradient))] text-white">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Patient Testimonials</h2>
-          <p className="text-neutral-200 text-lg">
-            Read stories from patients who have received care at our center.
+    <section className="py-20 sm:py-24 lg:py-28">
+      <div className="shell">
+        <Reveal className="max-w-2xl">
+          <span className="eyebrow">Patient stories</span>
+          <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
+            In their own words.
+          </h2>
+          <p className="lead mt-4">
+            Real feedback from people who sit in our chairs every week.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Testimonial Card 1 */}
-          <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border-orange-200/20">
-            <p className="text-neutral-200 quotes mb-6">
-              <q>
-                Since starting hemodialysis at Southwood, my energy levels have
-                improved dramatically. The staff is incredibly caring and the
-                facility is spotless.
-              </q>
-            </p>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/testimonial1.jpg"
-                alt="Patient testimonial photo 1"
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-                loading="lazy"
-              />
-              <div>
-                <p className="font-medium">Maria S.</p>
-                <p className="text-neutral-300 text-sm">Patient since 2024</p>
-              </div>
-            </div>
-          </div>
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {testimonials.map((item, index) => (
+            <Reveal key={item.name} delay={index * 70}>
+              <figure className="relative flex h-full flex-col rounded-2xl border border-ink/10 bg-white/80 p-7 transition-shadow duration-300 hover:shadow-lift">
+                <Quote
+                  className="h-7 w-7 text-ember-200"
+                  aria-hidden
+                  strokeWidth={2.5}
+                />
 
-          {/* Testimonial Card 2 */}
-          <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border-teal-200/20">
-            <p className="text-neutral-200 quotes mb-6">
-              <q>
-                The peritoneal dialysis program gave me my life back. I can now
-                treatment at home and spend more time with my family. Thank you,
-                Southwood Dialysis Center!
-              </q>
-            </p>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/testimonial2.jpg"
-                alt="Patient testimonial photo 2"
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-                loading="lazy"
-              />
-              <div>
-                <p className="font-medium">James W.</p>
-                <p className="text-neutral-300 text-sm">Patient since 2023</p>
-              </div>
-            </div>
-          </div>
+                <blockquote className="mt-4 flex-1 font-display text-[19px] leading-[1.45] text-ink">
+                  “{item.quote}”
+                </blockquote>
 
-          {/* Testimonial Card 3 */}
-          <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border-green-200/20">
-            <p className="text-neutral-200 quotes mb-6">
-              <q>
-                The team at Southwood truly cares about their patients. From the
-                moment I walked in, I felt welcomed and supported throughout my
-                treatment journey.
-              </q>
-            </p>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/testimonial3.jpg"
-                alt="Patient testimonial photo 3"
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-                loading="lazy"
-              />
-              <div>
-                <p className="fontSenior">Robert K.</p>
-                <p className="text-neutral-300 text-sm">Patient since 2024</p>
-              </div>
-            </div>
-          </div>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-ink/10 pt-5">
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-semibold text-white ${item.tone}`}
+                    aria-hidden
+                  >
+                    {item.initials}
+                  </span>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-ink">{item.name}</p>
+                    <p className="text-xs text-ink-muted">{item.detail}</p>
+                  </div>
+                  <span className="flex gap-0.5 text-ember-500" aria-label="5 out of 5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-current" aria-hidden />
+                    ))}
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

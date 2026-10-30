@@ -1,57 +1,100 @@
-/* Tailwind Base Styles */
 @tailwind base;
-
-/* Tailwind Components */
 @tailwind components;
-
-/* Tailwind Utilities */
 @tailwind utilities;
 
-/* Custom Variables */
-:root {
-  --radius: 0.5rem;
-  --kidney-gradient: linear-gradient(135deg, #f97316, #eab308);
+@layer base {
+  :root {
+    --ring-brand: 29 97 83;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: theme('colors.sand.50');
+    color: theme('colors.ink.DEFAULT');
+  }
+
+  ::selection {
+    background-color: theme('colors.brand.200');
+    color: theme('colors.brand.900');
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.600');
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
-/* Custom Animations */
-@keyframes fadeInUp {
-  from {
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-6 bg-ember-500;
+  }
+
+  .display {
+    @apply font-display font-normal tracking-tightest text-ink;
+  }
+
+  .lead {
+    @apply text-base leading-relaxed text-ink-soft sm:text-[17px];
+  }
+
+  .hairline {
+    @apply border-t border-ink/10;
+  }
+
+  /* Scroll reveal: hidden state only applies when the observer is active. */
+  .reveal-ready {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
   }
-  to {
+
+  .reveal-ready.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-ready {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@layer utilities {
+  .grain {
+    background-image: radial-gradient(
+      rgba(18, 32, 28, 0.055) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
 
-@keyframes slideIn {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-/* Custom Utilities */
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-slide-in {
-  animation: slideIn 0.3s ease-out forwards;
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  .text-balance {
+    text-wrap: balance;
   }
 }

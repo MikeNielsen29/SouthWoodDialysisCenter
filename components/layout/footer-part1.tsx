@@ -1,41 +1,128 @@
-"use client"
-
 import Image from 'next/image'
 import Link from 'next/link'
+import { Clock, Mail, MapPin, Phone } from 'lucide-react'
+
+const explore = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About us' },
+  { href: '/services', label: 'Services' },
+  { href: '/news', label: 'News & updates' },
+  { href: '/contact', label: 'Contact' },
+]
+
+const services = [
+  'Hemodialysis',
+  'Peritoneal dialysis',
+  'Preventive care',
+  'Renal nutrition',
+  'Patient education',
+]
 
 export function FooterLinks() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-      <div className="md:col-span-1">
-        <div className="flex items-center gap-2 mb-4">
-          <Image
-            src="/SBDC.png"
-            alt="Southwood Dialysis Center logo"
-            width={40}
-            height={40}
-            className="object-contain"
-          />
-          <span className="text-xl font-bold tracking-wider">
-            <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+    <div className="grid gap-10 border-b border-sand-50/10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div>
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-sand-50/10">
+            <Image
+              src="/SBDC.png"
+              alt=""
+              width={40}
+              height={40}
+              className="h-full w-full object-contain"
+            />
+          </span>
+          <span className="leading-none">
+            <span className="block font-display text-[19px] tracking-tight text-sand-50">
               Southwood
             </span>
-            <span className="text-teal-400">Dialysis Center</span>
+            <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-sand-100/50">
+              Dialysis Center
+            </span>
           </span>
-        </div>
+        </Link>
+
+        <p className="mt-5 max-w-xs text-sm leading-relaxed text-sand-100/60">
+          Calm, comprehensive kidney care for our community — with the same care
+          team at every visit.
+        </p>
+
+        <a
+          href="tel:+15550142800"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-sand-50/15 px-4 py-2 text-sm text-sand-50 transition-colors hover:border-ember-400 hover:text-ember-400"
+        >
+          <Phone className="h-3.5 w-3.5" aria-hidden />
+          (555) 014-2800
+        </a>
       </div>
+
       <div>
-        <h4 className="text-neutral-300 font-medium mb-4">Follow Us</h4>
-        <div className="flex gap-3">
-          <svg className="h-5 w-5 text-neutral-400 hover:text-teal-400 transition-colors" viewBox="0 0 24 24" fill="currentColor" aria-label="Facebook">
-            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5.003 3.657 9.168 8.438 9.878V14.89h-2.54V12h2.54V9.596c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.27v6.988C20.343 21.168 24 17 24 12z" />
-          </svg>
-          <svg className="h-5 w-5 text-neutral-400 hover:text-teal-400 transition-colors" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram">
-            <path d="M12 2.16c3.87 0 4.31.01 5.82.06 1.42.05 2.25.2 2.95.41.86.27 1.53.63 2.2 1.3.67.67 1.03 1.34 1.3 2.2.22.7.37 1.52.41 2.94.05 1.51.06 1.95.06 5.82s-.01 4.31-.06 5.82c-.04 1.42-.2 2.25-.41 2.95-.27.86-.63 1.53-1.3 2.2-.67.67-1.34 1.03-2.2 1.3-.7.22-1.52.37-2.94.41-1.51.05-1.95.06-5.82.06-3.87 0-4.31-.01-5.82-.06-1.42-.05-2.25-.2-2.95-.41-.86-.27-1.53-.63-2.2-1.3-.67-.67-1.03-1.34-1.3-2.2-.22-.7-.37-1.52-.41-2.94-.05-1.51-.06-1.95-.06-5.82s.01-4.31.06-5.82c.04-1.42.2-2.25.41-2.95.27-.86.63-1.53 1.3-2.2.67-.67 1.34-1.03 2.2-1.3.7-.22 1.52-.37 2.94-.41 1.51-.05 1.95-.06 5.82-.06m0-2.16c-3.87 0-4.31.01-5.82.06-1.42.05-2.25.2-2.95.41-.86.27-1.53.63-2.2 1.3-.67.67-1.03 1.34-1.3 2.2-.22.7-.37 1.52-.41 2.94-.05 1.51-.06 1.95-.06 5.82s.01 4.31.06 5.82c.04 1.42.2 2.25.41 2.95.27.86.63 1.53 1.3 2.2.67.67 1.34 1.03 2.2 1.3.7.22 1.52.37 2.94.41 1.51.05 1.95.06 5.82.06 3.87 0 4.31-.01 5.82-.06 1.42-.05 2.25-.2 2.95-.41.86-.27 1.53-.63 2.2-1.3.67-.67 1.03-1.34 1.3-2.2.22-.7.37-1.52.41-2.94.05-1.51.06-1.95.06-5.82s-.01-4.31-.06-5.82c-.04-1.42-.2-2.25-.41-2.95-.27-.86-.63-1.53-1.3-2.2-.67-.67-1.34-1.03-2.2-1.3-.7-.22-1.52-.37-2.94-.41-1.51-.05-1.95-.06-5.82-.06zm0 5.47c-1.09 0-1.98.9-1.98 2.01 0 1.09.9 1.99 1.98 1.99 1.1 0 1.98-.9 1.98-2.01 0-1.1-.88-2-1.98-2zm0 6.83c-1.97 0-3.67 1.24-4.23 2.95h8.45c-.57-1.7-2.26-2.95-4.22-2.95z" />
-          </svg>
-          <svg className="h-5 w-5 text-neutral-400 hover:text-teal-400 transition-colors" viewBox="0 0 24 24" fill="currentColor" aria-label="Twitter / X">
-            <path d="M18.248 0c-.65 0-.554.002-.806.01-2.825.065-3.97.75-5.29 1.883-.46.416-.89.9-1.27 1.512-1.65-1.245-3.81-2.183-6.12-2.183l-.08.01C3.6 0 2.836.017 2.21 1.05 1.58 2.09 1.5 3.42 1.5 4.947c0 2.402 1.227 4.514 3.06 5.82-.57-.11-1.12-.31-1.64-.62-.75-.24-1.48-.57-2.17-1.01-.04.25-.06.5-.06.75 0 2.23 1.94 4.07 4.52 4.49-.43.14-.88.2-1.32.21-.32.003-.6-.027-.86-.03-1.12-.07-2.92-.82-3.63 1.12-.3.82-.9 1.59-1.75 2.17.92.28 1.89.45 2.9.45 3.01 0 5.86-1.497 7.29-4.04.9-.81 1.65-1.78 2.22-2.86.6-.95.94-2.06.97-3.19.02-1.52-.18-3.07-.74-4.45l.02-.01c2.42.88 4.23 2.98 5.14 5.38.94 2.45 1.27 5.18.88 7.78-.4 2.67-2.05 5.05-4.38 6.6-.86.56-1.82 1.01-2.85 1.33.41.87 1.32 1.4 2.21 1.39 3.74-.56 6.41-3.23 7.3-6.65.84-3.27 1.18-6.72.88-10.04C20.19.67 19.51 0 18.248 0z" />
-          </svg>
-        </div>
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-100/40">
+          Explore
+        </h4>
+        <ul className="mt-4 space-y-2.5">
+          {explore.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="text-sm text-sand-100/70 transition-colors hover:text-sand-50"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-100/40">
+          Services
+        </h4>
+        <ul className="mt-4 space-y-2.5">
+          {services.map((service) => (
+            <li key={service}>
+              <Link
+                href="/services"
+                className="text-sm text-sand-100/70 transition-colors hover:text-sand-50"
+              >
+                {service}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-100/40">
+          Visit us
+        </h4>
+        <ul className="mt-4 space-y-3.5 text-sm text-sand-100/70">
+          <li className="flex gap-2.5">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
+            <span>
+              123 Kidney Avenue
+              <br />
+              Southwood District
+            </span>
+          </li>
+          <li className="flex gap-2.5">
+            <Clock className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
+            <span>
+              Mon–Sat, 6:00 AM – 8:00 PM
+              <br />
+              Sunday: on-call only
+            </span>
+          </li>
+          <li className="flex gap-2.5">
+            <Mail className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
+            <a
+              href="mailto:care@southwooddialysis.com"
+              className="transition-colors hover:text-sand-50"
+            >
+              care@southwooddialysis.com
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   )

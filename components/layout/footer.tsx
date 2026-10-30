@@ -3,8 +3,8 @@ import { FooterBottom } from './footer-part2'
 
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-200 bg-neutral-950 py-12">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-brand-950 pt-16">
+      <div className="shell">
         <FooterLinks />
         <FooterBottom />
       </div>
