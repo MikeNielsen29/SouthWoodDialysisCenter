@@ -1,14 +1,18 @@
-import { createHash } from 'node:crypto'
-
-const HASH_PEPPER = process.env.HASH_PEPPER || ''
+async function sha256Hex(input: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(input)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
 
 export async function hashPassword(password: string): Promise<string> {
-  return createHash('sha256').update(`${password}:${HASH_PEPPER}`).digest('hex')
+  return sha256Hex(`${password}:${process.env.HASH_PEPPER || ''}`)
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
   if (!hash) return false
-  const computed = createHash('sha256').update(`${password}:${HASH_PEPPER}`).digest('hex')
+  const computed = await sha256Hex(`${password}:${process.env.HASH_PEPPER || ''}`)
   return computed === hash
 }
 

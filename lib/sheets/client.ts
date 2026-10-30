@@ -1,11 +1,10 @@
-import { createHmac, randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { canonicalJson } from './canonical'
 
 /**
  * Signed client for the Google Apps Script backend (google-apps-script/Code.gs).
  *
- * SERVER ONLY. Importing this module pulls in node:crypto, and the shared
+ * SERVER ONLY. Importing this module pulls in Web Crypto API, and the shared
  * secret must never reach the browser.
  *
  * The script always answers HTTP 200, so success is decided by the `ok` field
@@ -68,9 +67,21 @@ export function isSheetsConfigured(): boolean {
   return Boolean(process.env.GS_WEBAPP_URL?.trim() && process.env.GS_SHARED_SECRET?.trim())
 }
 
-function sign(secret: string, ts: string, action: string, payload: unknown): string {
+async function hmacSha256Hex(secret: string, data: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  )
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data))
+  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+async function sign(secret: string, ts: string, action: string, payload: unknown): Promise<string> {
   const input = `${ts}\n${action}\n${canonicalJson(payload)}`
-  return createHmac('sha256', secret).update(input, 'utf8').digest('hex')
+  return hmacSha256Hex(secret, input)
 }
 
 const SuccessEnvelopeSchema = z.object({
@@ -97,7 +108,7 @@ async function post(
   const body = JSON.stringify({
     action,
     payload,
-    auth: { key: secret, ts, nonce: randomUUID(), sig: sign(secret, ts, action, payload) },
+    auth: { key: secret, ts, nonce: crypto.randomUUID(), sig: await sign(secret, ts, action, payload) },
   })
 
   const controller = new AbortController()
