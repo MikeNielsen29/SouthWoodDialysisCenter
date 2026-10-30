@@ -143,3 +143,11 @@ export async function PUT(request: Request) {
     })
 
     return response
+  } catch (error) {
+    console.error('Register error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
