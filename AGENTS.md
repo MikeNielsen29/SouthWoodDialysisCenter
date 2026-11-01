@@ -23,6 +23,15 @@ Data: Google Sheets ("CloudBase DB") via a Google Apps Script Web App · files: 
 Freebuff's Changes panel owns commits and pushes; only run git delivery commands when the user asks.
 Verify with `npm run build`; use `freebuff-preview restart` (its own command) to check the running app — never start `next dev` manually.
 
+## Agent working rules (bug fixing)
+
+Every AI tool working in this repo MUST follow these. They are kept here, inside the project, so no agent works blind:
+
+1. **Find where the bug starts, not just where it shows up.** Trace the failing chain to its origin before editing anything. Example from this repo's history: the Vercel build failed with `node:crypto` UnhandledSchemeError. It looked like `lib/sheets/client.ts` was the problem; it wasn't. The origin was `SettingsForm.tsx` (`'use client'`) importing `lib/content.ts` without a `'use server'` directive, which pulled the sheets client into the browser bundle. The fix was one directive — not rewriting the crypto.
+2. **No patches that guess.** Never swap a library, add a runtime hack, or broaden a config to "try" to fix a failure. If the root cause is not identified, say so instead of patching. (`export const runtime = 'nodejs'` in `middleware.ts`, replacing bcrypt with SHA-256, and stubbing `verifySession` to `return true` were all guessed patches — all reverted.)
+3. **Newer commit is not automatically correct.** Verify every change against `docs/BUILD_PLAN.md`. This repo's history contains "fix" commits from other tools that weakened auth (§7) and broke the build. The spec wins over commit order.
+4. **Auth/security stubs are never acceptable.** If `lib/auth/*` cannot use bcrypt/jose as specified, the work is blocked — do not substitute placeholders that "verify nothing".
+
 ## Known landmines
 
 - `components/ui/button-styles.ts` must stay client-free — moving it into the `"use client"` button file crashes server-component prerendering.

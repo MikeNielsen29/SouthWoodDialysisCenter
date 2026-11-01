@@ -22,18 +22,18 @@ export async function GET() {
 
   if (content.services?.length) {
     lines.push('## Services')
-    for (const service of content.services) {
+    for (const service of content.services as Array<{ title?: string; summary?: string }>) {
       if (!service.title) continue
-      lines.push(`- ${service.title}: ${String((service as { summary?: string }).summary || 'See service page.')}`)
+      lines.push(`- ${service.title}: ${String(service.summary || 'See service page.')}`)
     }
     lines.push('')
   }
 
   if (content.news?.length) {
     lines.push('## Recent news')
-    for (const item of content.news.slice(0, 6)) {
+    for (const item of (content.news as Array<{ title?: string; published_at?: string }>).slice(0, 6)) {
       if (!item.title) continue
-      const publishedAt = (item as { published_at?: string }).published_at
+      const publishedAt = item.published_at
       const date = publishedAt ? new Date(publishedAt).toLocaleDateString('en-PH') : ''
       lines.push(`- ${date ? date + ' — ' : ''}${item.title}`)
     }

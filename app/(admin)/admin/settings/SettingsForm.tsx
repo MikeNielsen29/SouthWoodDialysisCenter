@@ -26,7 +26,7 @@ export function SettingsForm({ initial }: { initial: Settings }) {
     setSaving(true)
     setError(null)
     try {
-      const result: { ok?: boolean; error?: string } = await saveSettingsAction()
+      const result: { ok?: boolean; error?: string } = await saveSettingsAction(formData)
       if (result?.ok) {
         setSaved(true)
         setTimeout(() => setSaved(false), 3000)

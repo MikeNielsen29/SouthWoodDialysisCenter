@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   keywords: 'dialysis, kidney disease, treatment, medical, healthcare',
   generator: 'Southwood Dialysis Center Website',
   icons: {
-    icon: '/favicon.svg',
+    icon: '/favicon.png',
   },
 }
 
