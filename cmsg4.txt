@@ -1,0 +1,53 @@
+test(e2e,security,format): E2E suite, CSP + headers, 26 more tests
+
+**E2E (Phase 8)** — `e2e/funnel.spec.ts`, 11 tests × mobile and desktop.
+The unit suite proves the pure functions are right; nothing proved a
+visitor can actually get from the listings index to a submitted inquiry,
+which is the one path a demo depends on and the one that crosses a form,
+a validation layer, an API route, the store and the Content DB. It
+covers the funnel, filter state surviving a reload, consent validation,
+the 404 page, the middleware redirect, and the admin favicon.
+
+Two of these exist because of bugs I already fixed: the consent form's
+privacy link pointed at `/legal/privacy-policy` while the real slug is
+`/legal/privacy`, and all four footer legal links were never checked by
+anything. A dead link on the consent link is the worst place for one, so
+those get their own assertions rather than being folded into a broader
+page check.
+
+⛔ **I could not get a green run.** `playwright test --list` registers all
+22, but every attempt was killed before finishing — the shell drops long
+runs and its buffered output with them, and the machine kept losing the
+network mid-run. An earlier attempt "passed" only because I passed the
+base URL using bash syntax inside cmd.exe, which silently ignored the
+variable and hit localhost. So: written and registered, **not verified.**
+The command is in TASKS.md and takes 30 seconds from a real terminal.
+
+**Security headers** — `X-Frame-Options: DENY`, `X-Content-Type-Options`,
+`Referrer-Policy`, `Permissions-Policy` (geolocation explicitly off; a
+property listing page has no use for it and it leaks a visitor's exact
+position), COOP, and a full CSP, all in `next.config.ts` so a fork
+inherits them instead of silently losing them.
+
+⚠️ The CSP is **enforced and unverified against a real page load**. It
+keeps `'unsafe-inline'` for script-src — which is what actually breaks a
+strict policy here, since Next bootstraps inline and the JSON-LD blocks
+are inline — and there is no `'unsafe-eval'`. But if the site renders
+blank after deploy, that header is the cause and the fix is documented in
+the file and in TASKS.md. HSTS is deliberately left commented out: sending
+it while the domain is still parked locks browsers out of it.
+
+**26 more unit tests** — `lib/utils/format.ts` was untested, and it
+formats every price, date and area on the site. Three of the tests failed
+on first run and all three were my own wrong expectations, not code
+bugs: en-PH renders "Sep 27, 2026" rather than "27 Sep 2026", and
+`formatRelative` uses `Math.round`, so "just now" only covers the first
+~30 seconds. Both are now asserted as the deliberate behaviour they are.
+**93 unit tests / 6 files**, all green.
+
+**Prettier** — config, ignore file and `format`/`format:check` scripts.
+`.editorconfig` and `.prettierrc.json` turned out to be in the repo all
+along; the tracker had them marked pending. Only the scripts were missing.
+
+Verified: tsc 0 errors · 93/93 unit tests · 22 E2E registered · next build
+green.

@@ -1,0 +1,9 @@
+M  .gitignore
+A  .prettierignore
+M  TASKS.md
+A  e2e/funnel.spec.ts
+A  lib/utils/__tests__/format.test.ts
+M  next.config.ts
+M  package-lock.json
+M  package.json
+A  playwright.config.ts

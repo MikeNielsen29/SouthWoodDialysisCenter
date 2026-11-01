@@ -1,0 +1,5 @@
+[main 7c31737] fix(a11y,security): stop leaking the DB secret, fix 8 tap targets
+ 15 files changed, 767 insertions(+), 36 deletions(-)
+ create mode 100644 lib/store/__tests__/redact.test.ts
+ create mode 100644 lib/store/redact.ts
+ create mode 100644 scripts/qa-audit.mjs

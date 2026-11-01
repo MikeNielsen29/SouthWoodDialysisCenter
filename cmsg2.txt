@@ -1,0 +1,40 @@
+fix(seo,links,valuation): lint gate + 4 real bugs found by it
+
+**1. The domain could take the whole site down.** `metadataBase` was
+`new URL(site.domains.primary)` — which THROWS on a bare "example.com"
+with no scheme. That is a runtime failure in the root layout, so every
+page on the site 500s the moment someone types the domain without
+"https://". This build is going to be resold, and a broker will type
+their own domain into that field. It now resolves in three tiers:
+Content DB → NEXT_PUBLIC_SITE_URL → the incoming request host, so a
+Vercel preview canonicalises to itself instead of to a stranger's domain.
+
+**2. A dead privacy link on the consent form.** contact-form.tsx pointed
+at `/legal/privacy-policy`; the real slug is `/legal/privacy` (privacy /
+terms / cookies / disclaimer). So the link a visitor clicks to read what
+happens to their data — on the form that collects their data — 404s.
+That is the wrong link to have broken, which is how it was found: ESLint
+flagged the `<a>`, and fixing it meant looking up the actual slug.
+
+**3. `??` is not a blank-cell check.** valuation.ts fell back to
+`salePrice / floorAreaSqm` only when pricePerSqm was null/undefined. A
+blank Google Sheets cell arrives as 0, and those rows come straight from
+the Content DB — so the median collapsed to 0 and the tool told visitors
+"we don't have enough data" with the price and floor area sitting on the
+same row. Now any non-positive value is treated as absent, with a
+regression test pinning it.
+
+**4. Eight internal links used `<a>` instead of `<Link>`** — a full page
+reload each, losing client-side navigation. The CSV export in
+lead-manager stays an `<a>` on purpose (it downloads from an API route)
+and says so inline.
+
+Also adds `eslint.config.mjs` (flat config, ESLint 9) with
+`npm run lint` / `lint:fix`. `next lint` was removed in Next 15 and no
+config was committed, so there was no lint gate at all — `tsc` cannot
+see a conditional hook call or an unescaped JSX apostrophe. Result:
+9 errors → 0, and 7 unused imports removed along the way.
+
+Verified: tsc 0 errors · 51/51 tests · eslint 0 errors, 13 warnings ·
+next build green. The 13 warnings are unused React state setters and
+console calls in the store layer, left alone deliberately.

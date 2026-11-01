@@ -1,0 +1,36 @@
+feat(admin): testimonial review queue with approve/reject
+
+The moderation gate existed in code but not in the UI: pending submissions
+were mixed into the Content library as ordinary Drafts, with no visible
+flags, no way to see the submitter's email, and no approve/reject action.
+Nothing was actually usable by a human.
+
+app/admin/testimonials/page.tsx (new)
+- Dedicated queue. Separate from /admin/content/testimonials on purpose:
+  there, "Draft" is a status on a row you are editing; here, each item is a
+  real person who wrote something and deserves a decision.
+- Header shows "N waiting for review" vs "N already reviewed".
+
+components/admin/testimonial-review.tsx (new)
+- Shows the quote, the auto-screening flags as colour-coded badges, and the
+  submitter's email as a mailto: link for verification.
+- Approve / Reject buttons. Verified and Featured checkboxes.
+- Reuses router.refresh() rather than optimistic state, so the UI can never
+  show "approved" for something the server rejected.
+- Already-reviewed items are read-only and show the rejection reason.
+- Verified defaults to OFF every time: it carries real legal weight.
+
+app/api/admin/testimonials/review/route.ts (new)
+- requireAdmin() gated. Validates id + decision.
+- Parses isVerified/isFeatured with === true, never truthiness, so the
+  string "false" can never mark a review verified.
+- Separate route instead of the generic /api/admin/[collection] because
+  approving has a public side effect (website + JSON-LD + average rating),
+  not just a row update.
+
+app/admin/layout.tsx
+- Added "Client reviews" to the Content nav group.
+
+Verified: tsc --noEmit clean, 161/161 tests pass, production build
+BUILD_PASS with /admin/testimonials, /api/admin/testimonials/review,
+/api/testimonials and /testimonials all present in the output.

@@ -1,0 +1,8 @@
+M  .gitignore
+M  app/(site)/contact/page.tsx
+M  app/layout.tsx
+M  components/ui/card.tsx
+A  lib/seo/title.ts
+A  lib/utils/__tests__/title-template.test.ts
+A  scripts/csp-check.mjs
+M  scripts/qa-audit.mjs

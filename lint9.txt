@@ -1,0 +1,35 @@
+
+D:\Real State Website\app\api\admin\system\route.ts
+  222:7  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+D:\Real State Website\components\admin\settings-tabs.tsx
+  175:10  warning  'preview' is assigned a value but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  175:19  warning  'setPreview' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Real State Website\components\admin\system-panel.tsx
+  69:15  warning  'setPin' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Real State Website\components\listings\filter-panel.tsx
+   87:9  warning  'toggleAmenity' is assigned a value but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  102:9  warning  'hasAmenity' is assigned a value but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  103:9  warning  'visibleAmenities' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Real State Website\components\listings\listing-location-map.tsx
+  21:3  warning  'label' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Real State Website\components\listings\listings-explorer.tsx
+  394:3  warning  'onNavigate' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  484:3  warning  'onNavigate' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+D:\Real State Website\eslint.config.mjs
+  36:1  warning  Assign array to a variable before exporting as module default  import/no-anonymous-default-export
+
+D:\Real State Website\lib\admin\pin-unlock.ts
+  50:3  warning  Unused eslint-disable directive (no problems were reported from 'no-var')
+
+D:\Real State Website\lib\leads\notify.ts
+  73:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+✖ 13 problems (0 errors, 13 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+

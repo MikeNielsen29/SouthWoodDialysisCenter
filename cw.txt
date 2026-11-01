@@ -1,0 +1,9 @@
+lib/store/contentbase.ts
+   import "server-only";
+   L228: // ⛔ `warnSafe`, not `console.warn`: a fetch failure carries the request
+   L358: console.warn(`[contentbase] Could not write "${name}":`, error);
+lib/store/credentialsbase.ts
+   import "server-only";
+   L184: // ⛔ `warnSafe`, not `console.warn` — see lib/store/redact.ts. A fetch
+   L243: console.error(
+   L252: console.warn(`[credentialsbase] Could not write "${name}":`, error);

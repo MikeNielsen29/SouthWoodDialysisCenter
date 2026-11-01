@@ -1,0 +1,7 @@
+TSC_FAIL
+STDOUT:
+
+STDERR:
+
+MSG:
+spawnSync npx.cmd EINVAL

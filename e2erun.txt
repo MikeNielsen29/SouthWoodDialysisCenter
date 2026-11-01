@@ -1,0 +1,699 @@
+
+Running 11 tests using 1 worker
+
+  ✘   1 [desktop] › e2e\funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index (1.2s)
+  ✘   2 [desktop] › e2e\funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index (retry #1) (786ms)
+  ✘   3 [desktop] › e2e\funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload (2.1s)
+  ✘   4 [desktop] › e2e\funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload (retry #1) (1.2s)
+  ✘   5 [desktop] › e2e\funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error (743ms)
+  ✘   6 [desktop] › e2e\funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error (retry #1) (757ms)
+  ✘   7 [desktop] › e2e\funnel.spec.ts:62:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page (946ms)
+  ✘   8 [desktop] › e2e\funnel.spec.ts:62:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page (retry #1) (1.0s)
+  ✘   9 [desktop] › e2e\funnel.spec.ts:77:7 › browse → filter → enquire › the inquiry form refuses to submit without consent (859ms)
+  ✘  10 [desktop] › e2e\funnel.spec.ts:77:7 › browse → filter → enquire › the inquiry form refuses to submit without consent (retry #1) (722ms)
+  ✘  11 [desktop] › e2e\funnel.spec.ts:97:7 › navigation and chrome › the homepage exposes a skip link and exactly one h1 (1.1s)
+  ✘  12 [desktop] › e2e\funnel.spec.ts:97:7 › navigation and chrome › the homepage exposes a skip link and exactly one h1 (retry #1) (774ms)
+  ✘  13 [desktop] › e2e\funnel.spec.ts:107:7 › navigation and chrome › every primary nav link resolves (1.1s)
+  ✘  14 [desktop] › e2e\funnel.spec.ts:107:7 › navigation and chrome › every primary nav link resolves (retry #1) (818ms)
+  ✘  15 [desktop] › e2e\funnel.spec.ts:125:7 › navigation and chrome › all four footer legal links resolve (760ms)
+  ✘  16 [desktop] › e2e\funnel.spec.ts:125:7 › navigation and chrome › all four footer legal links resolve (retry #1) (986ms)
+  ✘  17 [desktop] › e2e\funnel.spec.ts:145:7 › navigation and chrome › an unknown URL returns the 404 page, not a crash (962ms)
+  ✘  18 [desktop] › e2e\funnel.spec.ts:145:7 › navigation and chrome › an unknown URL returns the 404 page, not a crash (retry #1) (760ms)
+  ✘  19 [desktop] › e2e\funnel.spec.ts:153:7 › admin › protected pages redirect an anonymous visitor to login (800ms)
+  ✘  20 [desktop] › e2e\funnel.spec.ts:153:7 › admin › protected pages redirect an anonymous visitor to login (retry #1) (1.4s)
+  ✘  21 [desktop] › e2e\funnel.spec.ts:160:7 › admin › the login page carries the admin favicon, not the public one (1.2s)
+  ✘  22 [desktop] › e2e\funnel.spec.ts:160:7 › admin › the login page carries the admin favicon, not the public one (retry #1) (814ms)
+
+
+  1) [desktop] › e2e\funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      12 | test.describe("browse → filter → enquire", () => {
+      13 |   test("a visitor can reach a listing detail from the listings index", async ({ page }) => {
+    > 14 |     await page.goto("/listings");
+         |                ^
+      15 |
+      16 |     // The grid must contain at least one real card, not an empty state.
+      17 |     const firstCard = page.locator('a[href^="/listings/"]').first();
+        at D:\Real State Website\e2e\funnel.spec.ts:14:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      12 | test.describe("browse → filter → enquire", () => {
+      13 |   test("a visitor can reach a listing detail from the listings index", async ({ page }) => {
+    > 14 |     await page.goto("/listings");
+         |                ^
+      15 |
+      16 |     // The grid must contain at least one real card, not an empty state.
+      17 |     const firstCard = page.locator('a[href^="/listings/"]').first();
+        at D:\Real State Website\e2e\funnel.spec.ts:14:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-0ae17-ail-from-the-listings-index-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › e2e\funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      26 |
+      27 |   test("a bedroom filter narrows results and survives a reload", async ({ page }) => {
+    > 28 |     await page.goto("/listings");
+         |                ^
+      29 |     await page.waitForLoadState("networkidle");
+      30 |
+      31 |     const cards = page.locator('[data-listing-card], article a[href^="/listings/"]');
+        at D:\Real State Website\e2e\funnel.spec.ts:28:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      26 |
+      27 |   test("a bedroom filter narrows results and survives a reload", async ({ page }) => {
+    > 28 |     await page.goto("/listings");
+         |                ^
+      29 |     await page.waitForLoadState("networkidle");
+      30 |
+      31 |     const cards = page.locator('[data-listing-card], article a[href^="/listings/"]');
+        at D:\Real State Website\e2e\funnel.spec.ts:28:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-287c3-sults-and-survives-a-reload-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › e2e\funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings?beds=notanumber&price=abc-def
+    Call log:
+      - navigating to "http://localhost:3000/listings?beds=notanumber&price=abc-def", waiting until "load"
+
+
+      54 |   test("a hand-edited bad filter degrades to no filter, not an error", async ({ page }) => {
+      55 |     // A visitor can edit the URL, and so can a stale bookmark.
+    > 56 |     const response = await page.goto("/listings?beds=notanumber&price=abc-def");
+         |                                 ^
+      57 |
+      58 |     expect(response?.status()).toBe(200);
+      59 |     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+        at D:\Real State Website\e2e\funnel.spec.ts:56:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings?beds=notanumber&price=abc-def
+    Call log:
+      - navigating to "http://localhost:3000/listings?beds=notanumber&price=abc-def", waiting until "load"
+
+
+      54 |   test("a hand-edited bad filter degrades to no filter, not an error", async ({ page }) => {
+      55 |     // A visitor can edit the URL, and so can a stale bookmark.
+    > 56 |     const response = await page.goto("/listings?beds=notanumber&price=abc-def");
+         |                                 ^
+      57 |
+      58 |     expect(response?.status()).toBe(200);
+      59 |     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+        at D:\Real State Website\e2e\funnel.spec.ts:56:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-c8ec2-s-to-no-filter-not-an-error-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › e2e\funnel.spec.ts:62:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/contact
+    Call log:
+      - navigating to "http://localhost:3000/contact", waiting until "load"
+
+
+      65 |     // the consent link is the worst possible place for a dead link, so it gets
+      66 |     // its own test rather than being folded into a bigger page assertion.
+    > 67 |     await page.goto("/contact");
+         |                ^
+      68 |
+      69 |     const privacy = page.getByRole("link", { name: /privacy policy/i }).first();
+      70 |     await expect(privacy).toBeVisible();
+        at D:\Real State Website\e2e\funnel.spec.ts:67:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/contact
+    Call log:
+      - navigating to "http://localhost:3000/contact", waiting until "load"
+
+
+      65 |     // the consent link is the worst possible place for a dead link, so it gets
+      66 |     // its own test rather than being folded into a bigger page assertion.
+    > 67 |     await page.goto("/contact");
+         |                ^
+      68 |
+      69 |     const privacy = page.getByRole("link", { name: /privacy policy/i }).first();
+      70 |     await expect(privacy).toBeVisible();
+        at D:\Real State Website\e2e\funnel.spec.ts:67:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-dd2e0-orm-resolves-to-a-real-page-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [desktop] › e2e\funnel.spec.ts:77:7 › browse → filter → enquire › the inquiry form refuses to submit without consent 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      76 |
+      77 |   test("the inquiry form refuses to submit without consent", async ({ page }) => {
+    > 78 |     await page.goto("/listings");
+         |                ^
+      79 |     await page.locator('a[href^="/listings/"]').first().click();
+      80 |     await page.waitForLoadState("networkidle");
+      81 |
+        at D:\Real State Website\e2e\funnel.spec.ts:78:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Call log:
+      - navigating to "http://localhost:3000/listings", waiting until "load"
+
+
+      76 |
+      77 |   test("the inquiry form refuses to submit without consent", async ({ page }) => {
+    > 78 |     await page.goto("/listings");
+         |                ^
+      79 |     await page.locator('a[href^="/listings/"]').first().click();
+      80 |     await page.waitForLoadState("networkidle");
+      81 |
+        at D:\Real State Website\e2e\funnel.spec.ts:78:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-browse-→-filter-→-e-ed931-s-to-submit-without-consent-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [desktop] › e2e\funnel.spec.ts:97:7 › navigation and chrome › the homepage exposes a skip link and exactly one h1 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       96 | test.describe("navigation and chrome", () => {
+       97 |   test("the homepage exposes a skip link and exactly one h1", async ({ page }) => {
+    >  98 |     await page.goto("/");
+          |                ^
+       99 |
+      100 |     await expect(page.getByRole("link", { name: /skip to/i }).first()).toBeAttached();
+      101 |
+        at D:\Real State Website\e2e\funnel.spec.ts:98:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+       96 | test.describe("navigation and chrome", () => {
+       97 |   test("the homepage exposes a skip link and exactly one h1", async ({ page }) => {
+    >  98 |     await page.goto("/");
+          |                ^
+       99 |
+      100 |     await expect(page.getByRole("link", { name: /skip to/i }).first()).toBeAttached();
+      101 |
+        at D:\Real State Website\e2e\funnel.spec.ts:98:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-93d43-kip-link-and-exactly-one-h1-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [desktop] › e2e\funnel.spec.ts:107:7 › navigation and chrome › every primary nav link resolves 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+      106 |
+      107 |   test("every primary nav link resolves", async ({ page }) => {
+    > 108 |     await page.goto("/");
+          |                ^
+      109 |     const nav = page.getByRole("navigation", { name: /main/i }).first();
+      110 |     if ((await nav.count()) === 0) test.skip(true, "no main nav rendered");
+      111 |
+        at D:\Real State Website\e2e\funnel.spec.ts:108:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+      106 |
+      107 |   test("every primary nav link resolves", async ({ page }) => {
+    > 108 |     await page.goto("/");
+          |                ^
+      109 |     const nav = page.getByRole("navigation", { name: /main/i }).first();
+      110 |     if ((await nav.count()) === 0) test.skip(true, "no main nav rendered");
+      111 |
+        at D:\Real State Website\e2e\funnel.spec.ts:108:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chrome-every-primary-nav-link-resolves-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [desktop] › e2e\funnel.spec.ts:125:7 › navigation and chrome › all four footer legal links resolve 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+      126 |     // Same reason as the privacy test: the broken link made it to production
+      127 |     // precisely because nothing ever checked these four URLs.
+    > 128 |     await page.goto("/");
+          |                ^
+      129 |     const legal = page.getByRole("navigation", { name: /legal/i });
+      130 |     if ((await legal.count()) === 0) test.skip(true, "no legal nav rendered");
+      131 |
+        at D:\Real State Website\e2e\funnel.spec.ts:128:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+      126 |     // Same reason as the privacy test: the broken link made it to production
+      127 |     // precisely because nothing ever checked these four URLs.
+    > 128 |     await page.goto("/");
+          |                ^
+      129 |     const legal = page.getByRole("navigation", { name: /legal/i });
+      130 |     if ((await legal.count()) === 0) test.skip(true, "no legal nav rendered");
+      131 |
+        at D:\Real State Website\e2e\funnel.spec.ts:128:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-48e98--footer-legal-links-resolve-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) [desktop] › e2e\funnel.spec.ts:145:7 › navigation and chrome › an unknown URL returns the 404 page, not a crash 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/this-route-does-not-exist-e2e
+    Call log:
+      - navigating to "http://localhost:3000/this-route-does-not-exist-e2e", waiting until "load"
+
+
+      144 |
+      145 |   test("an unknown URL returns the 404 page, not a crash", async ({ page }) => {
+    > 146 |     const res = await page.goto("/this-route-does-not-exist-e2e");
+          |                            ^
+      147 |     expect(res?.status()).toBe(404);
+      148 |     await expect(page.getByRole("heading")).toBeVisible();
+      149 |   });
+        at D:\Real State Website\e2e\funnel.spec.ts:146:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/this-route-does-not-exist-e2e
+    Call log:
+      - navigating to "http://localhost:3000/this-route-does-not-exist-e2e", waiting until "load"
+
+
+      144 |
+      145 |   test("an unknown URL returns the 404 page, not a crash", async ({ page }) => {
+    > 146 |     const res = await page.goto("/this-route-does-not-exist-e2e");
+          |                            ^
+      147 |     expect(res?.status()).toBe(404);
+      148 |     await expect(page.getByRole("heading")).toBeVisible();
+      149 |   });
+        at D:\Real State Website\e2e\funnel.spec.ts:146:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-navigation-and-chro-6b4f7-ns-the-404-page-not-a-crash-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) [desktop] › e2e\funnel.spec.ts:153:7 › admin › protected pages redirect an anonymous visitor to login 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/admin
+    Call log:
+      - navigating to "http://localhost:3000/admin", waiting until "load"
+
+
+      153 |   test("protected pages redirect an anonymous visitor to login", async ({ page }) => {
+      154 |     // The middleware must hold. If this fails, the dashboard is public.
+    > 155 |     await page.goto("/admin");
+          |                ^
+      156 |     await expect(page).toHaveURL(/\/admin\/login/);
+      157 |     await expect(page.locator('input[type="password"]')).toBeVisible();
+      158 |   });
+        at D:\Real State Website\e2e\funnel.spec.ts:155:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/admin
+    Call log:
+      - navigating to "http://localhost:3000/admin", waiting until "load"
+
+
+      153 |   test("protected pages redirect an anonymous visitor to login", async ({ page }) => {
+      154 |     // The middleware must hold. If this fails, the dashboard is public.
+    > 155 |     await page.goto("/admin");
+          |                ^
+      156 |     await expect(page).toHaveURL(/\/admin\/login/);
+      157 |     await expect(page.locator('input[type="password"]')).toBeVisible();
+      158 |   });
+        at D:\Real State Website\e2e\funnel.spec.ts:155:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-admin-protected-pag-17bca--anonymous-visitor-to-login-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11) [desktop] › e2e\funnel.spec.ts:160:7 › admin › the login page carries the admin favicon, not the public one 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/admin/login
+    Call log:
+      - navigating to "http://localhost:3000/admin/login", waiting until "load"
+
+
+      159 |
+      160 |   test("the login page carries the admin favicon, not the public one", async ({ page }) => {
+    > 161 |     await page.goto("/admin/login");
+          |                ^
+      162 |     // The whole point of the separate icon: two tabs, clearly distinguishable.
+      163 |     const href = await page
+      164 |       .locator('link[rel="icon"]')
+        at D:\Real State Website\e2e\funnel.spec.ts:161:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/admin/login
+    Call log:
+      - navigating to "http://localhost:3000/admin/login", waiting until "load"
+
+
+      159 |
+      160 |   test("the login page carries the admin favicon, not the public one", async ({ page }) => {
+    > 161 |     await page.goto("/admin/login");
+          |                ^
+      162 |     // The whole point of the separate icon: two tabs, clearly distinguishable.
+      163 |     const href = await page
+      164 |       .locator('link[rel="icon"]')
+        at D:\Real State Website\e2e\funnel.spec.ts:161:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\funnel-admin-the-login-pag-225ae--favicon-not-the-public-one-desktop-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11 failed
+    [desktop] › e2e\funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index 
+    [desktop] › e2e\funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload 
+    [desktop] › e2e\funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error 
+    [desktop] › e2e\funnel.spec.ts:62:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page 
+    [desktop] › e2e\funnel.spec.ts:77:7 › browse → filter → enquire › the inquiry form refuses to submit without consent 
+    [desktop] › e2e\funnel.spec.ts:97:7 › navigation and chrome › the homepage exposes a skip link and exactly one h1 
+    [desktop] › e2e\funnel.spec.ts:107:7 › navigation and chrome › every primary nav link resolves ─
+    [desktop] › e2e\funnel.spec.ts:125:7 › navigation and chrome › all four footer legal links resolve 
+    [desktop] › e2e\funnel.spec.ts:145:7 › navigation and chrome › an unknown URL returns the 404 page, not a crash 
+    [desktop] › e2e\funnel.spec.ts:153:7 › admin › protected pages redirect an anonymous visitor to login 
+    [desktop] › e2e\funnel.spec.ts:160:7 › admin › the login page carries the admin favicon, not the public one 

@@ -1,0 +1,4 @@
+app\(site)\listings\page.tsx:38:    title: "Houses, condos & lots for sale",
+app\(site)\listings\page.tsx:68:    title: `${qualifier}${total} ${total === 1 ? "property" : "properties"} | ${site.siteName}`,
+app\(site)\listings\[slug]\page.tsx:37:    return { title: "Listing not found" };
+app\(site)\listings\[slug]\page.tsx:41:    title: listing.seo?.metaTitle ?? listing.title,

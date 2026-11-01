@@ -1,0 +1,27 @@
+feat(testimonials): moderated public submission + client docs
+
+Public testimonial submission with mandatory admin review.
+
+- POST /api/testimonials saves as status="draft". Only status="published"
+  is ever readable publicly (getPublicTestimonials already filters).
+- GET /api/testimonials requires admin auth and returns the pending queue.
+- lib/testimonials/schema.ts: zod validation, sanitizeText, screenText
+  (profanity / accusation / contact-info / link / all-caps / short flags).
+- lib/testimonials/types.ts: toPublicList() drops every non-published record
+  and strips admin-only submission metadata (email, IP, flags) entirely.
+- 22 new tests asserting pending/rejected cannot leak to the public payload.
+- Sanitizer now removes script/style block CONTENT, not just the tags.
+
+Fix regression risk: getPublicTestimonials() fell back to seed on
+stored.length > 0. A collection holding only drafts would have blanked the
+public page. It now falls back only when no published record exists.
+
+Client-facing documents for MIPORO ICT Solution:
+- docs/client/01-PROJECT-PROPOSAL.md      (researched PH market pricing)
+- docs/client/02-EULA.md                 (RA 10173, RA 8792, NPC 2023-04)
+- docs/client/03-TECHNICAL-GUIDELINES.md (non-technical admin manual)
+
+Also casts a deliberate property-access assertion in filters-params.test.ts
+so tsc --noEmit is clean.
+
+Tests: 161 passed (139 + 22). TypeScript: clean.

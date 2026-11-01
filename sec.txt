@@ -1,0 +1,6 @@
+lib\store\contentbase.ts:8: *   - `?secret=...` before a GET, `secret` in the body before a POST
+lib\store\contentbase.ts:135:    const target = method === "GET" ? `${url}?secret=${encodeURIComponent(secret)}` : url;
+lib\store\contentbase.ts:249:    const response = await fetch(`${url}?secret=${encodeURIComponent(secret)}&health=1`, {
+lib\store\credentialsbase.ts:14: *     - `?secret=...` on GET, `secret` in the body on POST
+lib\store\credentialsbase.ts:134:    const target = method === "GET" ? `${url}?secret=${encodeURIComponent(secret)}` : url;
+lib\store\credentialsbase.ts:205:    const response = await fetch(`${url}?secret=${encodeURIComponent(secret)}&health=1`, {

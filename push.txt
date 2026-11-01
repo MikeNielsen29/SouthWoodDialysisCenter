@@ -1,0 +1,18 @@
+﻿seed count: 9
+tsc bytes: 5
+--- adding ---
+--- committing ---
+[main 716ab9d] feat(leads,listings): lead capture API, mortgage presets, hover card, print CSS
+ 18 files changed, 1396 insertions(+), 22 deletions(-)
+ create mode 100644 app/admin/leads/page.tsx
+ create mode 100644 app/api/leads/[id]/route.ts
+ create mode 100644 app/api/leads/route.ts
+ create mode 100644 components/admin/lead-inbox.tsx
+ create mode 100644 lib/leads/schema.ts
+ create mode 100644 lib/leads/store.ts
+ create mode 100644 lib/listings/mortgage.ts
+ create mode 100644 scripts/generate-listings.mjs
+--- log ---
+716ab9d feat(leads,listings): lead capture API, mortgage presets, hover card, print CSS
+f74db59 feat(listings): Phase 2 - search page, interactive map, property detail
+e2715a1 feat(branding): runtime-modular brand tokens (colors, fonts, logo) with live CSS variable overrides

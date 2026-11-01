@@ -1,0 +1,35 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/Real State Website[39m
+
+
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m lib/utils/__tests__/title-template.test.ts[2m [ lib/utils/__tests__/title-template.test.ts ][22m
+[31m[1mError[22m: Transform failed with 1 error:
+D:/Real State Website/app/layout.tsx:105:0: ERROR: Expected ")" but found "export"[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mD:/Real State Website/app/layout.tsx[39m:105:0
+[33m  
+  [33mExpected ")" but found "export"[33m
+  103 |   * looks correct in review and is invisible until you read the rendered HTML.
+  104 |   */
+  105 |  export function buildTitleTemplate(pattern: string, brand: string): string {
+      |  ^
+  106 |    const resolved = pattern
+  107 |      .replace(/\{Page\s*Title\}/gi, "%s")
+  [39m
+[90m [2m❯[22m failureErrorWithLog node_modules/esbuild/lib/main.js:[2m1752:15[22m[39m
+[90m [2m❯[22m node_modules/esbuild/lib/main.js:[2m1019:50[22m[39m
+[90m [2m❯[22m responseCallbacks.<computed> node_modules/esbuild/lib/main.js:[2m886:9[22m[39m
+[90m [2m❯[22m handleIncomingPacket node_modules/esbuild/lib/main.js:[2m941:12[22m[39m
+[90m [2m❯[22m Socket.readFromStdout node_modules/esbuild/lib/main.js:[2m864:7[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 23:45:24
+[2m   Duration [22m 1.84s[2m (transform 113ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 536ms)[22m
+

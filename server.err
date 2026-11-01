@@ -1,0 +1,4 @@
+ ⨯ TypeError: c.map is not a function
+    at h (D:\GYM Website\.next\server\app\admin\seo\page.js:2:9157) {
+  digest: '2087320452'
+}

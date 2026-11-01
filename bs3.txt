@@ -1,0 +1,234 @@
+   ▲ Next.js 15.5.26
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 27.5s
+   Linting and checking validity of types ...
+
+./app/api/admin/system/route.ts
+222:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+./components/admin/settings-tabs.tsx
+175:10  Warning: 'preview' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+175:19  Warning: 'setPreview' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/admin/system-panel.tsx
+69:15  Warning: 'setPin' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/listings/filter-panel.tsx
+87:9  Warning: 'toggleAmenity' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+102:9  Warning: 'hasAmenity' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+103:9  Warning: 'visibleAmenities' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/listings/listing-location-map.tsx
+21:3  Warning: 'label' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/listings/listings-explorer.tsx
+394:3  Warning: 'onNavigate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+484:3  Warning: 'onNavigate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/admin/pin-unlock.ts
+50:3  Warning: Unused eslint-disable directive (no problems were reported from 'no-var').
+
+./lib/leads/notify.ts
+73:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/24) ...
+[contentbase] Falling back to seed for "settings" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:8883)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /sitemap.xml couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "listings" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:11782)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "posts" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:11782)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "neighborhoods" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:11782)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /sitemap.xml. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "settings" Error: Dynamic server usage: Route /robots.txt couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /robots.txt. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:8883)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /robots.txt couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /robots.txt. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "neighborhoods" Error: Dynamic server usage: Route /_not-found couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:8883)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /_not-found couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "neighborhoods" Error: Dynamic server usage: Route /_not-found couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:8883)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /_not-found couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[contentbase] Falling back to seed for "settings" Error: Dynamic server usage: Route /_not-found couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at r (D:\Real State Website\.next\server\chunks\1331.js:1:28376)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:1:11782)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4619)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459)
+    at i.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39425)
+    at e.startActiveSpan (D:\Real State Website\.next\server\chunks\1331.js:22:39959)
+    at <unknown> (D:\Real State Website\.next\server\chunks\1331.js:15:4147)
+    at e.with (D:\Real State Website\.next\server\chunks\1331.js:22:30212)
+    at i.with (D:\Real State Website\.next\server\chunks\1331.js:22:24459) {
+  description: "Route /_not-found couldn't be rendered statically because it used no-store fetch https://script.google.com/macros/s/AKfycbxhN7ICwbUvG4EW8WJ86SI9ttdaI28pvbZU82GXLk1VrdYspz6yx8-C4mG8yfNhkRa0Sw/exec?secret=***REDACTED*** /_not-found. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (6/24) 
+   Generating static pages (12/24) 
+   Generating static pages (18/24) 
+ ✓ Generating static pages (24/24)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                            Size  First Load JS
+┌ ƒ /                                               2.02 kB         126 kB
+├ ƒ /_not-found                                       185 B         103 kB
+├ ƒ /about                                            181 B         107 kB
+├ ƒ /admin                                            889 B         107 kB
+├ ƒ /admin/appointments                             1.15 kB         108 kB
+├ ƒ /admin/content                                    169 B         107 kB
+├ ƒ /admin/content/[collection]                       127 B         110 kB
+├ ƒ /admin/homepage                                 3.08 kB         115 kB
+├ ƒ /admin/leads                                    2.73 kB         134 kB
+├ ƒ /admin/legal                                    2.39 kB         109 kB
+├ ƒ /admin/listings                                 6.07 kB         113 kB
+├ ƒ /admin/login                                    1.47 kB         108 kB
+├ ƒ /admin/navigation                               2.19 kB         109 kB
+├ ƒ /admin/neighborhoods                              128 B         110 kB
+├ ƒ /admin/pipeline                                  1.7 kB         133 kB
+├ ƒ /admin/posts                                      125 B         110 kB
+├ ƒ /admin/settings                                 4.13 kB         111 kB
+├ ƒ /admin/system                                      5 kB         112 kB
+├ ƒ /admin/team                                       128 B         110 kB
+├ ƒ /api/admin/[collection]                           185 B         103 kB
+├ ƒ /api/admin/alerts                                 185 B         103 kB
+├ ƒ /api/admin/auth                                   185 B         103 kB
+├ ƒ /api/admin/homepage                               185 B         103 kB
+├ ƒ /api/admin/legal                                  185 B         103 kB
+├ ƒ /api/admin/listings                               185 B         103 kB
+├ ƒ /api/admin/places                                 185 B         103 kB
+├ ƒ /api/admin/settings                               185 B         103 kB
+├ ƒ /api/admin/sheets                                 185 B         103 kB
+├ ƒ /api/admin/system                                 185 B         103 kB
+├ ƒ /api/appointments                                 185 B         103 kB
+├ ƒ /api/health                                       185 B         103 kB
+├ ƒ /api/leads                                        185 B         103 kB
+├ ƒ /api/leads/[id]                                   185 B         103 kB
+├ ƒ /api/valuations                                   185 B         103 kB
+├ ƒ /blog                                             181 B         107 kB
+├ ● /blog/[slug]                                      183 B         112 kB
+├   ├ /blog/condo-prices-metro-manila-q3-2026
+├   ├ /blog/pag-ibig-housing-loan-requirements
+├   └ /blog/paano-mag-value-ng-property
+├ ƒ /blog/feed.xml                                    185 B         103 kB
+├ ƒ /buy                                              181 B         107 kB
+├ ƒ /buy/mortgage-calculator                          170 B         119 kB
+├ ƒ /contact                                         4.1 kB         119 kB
+├ ƒ /faq                                              185 B         103 kB
+├ ƒ /legal/[slug]                                     185 B         103 kB
+├ ƒ /listings                                       14.7 kB         135 kB
+├ ● /listings/[slug]                                6.99 kB         131 kB
+├   ├ /listings/2br-condo-bgc-tagui-2001
+├   ├ /listings/studio-for-rent-makati-cbd-2002
+├   ├ /listings/3br-townhouse-nuvali-sta-rosa-2003
+├   └ [+7 more paths]
+├ ƒ /neighborhoods                                    181 B         107 kB
+├ ● /neighborhoods/[slug]                             183 B         112 kB
+├   ├ /neighborhoods/bgc-taguig
+├   ├ /neighborhoods/alabang-muntinlupa
+├   ├ /neighborhoods/bf-homes-paranaque
+├   └ [+3 more paths]
+├ ƒ /past-sales                                       183 B         112 kB
+├ ƒ /robots.txt                                       185 B         103 kB
+├ ƒ /sell                                             181 B         107 kB
+├ ƒ /sell/home-valuation                            4.92 kB         120 kB
+├ ƒ /sitemap                                          181 B         107 kB
+├ ƒ /sitemap.xml                                      185 B         103 kB
+├ ● /team/[slug]                                    1.21 kB         122 kB
+└ ƒ /testimonials                                     185 B         103 kB
++ First Load JS shared by all                        103 kB
+  ├ chunks/1255-0f12d1d68e0b5948.js                 46.4 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js             54.2 kB
+  └ other shared chunks (total)                     2.58 kB
+
+
+ƒ Middleware                                        34.2 kB
+
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

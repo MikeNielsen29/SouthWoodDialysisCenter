@@ -1,0 +1,14 @@
+app/(site)/legal/[slug]/page.tsx | getLegalPages | usesOutsideImport=0
+    import { getLegalPage, getLegalPages } from "@/lib/store/content";
+app/(site)/neighborhoods/[slug]/page.tsx | Icon | usesOutsideImport=0
+    import { Icon } from "@/components/ui/icons";
+app/admin/leads/page.tsx | Metadata | usesOutsideImport=0
+    import type { Metadata } from "next";
+app/api/leads/route.ts | summarizeLeads | usesOutsideImport=0
+    import { leadsToCsv, listLeads, saveLead, summarizeLeads, listSlaAlerts, findDuplicates } from "@/lib/leads/store";
+app/api/leads/route.ts | listSlaAlerts | usesOutsideImport=0
+    import { leadsToCsv, listLeads, saveLead, summarizeLeads, listSlaAlerts, findDuplicates } from "@/lib/leads/store";
+app/api/leads/route.ts | findDuplicates | usesOutsideImport=0
+    import { leadsToCsv, listLeads, saveLead, summarizeLeads, listSlaAlerts, findDuplicates } from "@/lib/leads/store";
+components/site/site-footer.tsx | getPublicSettings | usesOutsideImport=0
+    import { getPublicFooterColumns, getPublicSettings } from "@/lib/store/content";

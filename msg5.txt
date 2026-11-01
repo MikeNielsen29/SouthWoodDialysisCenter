@@ -1,0 +1,41 @@
+feat(docs): /docs portal page, serving the HTML as static files
+
+The three documents existed as HTML but were unreachable — sitting in
+docs/client/html/, which Next.js does not serve. Anyone opening them had
+to already have the repo on disk.
+
+scripts/build-client-docs.mjs
+- Output moved from docs/client/html to public/client-docs. Next.js only
+  serves out of public/, so the old location produced 404s.
+- Regenerated; the old folder is removed.
+
+app/(site)/docs/page.tsx (new)
+- Landing page listing the three documents with Open + Download.
+- robots: noindex. The Proposal contains package pricing; this must not
+  end up in a Google result for "real estate website cost philippines".
+  Noted in the file that noindex is not access control — the HTML is
+  still public, and if the pricing must stay private it should be sent
+  by email instead.
+
+docs/client/01-PROJECT-PROPOSAL.md
+- New "About hosting" section under Care & Maintenance.
+
+On the hosting wording, which was the reason for this change:
+- Hosting is already inside the ₱4,500/mo line, and no infrastructure
+  vendor is named anywhere in the client-facing documents. Verified:
+  "Vercel" does not appear in any generated HTML.
+- What the new section does is say plainly that the site runs on managed
+  infrastructure that MIPORO chooses and pays for, that the client is not
+  billed for bandwidth, and that they get a full data export if they
+  leave. Moving hosts is described as a project, not a button, with the
+  first migration free within the first year.
+
+That wording was chosen on purpose. Naming no vendor is fine. Leaving the
+client to discover the hosting arrangement is not — a brokerage that
+believes it owns everything and then finds the site depends on one
+person's cloud account has a bad surprise waiting. The section keeps the
+vendor private and removes the ambiguity.
+
+Verified: tsc --noEmit clean, production build BUILD_PASS, /docs present
+in the build output, and the hosting clause is present in the generated
+Proposal HTML with no vendor name.

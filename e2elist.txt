@@ -1,0 +1,24 @@
+Listing tests:
+  [mobile] › funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index
+  [mobile] › funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload
+  [mobile] › funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error
+  [mobile] › funnel.spec.ts:62:7 › browse → filter → enquire › the inquiry form refuses to submit without consent
+  [mobile] › funnel.spec.ts:82:7 › browse → filter → enquire › navigation and chrome › the homepage exposes a skip link and exactly one h1
+  [mobile] › funnel.spec.ts:92:7 › browse → filter → enquire › navigation and chrome › every primary nav link resolves
+  [mobile] › funnel.spec.ts:110:7 › browse → filter → enquire › navigation and chrome › all four footer legal links resolve
+  [mobile] › funnel.spec.ts:130:7 › browse → filter → enquire › navigation and chrome › an unknown URL returns the 404 page, not a crash
+  [mobile] › funnel.spec.ts:138:7 › browse → filter → enquire › admin › protected pages redirect an anonymous visitor to login
+  [mobile] › funnel.spec.ts:145:7 › browse → filter → enquire › admin › the login page carries the admin favicon, not the public one
+  [mobile] › funnel.spec.ts:156:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page
+  [desktop] › funnel.spec.ts:13:7 › browse → filter → enquire › a visitor can reach a listing detail from the listings index
+  [desktop] › funnel.spec.ts:27:7 › browse → filter → enquire › a bedroom filter narrows results and survives a reload
+  [desktop] › funnel.spec.ts:54:7 › browse → filter → enquire › a hand-edited bad filter degrades to no filter, not an error
+  [desktop] › funnel.spec.ts:62:7 › browse → filter → enquire › the inquiry form refuses to submit without consent
+  [desktop] › funnel.spec.ts:82:7 › browse → filter → enquire › navigation and chrome › the homepage exposes a skip link and exactly one h1
+  [desktop] › funnel.spec.ts:92:7 › browse → filter → enquire › navigation and chrome › every primary nav link resolves
+  [desktop] › funnel.spec.ts:110:7 › browse → filter → enquire › navigation and chrome › all four footer legal links resolve
+  [desktop] › funnel.spec.ts:130:7 › browse → filter → enquire › navigation and chrome › an unknown URL returns the 404 page, not a crash
+  [desktop] › funnel.spec.ts:138:7 › browse → filter → enquire › admin › protected pages redirect an anonymous visitor to login
+  [desktop] › funnel.spec.ts:145:7 › browse → filter → enquire › admin › the login page carries the admin favicon, not the public one
+  [desktop] › funnel.spec.ts:156:7 › browse → filter → enquire › the privacy link on the consent form resolves to a real page
+Total: 22 tests in 1 file

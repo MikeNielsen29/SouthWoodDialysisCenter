@@ -1,0 +1,2 @@
+lib\store\contentbase.ts:232:    console.warn(`[contentbase] Falling back to seed for "${name}":`, error);
+lib\store\credentialsbase.ts:188:    console.warn(`[credentialsbase] Falling back to seed for "${name}":`, error);

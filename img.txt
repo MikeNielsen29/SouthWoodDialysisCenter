@@ -1,0 +1,4 @@
+components\admin\listing-manager.tsx:618:                      <img src={photo.image} alt={photo.alt || "Property photo"} />
+components\listings\listing-gallery.tsx:17: * A11y: only the button is focusable (not the <img>), every thumbnail has
+components\ui\media-client.tsx:18: *     the <img>** and uses `onError` to remove the picture on a 404.
+components\ui\media-client.tsx:20: * No flicker even on a 404: the placeholder sits behind the `<img>`, so it is

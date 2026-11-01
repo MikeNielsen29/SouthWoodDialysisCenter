@@ -1,0 +1,24 @@
+49:   { name: "mortgage", path: "/buy/mortgage-calculator" },
+50:   { name: "about", path: "/about" },
+51:   { name: "contact", path: "/contact" },
+52:   { name: "login", path: "/admin/login" },
+53: ];
+54: 
+55: const report = { base: BASE, at: new Date().toISOString(), results: [] };
+56: 
+57: const browser = await chromium.launch();
+58: 
+59:   for (const target of PAGES) {
+60:     const page = await context.newPage();
+61:     const consoleErrors = [];
+62:     const failedRequests = [];
+63: 
+...TAIL...
+247:   for (const r of statusRows) lines.push(`  ${r.viewport} ${r.page} -> ${r.statu
+248:   for (const r of errs) lines.push(`  ${r.viewport} ${r.page} -> ${r.error}`);
+249: }
+250: 
+251: const summary = lines.join("\n");
+252: writeFileSync("qa-report.txt", summary);
+253: console.log(summary);
+254: 

@@ -1,0 +1,9 @@
+fix(admin): stop doubling the section name in the login title
+
+The admin layout already appends the template "%s - Admin", and the login
+page title was "Admin - Sign in", so every visit rendered the browser tab
+as "Admin - Sign in - Admin".
+
+Visible only by reading the rendered HTML; the source reads correctly.
+Same class of bug as the public-site {Page Title} leak, which is why
+qa-audit.mjs now checks title, og:title and h1 count on every page.

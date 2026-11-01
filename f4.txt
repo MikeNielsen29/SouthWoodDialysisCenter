@@ -1,0 +1,3 @@
+components\blocks\explore-and-benefits.tsx:31  All neighborhoods
+components\blocks\featured-listings.tsx:30  View all listings
+components\blocks\social-proof.tsx:117  Visit the blog

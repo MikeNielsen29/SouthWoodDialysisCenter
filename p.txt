@@ -1,0 +1,9 @@
+﻿88:       "presets": ["Pag-IBIG", "Bank 15y", "Bank 20y", "Bank 25y"],
+      "cta": { "label": "Get pre-qualified", "href": "/buy/mortgage-calculator" }
+    },
+    {
+      "type": "testimonials-slider",
+      "id": "testimonials-1",
+      "isVisible": true,
+      "heading": "What our clients say",
+      "source": "featured",

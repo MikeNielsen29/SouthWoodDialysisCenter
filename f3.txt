@@ -1,0 +1,14 @@
+TOTAL 177
+124:             <Link href="/legal/disclaimer" className="underline hover:text-white">
+128:             <Link href="/legal/privacy" className="underline hover:text-white">
+129:               privacy policy
+138:             © {new Date().getFullYear()} {site.legalName ?? site.siteName}. All rights reserved.
+141:           <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2">
+142:             <Link href="/legal/privacy" className="hover:text-white">
+143:               Privacy Policy
+145:             <Link href="/legal/terms" className="hover:text-white">
+146:               Terms of Use
+148:             <Link href="/legal/cookies" className="hover:text-white">
+149:               Cookies
+151:             <Link href="/sitemap" className="hover:text-white">
+152:               Sitemap

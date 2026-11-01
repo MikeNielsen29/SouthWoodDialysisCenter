@@ -1,0 +1,43 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/Real State Website[39m
+
+ [31m❯[39m lib/store/__tests__/redact.test.ts [2m([22m[2m13 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 38[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mremoves the Content DB secret from a URL[32m 6[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mremoves the Security DB secret too[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mcatches a secret-shaped value it was never told about[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mcatches a JSON body containing a secret[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mredacts every occurrence, not just the first[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mleaves an ordinary URL alone[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mdoes not choke on regex metacharacters in the secret[32m 1[2mms[22m[39m
+   [32m✓[39m redact[2m > [22mtolerates an empty or short secret[32m 1[2mms[22m[39m
+   [32m✓[39m redactError[2m > [22mscrubs the secret out of message and stack[32m 2[2mms[22m[39m
+   [32m✓[39m redactError[2m > [22mkeeps the non-standard fields Next attaches, scrubbed[32m 10[2mms[22m[39m
+   [32m✓[39m redactError[2m > [22mdoes not mutate the original error[32m 1[2mms[22m[39m
+   [32m✓[39m redactError[2m > [22mpasses strings through the redactor[32m 1[2mms[22m[39m
+[31m   [31m×[31m redactError[2m > [22msurvives an object that is not an Error[39m[32m 10[2mms[22m[39m
+[31m     → expected '?secret=mike201422' not to contain 'mike201422'[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m lib/store/__tests__/redact.test.ts[2m > [22mredactError[2m > [22msurvives an object that is not an Error
+[31m[1mAssertionError[22m: expected '?secret=mike201422' not to contain 'mike201422'[39m
+
+Expected: [32m"mike201422"[39m
+Received: [31m"[7m?secret=[27mmike201422"[39m
+
+[36m [2m❯[22m lib/store/__tests__/redact.test.ts:[2m126:29[22m[39m
+    [90m124| [39m      reason[33m:[39m string[33m;[39m
+    [90m125| [39m    }[33m;[39m
+    [90m126| [39m    [34mexpect[39m(safe[33m.[39mreason)[33m.[39mnot[33m.[39m[34mtoContain[39m([33mCONTENT_SECRET[39m)[33m;[39m
+    [90m   | [39m                            [31m^[39m
+    [90m127| [39m  })[33m;[39m
+    [90m128| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 20:40:58
+[2m   Duration [22m 2.06s[2m (transform 127ms, setup 0ms, collect 145ms, tests 38ms, environment 1ms, prepare 396ms)[22m
+

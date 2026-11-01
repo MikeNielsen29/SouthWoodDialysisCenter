@@ -1,0 +1,73 @@
+1: # ---- Dependencies ----
+2: /node_modules
+3: /.pnp
+4: .pnp.js
+5: .yarn/install-state.gz
+6: 
+7: # ---- Testing ----
+8: /coverage
+9: 
+10: # ---- Next.js ----
+11: /.next/
+12: /out/
+13: next-env.d.ts
+14: 
+15: # ---- Production build ----
+16: /build
+17: 
+18: # ---- Environment files (HUWAG kailanman i-commit) ----
+19: .env
+20: .env.local
+21: .env.development.local
+22: .env.test.local
+23: .env.production.local
+24: .env.production
+25: !.env.example
+26: 
+27: # ---- Vercel ----
+28: .vercel
+29: 
+30: # ⛔ Env files para sa Vercel import — may BAWAL NA SECRETS.
+31: #    HUWAG kailanman i-commit. (.env* sa itaas ay may iba pang pattern)
+32: *.env
+33: !vercel-env.example
+34: vercel-env-*.env
+35: 
+36: # ---- TypeScript ----
+37: *.tsbuildinfo
+38: 
+39: # ---- Local media / uploads (dev only) ----
+40: /media-local
+41: /uploads
+42: 
+43: # ---- Lead data (PII! RA 10173) — HUWAG i-commit ----
+44: # Phase 2 shim: leads.json ay may pangalan/email/phone ng mga prospect.
+45: /data/
+46: data/leads.json
+47: 
+48: # ---- Logs & temp ----
+49: *.log
+50: npm-debug.log*
+51: yarn-debug.log*
+52: yarn-error.log*
+53: .pnpm-debug.log*
+54: /tmp
+55: 
+56: # ---- Editor ----
+57: .vscode/*
+58: !.vscode/extensions.json
+59: !.vscode/settings.json
+60: .idea
+61: *.swp
+62: 
+63: # ---- OS ----
+64: .DS_Store
+65: Thumbs.db
+66: desktop.ini
+67: $RECYCLE.BIN/
+68: 
+69: # ---- Secrets / keys (huwag kailanman) ----
+70: *.pem
+71: *.key
+72: service-account*.json
+73: 

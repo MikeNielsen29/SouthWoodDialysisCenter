@@ -1,0 +1,150 @@
+AUDIT  https://real-estate-website-w29x.vercel.app
+AT     2026-10-02T13:18:10.964Z
+
+HORIZONTAL OVERFLOW  0 / 32
+
+SMALL TAP TARGETS (<24px)  8 page(s)
+  360-mobile home
+      a[Skip to main content] 1x1
+      a[View all listings] 120x20
+      a[All neighborhoods] 140x20
+      a[Visit the blog] 107x20
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile listings
+      a[Skip to main content] 1x1
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile listing-detail
+      a[Skip to main content] 1x1
+      div[] 22x22
+      a[Leaflet] 51x14
+      a[OpenStreetMap] 85x14
+      a[Open in Google Maps] 141x16
+      input[] 16x16
+      input[] 16x16
+      input[] 16x16
+  360-mobile valuation
+      a[Skip to main content] 1x1
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile mortgage
+      a[Skip to main content] 1x1
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile about
+      a[Skip to main content] 1x1
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile contact
+      a[Skip to main content] 1x1
+      input[] 16x16
+      a[Privacy Policy] 74x16
+      a[Privacy Policy] 71x16
+      a[Terms of Use] 68x16
+      a[Cookies] 42x16
+      a[Sitemap] 43x16
+  360-mobile login
+      a[Skip to main content] 1x1
+      a[Back to website] 246x20
+
+CONSOLE ERRORS  11 page(s)
+  360-mobile home
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  360-mobile listings
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  360-mobile listing-detail
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  768-tablet home
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  768-tablet listings
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1024-laptop home
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1024-laptop listings
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1024-laptop listing-detail
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1440-desktop home
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1440-desktop listings
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+  1440-desktop listing-detail
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+      Failed to load resource: the server responded with a status of 404 ()
+
+FAILED REQUESTS  20 unique
+    7x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2001%2Fliving.jpg&w=360&q=75
+    5x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-1024%2Ffront-facade.jpg&w=360&q=75
+    5x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2002%2Fstudio.jpg&w=480&q=75
+    5x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2009%2Funit.jpg&w=480&q=75
+    5x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2005%2Funit.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2007%2Fview.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2006%2Fpool.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2001%2Fliving.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2004%2Fexterior.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2003%2Fmodel.jpg&w=480&q=75
+    3x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-1024%2Ffront-facade.jpg&w=480&q=75
+    2x  /_next/image?url=%2Fmedia%2Flistings%2Fpe-2001%2Fliving.jpg&w=640&q=75
+
+AXE-CORE VIOLATIONS  8 page(s)
+  home
+      [serious] color-contrast (8) Elements must meet minimum color contrast ratio thresholds
+            .pt-5
+      [serious] scrollable-region-focusable (1) Scrollable region must have keyboard access
+            ul[aria-label="Client testimonials"]
+  listings
+      [serious] color-contrast (1) Elements must meet minimum color contrast ratio thresholds
+            .bg-warning-50
+  listing-detail
+      [serious] aria-command-name (1) ARIA commands must have an accessible name
+            .leaflet-marker-icon
+      [serious] color-contrast (10) Elements must meet minimum color contrast ratio thresholds
+            .p-3.text-center.rounded-lg:nth-child(1) > .tracking-wide
+  valuation
+      [serious] color-contrast (2) Elements must meet minimum color contrast ratio thresholds
+            .mt-2.leading-relaxed:nth-child(2)
+  mortgage
+      [serious] color-contrast (5) Elements must meet minimum color contrast ratio thresholds
+            .max-w-2xl
+  about
+      [serious] color-contrast (6) Elements must meet minimum color contrast ratio thresholds
+            .bg-bg-50.p-5.rounded-lg > .mt-2.text-ink-500
+  contact
+      [serious] color-contrast (2) Elements must meet minimum color contrast ratio thresholds
+            .bg-bg-50 > .mt-1
+  login
+      [serious] color-contrast (1) Elements must meet minimum color contrast ratio thresholds
+            .login-tab[type="button"][role="tab"]:nth-child(1)
+
+PAGE ERRORS
+  768-tablet listing-detail -> page.goto: Timeout 45000ms exceeded.
+Call log:
+[2m  - navigating to "https://real-estate-website-w29x.vercel.app/listings/2br-condo-bgc-tagui-2001", waiting until "networkidle"[22m
+

@@ -1,0 +1,11 @@
+lib\listings\filters.ts:150  export function formatShort(value: number): string {
+lib\listings\filters.ts:276  export function formatResultCount(total: number, noun = "property"): string {
+lib\utils\format.ts:16  export function formatPrice(value: number | null | undefined): string {
+lib\utils\format.ts:22  export function formatPriceShort(value: number | null | undefined): string {
+lib\utils\format.ts:35  export function formatNumber(value: number | null | undefined): string {
+lib\utils\format.ts:41  export function formatArea(sqm: number | null | undefined): string {
+lib\utils\format.ts:47  export function formatBedsBaths(
+lib\utils\format.ts:60  export function formatDate(value: string | Date | null | undefined): string {
+lib\utils\format.ts:73  export function formatRelative(value: string | Date | null | undefined): string 
+lib\utils\format.ts:98  export function formatLastUpdated(value: string | Date | null | undefined): stri
+lib\utils\format.ts:113  export function formatPercent(value: number | null | undefined, digits = 1): str

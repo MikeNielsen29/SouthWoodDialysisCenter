@@ -1,0 +1,35 @@
+test(valuation,mortgage,filters,cluster): first suite — 50 tests
+
+The four modules under lib/listings/ are the ones that print a number to
+a visitor: a valuation range, a monthly payment, a result count, and the
+map pins. They had no tests at all, which meant the only thing protecting
+them was memory.
+
+Covers the parts that are easy to break and expensive to get wrong:
+
+- valuation — the ±18% band is asserted against hand-computed values
+  (a ₱100,000 centre must give ₱82,000–₱118,000), the ±₱1,000 rounding,
+  and the MIN_SAMPLE=3 guard that must return "not enough data" rather
+  than a number
+- filters — parsePriceRange/parseBounds take hand-edited URL query
+  strings, so reversed map corners, NaN, and the wrong field count all
+  have to degrade to "no filter" instead of throwing or inverting a range
+- cluster — the invariant is that no listing is ever swallowed: the total
+  of all cluster counts must equal the number of pinnable listings
+- mortgage — unique preset ids, since a duplicate makes the dropdown
+  silently quote a rate the visitor never picked
+
+**The suite immediately found a real bug** (valuation.test.ts, and it is
+pinned by a passing test rather than fixed here): `pricePerSqm ?? …` only
+falls through on null/undefined, but a blank Google Sheets cell arrives
+as 0. So a past sale with no price-per-sqm contributes 0, the median
+collapses to 0, and the tool tells the visitor "we don't have enough
+data" even though salePrice and floorAreaSqm are on the same row. The fix
+is `||` or a `> 0` guard — left for the owner because it changes a
+number shown to a customer. See TASKS.md.
+
+`vitest` is a devDependency and is not in the production bundle. The
+`@/` alias is repeated in vitest.config.ts because Vitest resolves
+imports with Vite, which does not read tsconfig paths on its own.
+
+npm test / npm run test:watch · 50 tests, 4 files, ~4s

@@ -1,0 +1,23 @@
+feat(testimonials): public submission form on /testimonials
+
+Wires the moderated submission API to a real form. Previously the page
+only told visitors to go to /contact, so the whole moderation flow had no
+way to be used.
+
+components/site/testimonial-form.tsx (new, matches contact-form.tsx):
+- name, client type, 1-5 star rating, quote, location, optional email
+- live character counter on the quote (20 min, 1000 max)
+- client-side validation mirroring the server schema
+- honeypot (`company`) + `startedAt` (>= 3s), same as /api/leads
+- posts to POST /api/testimonials -> saved as status="draft"
+
+app/(site)/testimonials/page.tsx:
+- replaces the "/contact" dead end with the form + a "why we review" panel
+- states plainly that the review is published only after approval
+
+The success copy deliberately does NOT say "published". Promising that is
+friendlier in the moment but dishonest: a rejected reviewer may take their
+grievance elsewhere and post something worse. It says "we review first".
+
+Verified: tsc --noEmit clean, 161/161 tests pass, production build green,
+/testimonials and /api/testimonials both present in the build output.

@@ -1,0 +1,18 @@
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings?beds=notanumber&price=abc-def
+      58 |     expect(response?.status()).toBe(200);
+      59 |     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings?beds=notanumber&price=abc-def
+      58 |     expect(response?.status()).toBe(200);
+      59 |     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/contact
+      70 |     await expect(privacy).toBeVisible();
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/contact
+      70 |     await expect(privacy).toBeVisible();
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/listings
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+      100 |     await expect(page.getByRole("link", { name: /skip to/i }).first()).toBeAttached();

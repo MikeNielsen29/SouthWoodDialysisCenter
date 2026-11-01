@@ -1,0 +1,7 @@
+﻿--- push ---
+To https://github.com/MikeNielsen29/real-estate-website.git
+   e2715a1..716ab9d  main -> main
+--- after ---
+716ab9d feat(leads,listings): lead capture API, mortgage presets, hover card, print CSS
+--- status ---
+## main...origin/main
