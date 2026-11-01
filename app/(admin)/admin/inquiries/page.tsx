@@ -3,6 +3,8 @@ import { load } from '@/lib/admin/data'
 import { InquirySchema } from '@/lib/sheets/types'
 import { updateInquiryAction } from '../actions'
 
+export const dynamic = 'force-dynamic'
+
 function age(value: string): string {
   if (!value) return ''
   const now = Date.now()

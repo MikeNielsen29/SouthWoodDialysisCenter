@@ -3,6 +3,8 @@ import { load } from '@/lib/admin/data'
 import { ServiceSchema } from '@/lib/sheets/types'
 import { saveServiceAction, deleteServiceAction } from '../actions'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ServicesPage({ searchParams }: { searchParams: { ok?: string; error?: string } }) {
   const raw = await load('content.listServices', ServiceSchema.array())
   const data = Array.isArray(raw) ? raw : []

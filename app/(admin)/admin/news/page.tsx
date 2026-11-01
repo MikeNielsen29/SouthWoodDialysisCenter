@@ -3,6 +3,8 @@ import { load } from '@/lib/admin/data'
 import { NewsPostSchema } from '@/lib/sheets/types'
 import { saveNewsAction } from '../actions'
 
+export const dynamic = 'force-dynamic'
+
 function localDate(value: string): string {
   if (!value) return ''
   const date = new Date(value)
