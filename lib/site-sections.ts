@@ -37,6 +37,7 @@ export type SectionKind =
   | 'footer'
   | 'hero_extra'
   | 'stats'
+  | 'about_stats'
 
 export type SectionDef = {
   key: string
@@ -106,6 +107,8 @@ export const EDITABLE_PAGES: PageDef[] = [
         heading: 'A neighbourhood centre with',
         emphasis: 'hospital-grade care.',
         body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        cta_label: 'More about our team',
+        cta_href: '/about',
         sort_order: '3',
       }),
       section('services', 'Services intro', 'services', {
@@ -126,9 +129,13 @@ export const EDITABLE_PAGES: PageDef[] = [
         heading: 'News & updates.',
         sort_order: '6',
       }),
+      section('about_stats', 'About: mini stats', 'about_stats', {
+        body: '2024 | Opened\n3 | Stations\n12 | Care staff',
+        sort_order: '4',
+      }),
       section('values', 'About: value cards', 'values', {
         body: 'Quality | Protocol-driven care and rigorous water safety checks.\nCompassion | Small team, familiar faces, unhurried sessions.\nClarity | Plain-language explanations at every step.',
-        sort_order: '4',
+        sort_order: '4.5',
       }),
       section('promise', 'About: promise card', 'promise', {
         eyebrow: 'Our promise',
@@ -181,6 +188,8 @@ export const EDITABLE_PAGES: PageDef[] = [
         heading: 'A neighbourhood centre with',
         emphasis: 'hospital-grade care.',
         body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        cta_label: 'More about our team',
+        cta_href: '/about',
         sort_order: '3',
       }),
       section('stories', 'Patient stories intro', 'stories', {
@@ -188,6 +197,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         heading: 'In their own words.',
         body: 'Real feedback from people who sit in our chairs every week.',
         sort_order: '4',
+      }),
+      section('about_stats', 'About: mini stats', 'about_stats', {
+        body: '2024 | Opened\n3 | Stations\n12 | Care staff',
+        sort_order: '4.5',
       }),
       section('values', 'About: value cards', 'values', {
         body: 'Quality | Protocol-driven care and rigorous water safety checks.\nCompassion | Small team, familiar faces, unhurried sessions.\nClarity | Plain-language explanations at every step.',

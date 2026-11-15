@@ -62,6 +62,7 @@ export function PagePreview({
           content={values.about}
           valuesContent={values.values}
           promiseContent={values.promise}
+          statsContent={values.about_stats}
         />
         <ProcessSection content={values.process} stepsContent={values.steps} />
         <TestimonialsSection items={data.testimonials} content={values.stories} />
@@ -78,6 +79,7 @@ export function PagePreview({
           content={values.about}
           valuesContent={values.values}
           promiseContent={values.promise}
+          statsContent={values.about_stats}
         />
         <TestimonialsSection items={data.testimonials} content={values.stories} />
         <CtaSection content={values.cta} />

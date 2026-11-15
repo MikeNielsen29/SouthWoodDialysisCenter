@@ -39,6 +39,7 @@ export default async function HomePage() {
         content={content.about}
         valuesContent={content.values}
         promiseContent={content.promise}
+        statsContent={content.about_stats}
       />
       <ProcessSection content={content.process} stepsContent={content.steps} />
       <TestimonialsSection items={data.testimonials} content={content.stories} />

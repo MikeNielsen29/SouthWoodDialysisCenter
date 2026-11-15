@@ -30,6 +30,7 @@ export default async function AboutPage() {
         content={content.about}
         valuesContent={content.values}
         promiseContent={content.promise}
+        statsContent={content.about_stats}
       />
       <TestimonialsSection items={data.testimonials} content={content.stories} />
       <CtaSection content={content.cta} />

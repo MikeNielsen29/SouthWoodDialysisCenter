@@ -32,11 +32,28 @@ export function AboutSection({
   content,
   valuesContent,
   promiseContent,
+  statsContent,
 }: {
-  content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+  content?: {
+    eyebrow?: string
+    heading?: string
+    emphasis?: string
+    body?: string
+    cta_label?: string
+    cta_href?: string
+  }
   valuesContent?: { body?: string }
   promiseContent?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+  statsContent?: { body?: string }
 }) {
+  const savedStats = parseSectionList(statsContent?.body)
+  const shownStats = savedStats.length
+    ? savedStats.map((item) => ({ value: item.title, label: item.copy }))
+    : [
+        { value: '2024', label: 'Opened' },
+        { value: '3', label: 'Stations' },
+        { value: '12', label: 'Care staff' },
+      ]
   const valueItems = parseSectionList(valuesContent?.body)
   const commitmentItems = parseSectionList(promiseContent?.body)
   const shownValues = valueItems.length
@@ -114,8 +131,11 @@ export function AboutSection({
             </Reveal>
 
             <Reveal delay={200}>
-              <Link href="/about" className={buttonClasses('outline', 'md', 'mt-9')}>
-                More about our team
+              <Link
+                href={content?.cta_href || '/about'}
+                className={buttonClasses('outline', 'md', 'mt-9')}
+              >
+                {content?.cta_label || 'More about our team'}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </Reveal>
@@ -127,7 +147,23 @@ export function AboutSection({
                 {promiseContent?.eyebrow || 'Our promise'}
               </p>
               <blockquote className="display mt-5 text-[26px] leading-[1.25] sm:text-[30px]">
-                “{promiseContent?.heading || 'Care that respects your time, your privacy, and your dignity.'}”
+                “
+                {(() => {
+                  const quote =
+                    promiseContent?.heading ||
+                    'Care that respects your time, your privacy, and your dignity.'
+                  const accent = (promiseContent?.emphasis || 'your privacy,').trim()
+                  const at = accent ? quote.indexOf(accent) : -1
+                  if (at < 0) return quote
+                  return (
+                    <>
+                      {quote.slice(0, at)}
+                      <span className="italic text-brand-700">{accent}</span>
+                      {quote.slice(at + accent.length)}
+                    </>
+                  )
+                })()}
+                ”
               </blockquote>
 
               <div className="mt-8 space-y-3 border-t border-ink/10 pt-6">
@@ -144,24 +180,14 @@ export function AboutSection({
 
             <div className="relative -mt-6 ml-6 rounded-2xl bg-brand-900 p-6 text-sand-100 shadow-lift sm:ml-10">
               <div className="grid grid-cols-3 divide-x divide-sand-50/15 text-center">
-                <div>
-                  <p className="font-display text-xl text-sand-50">2024</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-sand-100/60">
-                    Opened
-                  </p>
-                </div>
-                <div>
-                  <p className="font-display text-xl text-sand-50">3</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-sand-100/60">
-                    Stations
-                  </p>
-                </div>
-                <div>
-                  <p className="font-display text-xl text-sand-50">12</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-sand-100/60">
-                    Care staff
-                  </p>
-                </div>
+                {shownStats.map((stat, index) => (
+                  <div key={`${stat.label}-${index}`}>
+                    <p className="font-display text-xl text-sand-50">{stat.value}</p>
+                    <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-sand-100/60">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </Reveal>

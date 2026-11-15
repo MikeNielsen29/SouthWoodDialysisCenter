@@ -228,6 +228,8 @@ export function ContentEditor({
                   ? 'Cards — one per line: Title | Copy'
                   : section.kind === 'stats'
                     ? 'Stats — one per line: Value | Label'
+                    : section.kind === 'about_stats'
+                      ? 'Mini stats — one per line: Value | Label'
                     : section.kind === 'hero_extra'
                       ? 'Hero extras — one key=value per line'
                       : section.kind === 'promise'
@@ -281,7 +283,7 @@ export function ContentEditor({
                   custom description. Walang path = hindi lumalabas ang section.
                 </p>
               </Field>
-            ) : ['about', 'services', 'stories', 'news', 'contact', 'values', 'promise', 'steps', 'form', 'footer', 'hero_extra', 'stats'].includes(section.kind) ? null : (
+            ) : ['services', 'stories', 'news', 'contact', 'values', 'promise', 'steps', 'form', 'footer', 'hero_extra', 'stats', 'about_stats'].includes(section.kind) ? null : (
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Button label">
@@ -301,24 +303,26 @@ export function ContentEditor({
                   </Field>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Image path or URL (optional)">
-                    <Input
-                      name="image_url"
-                      value={values.image_url}
-                      onChange={(event) => update('image_url', event.target.value)}
-                      placeholder="/SBDC.png or /api/media/…"
-                    />
-                    <ImageUploadButton onUploaded={(path) => update('image_url', path)} />
-                  </Field>
-                  <Field label="Image alt text">
-                    <Input
-                      name="image_alt"
-                      value={values.image_alt}
-                      onChange={(event) => update('image_alt', event.target.value)}
-                    />
-                  </Field>
-                </div>
+                {section.kind !== 'about' ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="Image path or URL (optional)">
+                      <Input
+                        name="image_url"
+                        value={values.image_url}
+                        onChange={(event) => update('image_url', event.target.value)}
+                        placeholder="/SBDC.png or /api/media/…"
+                      />
+                      <ImageUploadButton onUploaded={(path) => update('image_url', path)} />
+                    </Field>
+                    <Field label="Image alt text">
+                      <Input
+                        name="image_alt"
+                        value={values.image_alt}
+                        onChange={(event) => update('image_alt', event.target.value)}
+                      />
+                    </Field>
+                  </div>
+                ) : null}
               </>
             )}
 
