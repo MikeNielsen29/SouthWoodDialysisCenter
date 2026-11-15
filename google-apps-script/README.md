@@ -2,7 +2,18 @@
 
 Ang backend ng site. Google Sheets ang database, at ang script na ito ang nagiging JSON API niya para sa Next.js server. **Hindi ito kinakausap ng browser.**
 
-## One-time setup (mga 5 minuto)
+## One-time setup (mga 2 minuto)
+
+**Galing sa editor (pinakasimple):**
+
+1. `script.google.com` → **New project** (hindi na kailangang bound sa sheet) → i-paste ang buong `Code.gs` → **Save**
+2. Piliin ang function na **`initialize`** sa dropdown → **Run** → payagan ang mga permission
+3. **Deploy → New deployment → Web app** (*Execute as: Me*, *Access: Anyone*) → kopyahin ang `/exec` URL
+4. Sa Vercel: `GS_WEBAPP_URL` = ang URL, `GS_SHARED_SECRET` = random key → **Redeploy**
+
+Hindi mo kailangang mag-set ng anumang sheet ID — hahanapin (o gagawa) ng script ang **CloudBase DB** sa Drive.
+
+## Manual na setup (kung bound project ang gusto mo)
 
 1. Gumawa ng blangkong Google Sheet, pangalanan: `CloudBase DB`.
 2. Sa Sheet: **Extensions → Apps Script**.

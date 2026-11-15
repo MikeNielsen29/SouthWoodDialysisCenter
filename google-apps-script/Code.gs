@@ -29,6 +29,7 @@ var CFG = {
   BACKUP_RETENTION_DAYS: 30,
   SCHEMA_VERSION: '1',
   META_TAB: '_Meta',
+  DB_NAME: 'CloudBase DB',
   PASSWORD_ROUNDS: 500,
   DEFAULT_ADMIN_CN: 'SDC-ADMIN',
   DEFAULT_ADMIN_EMAIL: 'admin@southwooddialysis.com',
@@ -722,18 +723,49 @@ function installBackupTrigger_() {
 /* Sheet plumbing                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Resolves the database without any manual configuration:
+ *   1. the spreadsheet this script is bound to (most common),
+ *   2. the id remembered from a previous run,
+ *   3. a spreadsheet named "CloudBase DB" anywhere in Drive,
+ *   4. a new spreadsheet with that name.
+ * That is what lets the script work from a standalone project too — no
+ * SHEET_ID prompt, no menu detour.
+ */
 function getDb_() {
+  var props = PropertiesService.getScriptProperties();
+
   var active = null;
   try {
     active = SpreadsheetApp.getActiveSpreadsheet();
   } catch (error) {
     active = null;
   }
-  if (active) return active;
+  if (active) {
+    props.setProperty(CFG.SHEET_ID_PROP, active.getId());
+    return active;
+  }
 
-  var id = PropertiesService.getScriptProperties().getProperty(CFG.SHEET_ID_PROP);
-  if (!id) throw apiError_('NOT_CONFIGURED', 'Spreadsheet is not configured');
-  return SpreadsheetApp.openById(id);
+  var id = props.getProperty(CFG.SHEET_ID_PROP);
+  if (id) {
+    try {
+      return SpreadsheetApp.openById(id);
+    } catch (error) {
+      props.deleteProperty(CFG.SHEET_ID_PROP);
+    }
+  }
+
+  var files = DriveApp.getFilesByName(CFG.DB_NAME);
+  while (files.hasNext()) {
+    var file = files.next();
+    if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) continue;
+    props.setProperty(CFG.SHEET_ID_PROP, file.getId());
+    return SpreadsheetApp.openById(file.getId());
+  }
+
+  var created = SpreadsheetApp.create(CFG.DB_NAME);
+  props.setProperty(CFG.SHEET_ID_PROP, created.getId());
+  return created;
 }
 
 function applyHeader_(sheet, def) {
@@ -1055,6 +1087,17 @@ function menuDiagnose() {
       '\n\nCompare the URL above with GS_WEBAPP_URL in Vercel. ' +
       'They must be identical, and the secret must be set in the same project that serves that URL.'
   );
+}
+
+/**
+ * Run this once from the editor: select `initialize` in the function dropdown
+ * and press Run. It creates the tabs and the first administrator, and finds (or
+ * creates) the "CloudBase DB" spreadsheet by itself.
+ */
+function initialize() {
+  var result = setup_();
+  Logger.log(JSON.stringify(result, null, 2));
+  return result;
 }
 
 function menuSetup() {
