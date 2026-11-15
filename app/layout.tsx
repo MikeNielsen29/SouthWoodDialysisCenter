@@ -1,7 +1,5 @@
 import './globals.css'
 import { Metadata, Viewport } from 'next'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'Southwood Dialysis Center',
@@ -26,11 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex min-h-screen flex-col antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      {/* Public chrome lives in app/(site)/layout.tsx so /admin and /portal
+          render their own shells instead of the website header and footer. */}
+      <body className="antialiased">{children}</body>
     </html>
   )
 }
