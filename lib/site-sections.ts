@@ -30,6 +30,11 @@ export type SectionKind =
   | 'stories'
   | 'news'
   | 'contact'
+  | 'values'
+  | 'promise'
+  | 'steps'
+  | 'form'
+  | 'footer'
 
 export type SectionDef = {
   key: string
@@ -111,6 +116,29 @@ export const EDITABLE_PAGES: PageDef[] = [
         heading: 'News & updates.',
         sort_order: '6',
       }),
+      section('values', 'About: value cards', 'values', {
+        body: 'Quality | Protocol-driven care and rigorous water safety checks.\nCompassion | Small team, familiar faces, unhurried sessions.\nClarity | Plain-language explanations at every step.',
+        sort_order: '4',
+      }),
+      section('promise', 'About: promise card', 'promise', {
+        eyebrow: 'Our promise',
+        heading: 'Care that respects your time, your privacy, and your dignity.',
+        body: 'Nephrologist-led treatment plans\nCertified dialysis technicians on every shift\nEvening and early-morning slots',
+        sort_order: '5',
+      }),
+      section('process', 'How it works block', 'process', {
+        eyebrow: 'How it works',
+        heading: 'Three steps to',
+        emphasis: 'your first session.',
+        body: 'No referrals required to start the conversation. We will walk you through insurance, transport, and scheduling before you commit to anything.',
+        cta_label: 'Talk to our care team',
+        cta_href: '/contact',
+        sort_order: '6',
+      }),
+      section('steps', 'How it works: step cards', 'steps', {
+        body: 'Book a consultation | Call us or send a request online. We confirm your slot within one working day and explain what to bring.\nAssessment & plan | A nephrologist reviews your history, orders labs if needed, and designs a schedule that fits your week.\nStart treatment | Meet your care team, settle into your station, and begin sessions with the same faces each visit.',
+        sort_order: '7',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -118,7 +146,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '7',
+        sort_order: '8',
       }),
     ],
   },
@@ -151,6 +179,16 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Real feedback from people who sit in our chairs every week.',
         sort_order: '4',
       }),
+      section('values', 'About: value cards', 'values', {
+        body: 'Quality | Protocol-driven care and rigorous water safety checks.\nCompassion | Small team, familiar faces, unhurried sessions.\nClarity | Plain-language explanations at every step.',
+        sort_order: '5',
+      }),
+      section('promise', 'About: promise card', 'promise', {
+        eyebrow: 'Our promise',
+        heading: 'Care that respects your time, your privacy, and your dignity.',
+        body: 'Nephrologist-led treatment plans\nCertified dialysis technicians on every shift\nEvening and early-morning slots',
+        sort_order: '6',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -158,7 +196,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '5',
+        sort_order: '7',
       }),
     ],
   },
@@ -194,6 +232,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         cta_href: '/contact',
         sort_order: '4',
       }),
+      section('steps', 'How it works: step cards', 'steps', {
+        body: 'Book a consultation | Call us or send a request online. We confirm your slot within one working day and explain what to bring.\nAssessment & plan | A nephrologist reviews your history, orders labs if needed, and designs a schedule that fits your week.\nStart treatment | Meet your care team, settle into your station, and begin sessions with the same faces each visit.',
+        sort_order: '5',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -201,7 +243,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '4',
+        sort_order: '6',
       }),
     ],
   },
@@ -258,6 +300,23 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Call us during opening hours, or send a request and we will get back to you within one working day. No referral is needed to ask a question.',
         cta_label: 'Send request',
         sort_order: '3',
+      }),
+      section('form', 'Request form', 'form', {
+        heading: 'Request an appointment',
+        body: 'Send it online and our team will call you back within one working day.',
+        cta_label: 'Send request',
+        sort_order: '4',
+      }),
+    ],
+  },
+  {
+    slug: 'global',
+    title: 'Header & footer',
+    path: '/',
+    sections: [
+      section('footer', 'Footer tagline', 'footer', {
+        body: 'Calm, comprehensive kidney care for our community — with the same care team at every visit.',
+        sort_order: '1',
       }),
     ],
   },

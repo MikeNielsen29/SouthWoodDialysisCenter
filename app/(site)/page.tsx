@@ -23,8 +23,12 @@ export default async function HomePage() {
       <Section content={content.hero} />
       <GallerySection content={content.gallery} />
       <ServicesSection items={data.services} content={content.services} />
-      <AboutSection content={content.about} />
-      <ProcessSection content={content.process} />
+      <AboutSection
+        content={content.about}
+        valuesContent={content.values}
+        promiseContent={content.promise}
+      />
+      <ProcessSection content={content.process} stepsContent={content.steps} />
       <TestimonialsSection items={data.testimonials} content={content.stories} />
       <NewsSection articles={data.news} content={content.news} />
       <CtaSection content={content.cta} />

@@ -26,7 +26,11 @@ export default async function AboutPage() {
         }
       />
       <GallerySection content={content.gallery} />
-      <AboutSection content={content.about} />
+      <AboutSection
+        content={content.about}
+        valuesContent={content.values}
+        promiseContent={content.promise}
+      />
       <TestimonialsSection items={data.testimonials} content={content.stories} />
       <CtaSection content={content.cta} />
     </main>

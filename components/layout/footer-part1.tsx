@@ -10,7 +10,7 @@ const explore = [
   { href: '/contact', label: 'Contact' },
 ]
 
-const services = [
+const defaultServices = [
   'Hemodialysis',
   'Peritoneal dialysis',
   'Preventive care',
@@ -18,7 +18,34 @@ const services = [
   'Patient education',
 ]
 
-export function FooterLinks() {
+interface FooterSettings {
+  hotline: string
+  email: string
+  address: string
+  hours: string
+}
+
+export function FooterLinks({
+  tagline,
+  settings,
+  services,
+}: {
+  tagline?: string
+  settings?: FooterSettings
+  services?: string[]
+}) {
+  const serviceNames = services && services.length > 0 ? services.slice(0, 5) : defaultServices
+  const hotline = settings?.hotline || '(555) 014-2800'
+  const email = settings?.email || 'care@southwooddialysis.com'
+  const addressLines = (settings?.address || '123 Kidney Avenue\nSouthwood District')
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+  const hourLines = (settings?.hours || 'Mon–Sat, 6:00 AM – 8:00 PM\nSunday: on-call only')
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
   return (
     <div className="grid gap-10 border-b border-sand-50/10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
       <div>
@@ -43,16 +70,16 @@ export function FooterLinks() {
         </Link>
 
         <p className="mt-5 max-w-xs text-sm leading-relaxed text-sand-100/60">
-          Calm, comprehensive kidney care for our community — with the same care
-          team at every visit.
+          {tagline ||
+            'Calm, comprehensive kidney care for our community — with the same care team at every visit.'}
         </p>
 
         <a
-          href="tel:+15550142800"
+          href={`tel:${hotline.replace(/[^\d+]/g, '')}`}
           className="mt-6 inline-flex items-center gap-2 rounded-full border border-sand-50/15 px-4 py-2 text-sm text-sand-50 transition-colors hover:border-ember-400 hover:text-ember-400"
         >
           <Phone className="h-3.5 w-3.5" aria-hidden />
-          (555) 014-2800
+          {hotline}
         </a>
       </div>
 
@@ -79,7 +106,7 @@ export function FooterLinks() {
           Services
         </h4>
         <ul className="mt-4 space-y-2.5">
-          {services.map((service) => (
+          {serviceNames.map((service) => (
             <li key={service}>
               <Link
                 href="/services"
@@ -100,26 +127,31 @@ export function FooterLinks() {
           <li className="flex gap-2.5">
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
             <span>
-              123 Kidney Avenue
-              <br />
-              Southwood District
+              {addressLines.map((line, index) => (
+                <span key={line} className="block">
+                  {line}
+                  {index < addressLines.length - 1 ? null : null}
+                </span>
+              ))}
             </span>
           </li>
           <li className="flex gap-2.5">
             <Clock className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
             <span>
-              Mon–Sat, 6:00 AM – 8:00 PM
-              <br />
-              Sunday: on-call only
+              {hourLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </span>
           </li>
           <li className="flex gap-2.5">
             <Mail className="mt-0.5 h-4 w-4 shrink-0 text-ember-400" aria-hidden />
             <a
-              href="mailto:care@southwooddialysis.com"
+              href={`mailto:${email}`}
               className="transition-colors hover:text-sand-50"
             >
-              care@southwooddialysis.com
+              {email}
             </a>
           </li>
         </ul>

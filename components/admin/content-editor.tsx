@@ -209,13 +209,31 @@ export function ContentEditor({
               </Field>
             </div>
 
-            <Field label="Body">
+            <Field
+              label={
+                section.kind === 'values' || section.kind === 'steps'
+                  ? 'Cards — one per line: Title | Copy'
+                  : section.kind === 'promise'
+                    ? 'Checklist — one per line'
+                    : 'Body'
+              }
+            >
               <Textarea
                 name="body"
                 rows={4}
                 value={values.body}
                 onChange={(event) => update('body', event.target.value)}
               />
+              {section.kind === 'values' || section.kind === 'steps' ? (
+                <p className="text-[11px] text-ink-muted">
+                  Halimbawa: <code className="rounded bg-sand-100 px-1">Quality | Maingat na pagsusuri</code>
+                </p>
+              ) : null}
+              {section.kind === 'promise' ? (
+                <p className="text-[11px] text-ink-muted">
+                  Isang linya bawat item; lalabas na may check mark.
+                </p>
+              ) : null}
             </Field>
 
             {section.kind === 'gallery' ? (
@@ -237,7 +255,7 @@ export function ContentEditor({
                   custom description. Walang path = hindi lumalabas ang section.
                 </p>
               </Field>
-            ) : ['about', 'services', 'stories', 'news', 'contact'].includes(section.kind) ? null : (
+            ) : ['about', 'services', 'stories', 'news', 'contact', 'values', 'promise', 'steps', 'form', 'footer'].includes(section.kind) ? null : (
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Button label">

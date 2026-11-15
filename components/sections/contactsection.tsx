@@ -16,11 +16,13 @@ const fieldClass =
 export function ContactSection({
   settings,
   content,
+  formContent,
   sent,
   error,
 }: {
   settings?: ContactSettings
   content?: { heading?: string; body?: string; cta_label?: string }
+  formContent?: { heading?: string; body?: string; cta_label?: string }
   sent?: boolean
   error?: string
 }) {
@@ -95,9 +97,12 @@ export function ContactSection({
 
         <Reveal delay={100}>
           <div id="request" className="rounded-4xl border border-ink/10 bg-white p-7 shadow-soft sm:p-9">
-            <h3 className="font-display text-[22px] text-ink">Request an appointment</h3>
+            <h3 className="font-display text-[22px] text-ink">
+              {formContent?.heading || 'Request an appointment'}
+            </h3>
             <p className="mt-2 text-sm text-ink-muted">
-              Send it online and our team will call you back within one working day.
+              {formContent?.body ||
+                'Send it online and our team will call you back within one working day.'}
             </p>
 
             {sent ? (
@@ -168,7 +173,7 @@ export function ContactSection({
                 type="submit"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-medium text-sand-50 transition-colors hover:bg-brand-900"
               >
-                {content?.cta_label || 'Send request'}
+                {formContent?.cta_label || content?.cta_label || 'Send request'}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </button>
 

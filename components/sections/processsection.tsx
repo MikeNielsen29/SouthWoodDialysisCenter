@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, CalendarCheck, ClipboardList, Stethoscope } from 'lucide-react'
 import { buttonClasses } from '@/components/ui/button-styles'
 import { Reveal } from '@/components/ui/reveal'
+import { parseSectionList } from '@/lib/section-list'
 
 const steps = [
   {
@@ -26,9 +27,21 @@ const steps = [
 
 export function ProcessSection({
   content,
+  stepsContent,
 }: {
   content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string; cta_label?: string; cta_href?: string }
+  stepsContent?: { body?: string }
 }) {
+  const savedSteps = parseSectionList(stepsContent?.body)
+  const shownSteps = savedSteps.length
+    ? savedSteps.map((item, index) => ({
+        icon: steps[index % steps.length]?.icon ?? CalendarCheck,
+        step: String(index + 1).padStart(2, '0'),
+        title: item.title,
+        copy: item.copy,
+      }))
+    : steps
+
   return (
     <section className="relative overflow-hidden bg-brand-950 py-20 text-sand-100 sm:py-24 lg:py-28">
       <div
@@ -67,7 +80,7 @@ export function ProcessSection({
               className="absolute left-[27px] top-3 hidden h-[calc(100%-2rem)] w-px bg-gradient-to-b from-ember-500/60 via-sand-50/20 to-transparent sm:block"
             />
             <ol className="space-y-8">
-              {steps.map((step, index) => {
+              {shownSteps.map((step, index) => {
                 const Icon = step.icon
                 return (
                   <Reveal key={step.step} delay={index * 90} as="li">

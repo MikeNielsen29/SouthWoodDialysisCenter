@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, Check, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react'
 import { buttonClasses } from '@/components/ui/button-styles'
 import { Reveal } from '@/components/ui/reveal'
+import { parseSectionList } from '@/lib/section-list'
 
 const commitments = [
   'Nephrologist-led treatment plans',
@@ -29,9 +30,25 @@ const values = [
 
 export function AboutSection({
   content,
+  valuesContent,
+  promiseContent,
 }: {
   content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+  valuesContent?: { body?: string }
+  promiseContent?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
 }) {
+  const valueItems = parseSectionList(valuesContent?.body)
+  const commitmentItems = parseSectionList(promiseContent?.body)
+  const shownValues = valueItems.length
+    ? valueItems.map((item, index) => ({
+        icon: values[index % values.length]?.icon ?? ShieldCheck,
+        title: item.title,
+        copy: item.copy,
+      }))
+    : values
+  const shownCommitments = commitmentItems.length
+    ? commitmentItems.map((item) => item.title)
+    : commitments
   const paragraphs = (content?.body || '')
     .split(/\n{2,}/)
     .map((line) => line.trim())
@@ -79,7 +96,7 @@ export function AboutSection({
 
             <Reveal delay={140}>
               <div className="mt-10 grid gap-6 border-t border-ink/10 pt-8 sm:grid-cols-3">
-                {values.map((value) => {
+                {shownValues.map((value) => {
                   const Icon = value.icon
                   return (
                     <div key={value.title}>
@@ -107,16 +124,14 @@ export function AboutSection({
           <Reveal delay={120} className="relative">
             <div className="grain relative rounded-4xl border border-ink/10 bg-sand-50 p-8 shadow-soft sm:p-10">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-muted">
-                Our promise
+                {promiseContent?.eyebrow || 'Our promise'}
               </p>
               <blockquote className="display mt-5 text-[26px] leading-[1.25] sm:text-[30px]">
-                “Care that respects your time,
-                <span className="italic text-brand-700"> your privacy,</span> and your
-                dignity.”
+                “{promiseContent?.heading || 'Care that respects your time, your privacy, and your dignity.'}”
               </blockquote>
 
               <div className="mt-8 space-y-3 border-t border-ink/10 pt-6">
-                {commitments.map((item) => (
+                {shownCommitments.map((item) => (
                   <p key={item} className="flex items-start gap-2.5 text-sm text-ink-soft">
                     <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
                       <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden />
