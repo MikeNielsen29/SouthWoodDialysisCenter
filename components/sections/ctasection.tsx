@@ -3,7 +3,24 @@ import { ArrowRight, Phone } from 'lucide-react'
 import { buttonClasses } from '@/components/ui/button-styles'
 import { Reveal } from '@/components/ui/reveal'
 
-export function CtaSection() {
+export type CtaContent = {
+  eyebrow?: string
+  heading?: string
+  emphasis?: string
+  body?: string
+  cta_label?: string
+  cta_href?: string
+}
+
+export function CtaSection({ content }: { content?: CtaContent }) {
+  const eyebrow = content?.eyebrow?.trim() || 'Get started'
+  const heading = content?.heading?.trim() || 'Ready to talk about'
+  const emphasis = content?.emphasis ?? ' your treatment plan?'
+  const body =
+    content?.body?.trim() ||
+    'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.'
+  const ctaLabel = content?.cta_label?.trim() || 'Book an appointment'
+  const ctaHref = content?.cta_href?.trim() || '/contact'
   return (
     <section className="pb-20 pt-4 sm:pb-24 lg:pb-28">
       <div className="shell">
@@ -15,19 +32,16 @@ export function CtaSection() {
             />
 
             <div className="relative mx-auto max-w-2xl">
-              <span className="eyebrow justify-center text-ember-400">Get started</span>
+              <span className="eyebrow justify-center text-ember-400">{eyebrow}</span>
               <h2 className="display mt-5 text-balance text-[32px] leading-[1.1] text-sand-50 sm:text-[42px]">
-                Ready to talk about
-                <span className="italic text-ember-400"> your treatment plan?</span>
+                {heading}
+                {emphasis ? <span className="italic text-ember-400">{emphasis}</span> : null}
               </h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-sand-100/70">
-                Tell us a little about your situation and we will call you back within
-                one working day. No referrals needed to start the conversation.
-              </p>
+              <p className="mt-4 text-[15px] leading-relaxed text-sand-100/70">{body}</p>
 
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link href="/contact" className={buttonClasses('accent', 'lg', 'w-full sm:w-auto')}>
-                  Book an appointment
+                <Link href={ctaHref} className={buttonClasses('accent', 'lg', 'w-full sm:w-auto')}>
+                  {ctaLabel}
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <a

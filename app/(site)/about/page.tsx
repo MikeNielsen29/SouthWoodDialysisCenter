@@ -3,19 +3,26 @@ import { AboutSection } from '@/components/sections/aboutsection'
 import { TestimonialsSection } from '@/components/sections/testimonialssection'
 import { CtaSection } from '@/components/sections/ctasection'
 import { generateSeoMetadata } from '@/lib/seo'
+import { getPublishedSections } from '@/lib/site-content'
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getPublishedSections('about')
+  const header = content.header
+
   return (
     <main>
       <PageHeader
-        eyebrow="About us"
-        title="Kidney care with a "
-        emphasis="human pace."
-        lead="A small team, three modern stations, and a schedule built around patients rather than queues."
+        eyebrow={header?.eyebrow || 'About us'}
+        title={header?.heading || 'Kidney care with a '}
+        emphasis={header?.emphasis || 'human pace.'}
+        lead={
+          header?.body ||
+          'A small team, three modern stations, and a schedule built around patients rather than queues.'
+        }
       />
       <AboutSection />
       <TestimonialsSection />
-      <CtaSection />
+      <CtaSection content={content.cta} />
     </main>
   )
 }

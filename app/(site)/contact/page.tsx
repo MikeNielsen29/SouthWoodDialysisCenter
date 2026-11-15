@@ -1,15 +1,22 @@
 import { PageHeader } from '@/components/sections/pageheader'
 import { ContactSection } from '@/components/sections/contactsection'
 import { generateSeoMetadata } from '@/lib/seo'
+import { getPublishedSections } from '@/lib/site-content'
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const content = await getPublishedSections('contact')
+  const header = content.header
+
   return (
     <main>
       <PageHeader
-        eyebrow="Contact"
-        title="Book a visit or "
-        emphasis="ask us anything."
-        lead="We answer the phone during opening hours and reply to requests within one working day."
+        eyebrow={header?.eyebrow || 'Contact'}
+        title={header?.heading || 'Book a visit or '}
+        emphasis={header?.emphasis || 'ask us anything.'}
+        lead={
+          header?.body ||
+          'We answer the phone during opening hours and reply to requests within one working day.'
+        }
       />
       <ContactSection />
     </main>

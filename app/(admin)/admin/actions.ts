@@ -36,7 +36,7 @@ export async function savePageAction(formData: FormData) {
     body: (formData.get('body') as string | null)?.trim() || '',
   }
 
-  const updated = await callSheets('pages.update', payload)
+  const updated = await callSheets('content.upsertPage', payload)
 
   if (!updated || typeof updated !== 'object') {
     return { ok: false as const, error: 'Could not save page' }
@@ -57,31 +57,53 @@ export async function savePageAction(formData: FormData) {
   return { ok: true as const }
 }
 
-export async function saveSectionAction(formData: FormData) {
+export async function saveSectionAction(formData: FormData): Promise<void> {
+  const pageSlug = (formData.get('page_slug') as string | null)?.trim() || ''
+  const sectionKey = (formData.get('section_key') as string | null)?.trim() || ''
+  const back = `/admin/content?page=${encodeURIComponent(pageSlug)}&section=${encodeURIComponent(
+    sectionKey
+  )}`
+
   if (!isSheetsConfigured()) {
-    return { ok: false as const, error: 'Backend not configured' }
+    redirect(`${back}&error=${encodeURIComponent('Backend not configured')}`)
   }
 
   const payload = {
-    page_slug: (formData.get('page_slug') as string | null)?.trim() || '',
-    section_key: (formData.get('section_key') as string | null)?.trim() || '',
+    page_slug: pageSlug,
+    section_key: sectionKey,
     sort_order: (formData.get('sort_order') as string | null)?.trim() || '0',
     eyebrow: (formData.get('eyebrow') as string | null)?.trim() || '',
     heading: (formData.get('heading') as string | null)?.trim() || '',
+    emphasis: (formData.get('emphasis') as string | null)?.trim() || '',
     body: (formData.get('body') as string | null)?.trim() || '',
+    image_url: (formData.get('image_url') as string | null)?.trim() || '',
+    image_alt: (formData.get('image_alt') as string | null)?.trim() || '',
     cta_label: (formData.get('cta_label') as string | null)?.trim() || '',
     cta_href: (formData.get('cta_href') as string | null)?.trim() || '',
     status: (formData.get('status') as string | null) || 'published',
   }
 
-  const updated = await callSheets('sections.update', payload)
-
-  if (!updated || typeof updated !== 'object') {
-    return { ok: false as const, error: 'Could not save section' }
+  try {
+    await callSheets('content.upsertSection', payload)
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Could not save the section'
+    redirect(`${back}&error=${encodeURIComponent(message)}`)
   }
 
+  await logAudit({
+    actor_id: 'admin',
+    actor_role: 'Admin',
+    action: 'content.section_saved',
+    entity: 'section',
+    entity_id: `${pageSlug}:${sectionKey}`,
+    meta_json: JSON.stringify({ status: payload.status }),
+    ip_hash: '',
+    created_at: new Date().toISOString(),
+  } as AuditEntry)
+
   revalidateTag('content')
-  return { ok: true as const }
+  redirect(`${back}&saved=1`)
 }
 
 export async function saveServiceAction(formData: FormData) {

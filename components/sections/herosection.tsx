@@ -89,7 +89,24 @@ function CarePanel() {
   )
 }
 
-export function Section() {
+export type HeroContent = {
+  eyebrow?: string
+  heading?: string
+  emphasis?: string
+  body?: string
+  cta_label?: string
+  cta_href?: string
+}
+
+export function Section({ content }: { content?: HeroContent }) {
+  const eyebrow = content?.eyebrow?.trim() || 'Kidney care · Since 2024'
+  const heading = content?.heading?.trim() || 'Dialysis care that'
+  const emphasis = content?.emphasis ?? 'feels personal.'
+  const body =
+    content?.body?.trim() ||
+    'Compassionate, state-of-the-art dialysis treatment in a calm environment. Our nephrologists and certified technicians focus on one thing — helping you feel like yourself again.'
+  const ctaLabel = content?.cta_label?.trim() || 'Book an appointment'
+  const ctaHref = content?.cta_href?.trim() || '/contact'
   return (
     <section className="relative overflow-hidden">
       {/* Soft wash */}
@@ -102,28 +119,26 @@ export function Section() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div>
             <Reveal>
-              <span className="eyebrow">Kidney care · Since 2024</span>
+              <span className="eyebrow">{eyebrow}</span>
             </Reveal>
 
             <Reveal delay={60}>
               <h1 className="display mt-6 text-balance text-[40px] leading-[1.04] sm:text-[56px] lg:text-[64px]">
-                Dialysis care that
-                <span className="block italic text-brand-700">feels personal.</span>
+                {heading}
+                {emphasis ? (
+                  <span className="block italic text-brand-700">{emphasis}</span>
+                ) : null}
               </h1>
             </Reveal>
 
             <Reveal delay={120}>
-              <p className="lead mt-6 max-w-xl">
-                Compassionate, state-of-the-art dialysis treatment in a calm
-                environment. Our nephrologists and certified technicians focus on
-                one thing — helping you feel like yourself again.
-              </p>
+              <p className="lead mt-6 max-w-xl">{body}</p>
             </Reveal>
 
             <Reveal delay={180}>
               <div className="mt-9 flex flex-wrap items-center gap-3">
-                <Link href="/contact" className={buttonClasses('primary', 'lg')}>
-                  Book an appointment
+                <Link href={ctaHref} className={buttonClasses('primary', 'lg')}>
+                  {ctaLabel}
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <Link href="/services" className={buttonClasses('outline', 'lg')}>

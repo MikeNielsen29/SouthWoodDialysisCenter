@@ -2,18 +2,25 @@ import { PageHeader } from '@/components/sections/pageheader'
 import { NewsSection } from '@/components/sections/newsection'
 import { CtaSection } from '@/components/sections/ctasection'
 import { generateSeoMetadata } from '@/lib/seo'
+import { getPublishedSections } from '@/lib/site-content'
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const content = await getPublishedSections('news')
+  const header = content.header
+
   return (
     <main>
       <PageHeader
-        eyebrow="News"
-        title="What's happening at "
-        emphasis="Southwood."
-        lead="Centre updates, patient workshops, and practical health notes from our clinical team."
+        eyebrow={header?.eyebrow || 'News'}
+        title={header?.heading || "What's happening at "}
+        emphasis={header?.emphasis || 'Southwood.'}
+        lead={
+          header?.body ||
+          'Centre updates, patient workshops, and practical health notes from our clinical team.'
+        }
       />
       <NewsSection />
-      <CtaSection />
+      <CtaSection content={content.cta} />
     </main>
   )
 }

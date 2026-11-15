@@ -1,4 +1,5 @@
 import { generateSeoMetadata } from '@/lib/seo'
+import { getPublishedSections } from '@/lib/site-content'
 import { Section } from '@/components/sections/herosection'
 import { AboutSection } from '@/components/sections/aboutsection'
 import { ServicesSection } from '@/components/sections/servicessection'
@@ -9,16 +10,18 @@ import { CtaSection } from '@/components/sections/ctasection'
 
 export const revalidate = 60 // SEO: sitemap-friendly
 
-export default function HomePage() {
+export default async function HomePage() {
+  const content = await getPublishedSections('home')
+
   return (
     <main>
-      <Section />
+      <Section content={content.hero} />
       <ServicesSection />
       <AboutSection />
       <ProcessSection />
       <TestimonialsSection />
       <NewsSection />
-      <CtaSection />
+      <CtaSection content={content.cta} />
     </main>
   )
 }
