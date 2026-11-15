@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 import { requireRoleOrRedirect } from '@/lib/auth/session'
-import { getSettings } from '@/lib/content'
-import { Card, Empty, Field, FileText, Notice, Pill, Select, Submit, Table, TableHead, TableRows, TableRow, TableHeadCell, TableData } from '@/components/admin/ui'
+import { Card, Empty, Notice, Pill, Table, TableData, TableHead, TableHeadCell, TableRow, TableRows } from '@/components/admin/ui'
 import { load } from '@/lib/admin/data'
 import { TestimonialSchema } from '@/lib/sheets/types'
 import { moderateTestimonialAction } from '../actions'
@@ -14,77 +12,158 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function TestimonialsPage() {
+interface TestimonialRow {
+  id?: string
+  patient_cn?: string
+  display_name?: string
+  rating?: string | number
+  body?: string
+  status?: string
+  created_at?: string
+}
+
+export default async function TestimonialsPage({
+  searchParams,
+}: {
+  searchParams: { ok?: string; error?: string }
+}) {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
-  const settings = await getSettings()
-  const raw = await load('testimonials.list', TestimonialSchema.array(), { limit: 50 })
-  const data = Array.isArray(raw) ? raw : []
-  const error = typeof raw === 'object' && raw !== null && 'error' in raw ? String((raw as { error?: string }).error) : ''
+
+  const raw = await load('testimonials.list', TestimonialSchema.array(), { limit: 100 })
+  const data = (Array.isArray(raw) ? raw : []) as TestimonialRow[]
+
+  const pending = data.filter((item) => (item.status || 'Pending') === 'Pending')
+  const reviewed = data.filter((item) => (item.status || 'Pending') !== 'Pending')
+
+  function row(item: TestimonialRow, index: number) {
+    const rating = Math.max(0, Math.min(5, Number(item.rating) || 0))
+    return (
+      <TableRow key={item.id || index}>
+        <TableData className="whitespace-nowrap">
+          <span className="text-ember-500" aria-label={`${rating} out of 5`}>
+            {'★'.repeat(rating)}
+            <span className="text-ink-200">{'★'.repeat(5 - rating)}</span>
+          </span>
+        </TableData>
+        <TableData className="font-medium">
+          {item.display_name || item.patient_cn || '—'}
+          {item.patient_cn ? (
+            <span className="block text-[11px] font-normal text-ink-muted">{item.patient_cn}</span>
+          ) : null}
+        </TableData>
+        <TableData className="max-w-[380px] text-ink-soft">
+          <p className="whitespace-pre-line text-[13px] leading-relaxed">{item.body || '—'}</p>
+        </TableData>
+        <TableData>
+          <Pill variant={item.status === 'Approved' ? 'brand' : 'default'}>
+            {item.status || 'Pending'}
+          </Pill>
+        </TableData>
+        <TableData>
+          {item.status === 'Pending' ? (
+            <div className="flex items-center gap-2">
+              <form action={moderateTestimonialAction}>
+                <input type="hidden" name="id" value={item.id || ''} />
+                <input type="hidden" name="status" value="Approved" />
+                <button
+                  type="submit"
+                  className="rounded-lg bg-brand-800 px-3 py-1.5 text-xs font-medium text-sand-50 transition hover:bg-brand-900"
+                >
+                  Approve
+                </button>
+              </form>
+              <form action={moderateTestimonialAction}>
+                <input type="hidden" name="id" value={item.id || ''} />
+                <input type="hidden" name="status" value="Rejected" />
+                <button
+                  type="submit"
+                  className="rounded-lg border border-ink/15 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-ember-300 hover:text-ember-700"
+                >
+                  Reject
+                </button>
+              </form>
+            </div>
+          ) : (
+            <span className="text-[11px] text-ink-muted">Reviewed</span>
+          )}
+        </TableData>
+      </TableRow>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-sand-50">
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-xl text-ink">Testimonials</h1>
-            <p className="mt-1 text-sm text-ink-muted">Review and moderate patient testimonials.</p>
-          </div>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <div className="mb-6">
+        <h1 className="font-display text-xl text-ink">Testimonials</h1>
+        <p className="mt-1 max-w-2xl text-sm text-ink-muted">
+          Patients submit reviews from their own portal account. Your role here is to
+          approve or reject them — edits are not allowed, so the words stay the
+          patient&apos;s own.
+        </p>
+      </div>
+
+      {searchParams.ok ? <Notice variant="info">{searchParams.ok}</Notice> : null}
+      {searchParams.error ? <Notice variant="warning">{searchParams.error}</Notice> : null}
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-ink/10 bg-white p-4">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ink-muted">Waiting</p>
+          <p className="mt-1 font-display text-2xl text-ink">{pending.length}</p>
         </div>
+        <div className="rounded-xl border border-ink/10 bg-white p-4">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ink-muted">Approved</p>
+          <p className="mt-1 font-display text-2xl text-ink">
+            {data.filter((item) => item.status === 'Approved').length}
+          </p>
+        </div>
+        <div className="rounded-xl border border-ink/10 bg-white p-4">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ink-muted">Rejected</p>
+          <p className="mt-1 font-display text-2xl text-ink">
+            {data.filter((item) => item.status === 'Rejected').length}
+          </p>
+        </div>
+      </div>
 
-        {error ? <Notice variant="warning">{error}</Notice> : null}
-
-        {data.length === 0 ? (
-          <Empty description="No testimonials yet." />
+      <Card>
+        <h2 className="mb-4 font-display text-base text-ink">Waiting for review</h2>
+        {pending.length === 0 ? (
+          <Empty description="No reviews waiting." />
         ) : (
           <Table>
             <TableHead>
-              <div className="border-b border-ink/5">
-                <div className="grid grid-cols-[48px_160px_1fr_120px_120px] gap-3 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-muted">
-                  <TableHeadCell>Rating</TableHeadCell>
-                  <TableHeadCell>Patient</TableHeadCell>
-                  <TableHeadCell>Testimonial</TableHeadCell>
-                  <TableHeadCell>Status</TableHeadCell>
-                  <TableHeadCell>Action</TableHeadCell>
-                </div>
-              </div>
+              <TableRow>
+                <TableHeadCell>Rating</TableHeadCell>
+                <TableHeadCell>Patient</TableHeadCell>
+                <TableHeadCell>Review</TableHeadCell>
+                <TableHeadCell>Status</TableHeadCell>
+                <TableHeadCell>Decision</TableHeadCell>
+              </TableRow>
             </TableHead>
-            <TableRows>
-              {data.map((item) => (
-                <TableRow key={item.id}>
-                  <TableData className="flex items-center gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className={i < item.rating ? 'text-ember-600' : 'text-ink-200'}>
-                        <span className="text-lg leading-none">★</span>
-                      </span>
-                    ))}
-                  </TableData>
-                  <TableData className="font-medium">{item.display_name || item.patient_cn || '—'}</TableData>
-                  <TableData className="text-ink-soft">{item.body}</TableData>
-                  <TableData className="select-none">
-                    <form action={moderateTestimonialAction}>
-                      <input type="hidden" name="id" value={item.id} />
-                      <Select name="status" defaultValue={item.status} className="w-auto">
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Rejected">Rejected</option>
-                      </Select>
-                    </form>
-                  </TableData>
-                  <TableData>
-                    <form action={moderateTestimonialAction}>
-                      <input type="hidden" name="id" value={item.id} />
-                      <Submit type="submit" className="w-auto">Save</Submit>
-                    </form>
-                  </TableData>
-                </TableRow>
-              ))}
-            </TableRows>
+            <TableRows>{pending.map(row)}</TableRows>
           </Table>
         )}
+      </Card>
 
-        <div className="mt-6 border-t border-ink/10 pt-6 text-xs text-ink-muted">
-          <p>Testimonials are submitted by patients through the portal and are moderated here before they appear on the public site.</p>
-        </div>
+      <div className="mt-6">
+        <Card>
+          <h2 className="mb-4 font-display text-base text-ink">Reviewed</h2>
+          {reviewed.length === 0 ? (
+            <Empty description="Nothing reviewed yet." />
+          ) : (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableHeadCell>Rating</TableHeadCell>
+                  <TableHeadCell>Patient</TableHeadCell>
+                  <TableHeadCell>Review</TableHeadCell>
+                  <TableHeadCell>Status</TableHeadCell>
+                  <TableHeadCell>Decision</TableHeadCell>
+                </TableRow>
+              </TableHead>
+              <TableRows>{reviewed.map(row)}</TableRows>
+            </Table>
+          )}
+        </Card>
       </div>
     </div>
   )

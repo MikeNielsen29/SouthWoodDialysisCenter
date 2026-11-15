@@ -1,9 +1,10 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { requireUser } from '@/lib/auth/session'
-import { load } from '@/lib/sheets/client'
-import { logAudit } from '@/lib/audit'
+import { load, callSheets, isSheetsConfigured } from '@/lib/sheets/client'
+import { logAudit, type AuditEntry } from '@/lib/audit'
 
 export async function requestAppointmentAction(formData: FormData) {
   const user = await requireUser('/portal')
@@ -51,30 +52,59 @@ export async function cancelAppointmentAction(formData: FormData) {
   return { ok: true as const }
 }
 
-export async function submitTestimonialAction(formData: FormData) {
-  const user = await requireUser('/portal')
-  const testimonial = {
-    patient_cn: formData.get('patient_cn') as string | null,
-    rating: Number(formData.get('rating')) || 5,
-    display_name: (formData.get('display_name') as string | null)?.trim() || '',
-    body: (formData.get('body') as string | null)?.trim() || '',
+export async function submitTestimonialAction(formData: FormData): Promise<void> {
+  const user = await requireUser('/portal/testimonials')
+
+  // Only verified patients write testimonials; staff accounts never do.
+  if (user.role !== 'Patient') {
+    redirect('/portal?error=' + encodeURIComponent('Only patient accounts can share a review.'))
   }
-  if (!testimonial.patient_cn || !testimonial.body) {
-    return { ok: false as const, error: 'Missing required fields' }
+
+  const rating = Number(formData.get('rating'))
+  const body = String(formData.get('body') ?? '').trim()
+
+  if (!(rating >= 1 && rating <= 5) || body.length < 10) {
+    redirect(
+      '/portal/testimonials?error=' +
+        encodeURIComponent('Choose a rating and write at least a sentence.')
+    )
   }
+
+  if (!isSheetsConfigured()) {
+    redirect(
+      '/portal/testimonials?error=' +
+        encodeURIComponent('The database is not connected. Please try again later.')
+    )
+  }
+
+  try {
+    await callSheets('testimonials.create', {
+      patient_cn: user.cn,
+      display_name: user.full_name || user.cn,
+      rating,
+      body,
+    })
+  } catch {
+    redirect(
+      '/portal/testimonials?error=' +
+        encodeURIComponent('We could not save your review. Please try again.')
+    )
+  }
+
   await logAudit({
     id: crypto.randomUUID(),
-    actor_id: testimonial.patient_cn || user.cn,
+    actor_id: user.cn,
     actor_role: 'Patient',
     action: 'portal.testimonial_submitted',
     entity: 'testimonial',
-    entity_id: 'new',
-    meta_json: JSON.stringify(testimonial),
+    entity_id: user.cn,
+    meta_json: JSON.stringify({ rating }),
     ip_hash: '',
     created_at: new Date().toISOString(),
-  })
+  } as AuditEntry)
+
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/portal/testimonials?sent=1')
 }
 
 export async function fetchMyFilesAction() {
