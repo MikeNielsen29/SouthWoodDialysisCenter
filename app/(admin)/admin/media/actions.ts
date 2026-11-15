@@ -13,6 +13,57 @@ async function requireStaff() {
   return session
 }
 
+type SiteImageUpload = { ok: true; path: string } | { ok: false; error: string }
+
+/**
+ * Same pipeline as the media library, but returns the path instead of
+ * redirecting so the content editor can drop it straight into a section.
+ */
+export async function uploadSiteImageAction(formData: FormData): Promise<SiteImageUpload> {
+  const session = await getSession()
+  if (!session || !STAFF_ROLES.includes(session.role)) {
+    return { ok: false, error: 'Your session expired. Sign in again.' }
+  }
+
+  const file = formData.get('image')
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: 'Choose an image first.' }
+  }
+  if (!(MEDIA_MIME as readonly string[]).includes(file.type)) {
+    return { ok: false, error: 'Use a PNG, JPEG or WebP image.' }
+  }
+  if (file.size > MAX_MEDIA_BYTES) {
+    return { ok: false, error: 'Images must be 8 MB or smaller.' }
+  }
+  if (!isMediaConfigured()) {
+    return { ok: false, error: 'The Media Vault is not configured. Ask an administrator.' }
+  }
+  if (!isSheetsConfigured()) {
+    return { ok: false, error: 'The database is not connected.' }
+  }
+
+  const filename = (file.name || 'image').replace(/[^A-Za-z0-9._-]/g, '-').slice(-80)
+
+  try {
+    const uploaded = await uploadMedia(Buffer.from(await file.arrayBuffer()), filename, file.type)
+    const row = (await callSheets('media.create', {
+      vault_file_id: uploaded.fileId,
+      name: filename,
+      alt: '',
+      mime: file.type,
+      size_bytes: String(uploaded.size),
+      uploaded_by: session.cn,
+    })) as { id?: string } | null
+
+    if (!row?.id) {
+      return { ok: false, error: 'Uploaded, but the library row could not be saved.' }
+    }
+    return { ok: true, path: `/api/media/${uploaded.fileId}` }
+  } catch {
+    return { ok: false, error: 'The upload failed. Check the vault credentials.' }
+  }
+}
+
 export async function uploadMediaAction(formData: FormData): Promise<void> {
   const session = await requireStaff()
   const file = formData.get('image')

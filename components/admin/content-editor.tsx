@@ -6,6 +6,7 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 import { saveSectionAction } from '@/app/(admin)/admin/actions'
 import { EDITABLE_PAGES, type PageDef, type SectionDef, type SectionFields } from '@/lib/site-sections'
 import { Field, Input, Notice, Select, Submit, Textarea } from '@/components/admin/ui'
+import { ImageUploadButton } from '@/components/admin/image-upload-button'
 
 export type SavedSections = Record<string, SectionFields>
 
@@ -245,6 +246,15 @@ export function ContentEditor({
                   onChange={(event) => update('image_url', event.target.value)}
                   placeholder={'/api/media/AgAC…\n/api/media/AgAD…'}
                 />
+                <ImageUploadButton
+                  label="Upload image"
+                  onUploaded={(path) =>
+                    update(
+                      'image_url',
+                      `${values.image_url.trim()}\n${path}`.trim()
+                    )
+                  }
+                />
                 <p className="text-[11px] leading-relaxed text-ink-muted">
                   Upload the photos in the{' '}
                   <Link href="/admin/media" className="font-medium text-brand-700 underline">
@@ -283,6 +293,7 @@ export function ContentEditor({
                       onChange={(event) => update('image_url', event.target.value)}
                       placeholder="/SBDC.png or /api/media/…"
                     />
+                    <ImageUploadButton onUploaded={(path) => update('image_url', path)} />
                   </Field>
                   <Field label="Image alt text">
                     <Input

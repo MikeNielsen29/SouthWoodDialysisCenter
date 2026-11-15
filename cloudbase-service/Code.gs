@@ -1333,6 +1333,13 @@ A.upsertService = function (payload) {
     status: payload.status === 'draft' ? 'draft' : 'published',
   };
 
+  // Editing sends the row id, so renaming the slug updates instead of cloning.
+  var id = text_(payload.id);
+  if (id) {
+    updateById_('Services', id, fields);
+    return { id: id, created: false };
+  }
+
   var existing = find_(readAll_('Services'), function (row) {
     return row.slug === slug;
   });

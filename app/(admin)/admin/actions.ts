@@ -248,13 +248,24 @@ export async function deleteUserAction(formData: FormData): Promise<void> {
   backToUsers('deleted=1')
 }
 
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60)
+}
+
 export async function saveServiceAction(formData: FormData) {
   if (!isSheetsConfigured()) {
     return { ok: false as const, error: 'Backend not configured' }
   }
 
   const id = formData.get('id') as string | null
-  const slug = (formData.get('slug') as string | null)?.trim() || ''
+  const title = (formData.get('title') as string | null)?.trim() || ''
+  const slug =
+    (formData.get('slug') as string | null)?.trim() || slugify(title)
 
   if (!id && !slug) {
     return { ok: false as const, error: 'Missing service id or slug' }
@@ -263,7 +274,7 @@ export async function saveServiceAction(formData: FormData) {
   const payload = {
     id: (id || undefined) as string | undefined,
     slug,
-    title: (formData.get('title') as string | null)?.trim() || '',
+    title,
     summary: (formData.get('summary') as string | null)?.trim() || '',
     icon: (formData.get('icon') as string | null)?.trim() || '',
     sort_order: (formData.get('sort_order') as string | null)?.trim() || '0',

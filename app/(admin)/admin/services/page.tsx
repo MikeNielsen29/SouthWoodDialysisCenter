@@ -28,10 +28,10 @@ export default async function ServicesPage({ searchParams }: { searchParams: { o
             {data.map((service) => (
               <form key={service.id} action={saveServiceAction} className="space-y-3 rounded-xl border border-ink/10 p-4">
                 <input type="hidden" name="id" value={service.id} />
-                <input type="hidden" name="slug" value={service.slug} />
-                <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr]">
+                <div className="grid gap-3 sm:grid-cols-[2fr_1fr_0.7fr_1fr]">
                   <Field><Labeled>Title</Labeled><Input name="title" defaultValue={service.title} required /></Field>
                   <Field><Labeled>Slug</Labeled><Input name="slug" defaultValue={service.slug} /></Field>
+                  <Field><Labeled>Order</Labeled><Input name="sort_order" type="number" defaultValue={service.sort_order || '0'} /></Field>
                   <Field><Labeled>Status</Labeled><Select name="status" defaultValue={service.status}><option value="published">Published</option><option value="draft">Draft</option></Select></Field>
                 </div>
                 <Field><Labeled>Summary</Labeled><Textarea name="summary" defaultValue={service.summary} className="min-h-[70px]" /></Field>
@@ -53,9 +53,10 @@ export default async function ServicesPage({ searchParams }: { searchParams: { o
       <Card>
         <h2 className="font-display text-base text-ink mb-1">New service</h2>
         <form action={saveServiceAction} className="mt-4 space-y-3">
-          <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr]">
+          <div className="grid gap-3 sm:grid-cols-[2fr_1fr_0.7fr_1fr]">
             <Field><Labeled>Title</Labeled><Input name="title" required placeholder="Hemodialysis" /></Field>
-            <Field><Labeled>Slug</Labeled><Input name="slug" required placeholder="hemodialysis" /></Field>
+            <Field><Labeled>Slug (optional)</Labeled><Input name="slug" placeholder="auto from title" /></Field>
+            <Field><Labeled>Order</Labeled><Input name="sort_order" type="number" defaultValue="0" /></Field>
             <Field><Labeled>Status</Labeled><Select name="status" defaultValue="published"><option value="published">Published</option><option value="draft">Draft</option></Select></Field>
           </div>
           <Field><Labeled>Summary</Labeled><Textarea name="summary" className="min-h-[70px]" /></Field>

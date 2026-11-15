@@ -18,9 +18,16 @@ export default async function HomePage() {
     getPublicContent(),
   ])
 
+  const rated = data.testimonials
+    .map((item) => Number(item.rating))
+    .filter((value) => Number.isFinite(value) && value > 0)
+  const averageRating = rated.length
+    ? rated.reduce((total, value) => total + value, 0) / rated.length
+    : 0
+
   return (
     <main>
-      <Section content={content.hero} />
+      <Section content={content.hero} rating={averageRating} />
       <GallerySection content={content.gallery} />
       <ServicesSection items={data.services} content={content.services} />
       <AboutSection

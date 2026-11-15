@@ -10,7 +10,10 @@ const stats = [
   { value: '24/7', label: 'Support line' },
 ]
 
-function CarePanel() {
+function CarePanel({ rating = 0 }: { rating?: number }) {
+  const stars = Math.round(Math.min(5, Math.max(0, rating)))
+  const satisfaction = rating > 0 ? Math.round((rating / 5) * 100) : 98
+
   return (
     <div className="relative isolate overflow-hidden rounded-4xl bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 p-8 shadow-lift sm:p-10">
       {/* Concentric rings */}
@@ -37,9 +40,16 @@ function CarePanel() {
           <ShieldCheck className="h-3.5 w-3.5 text-ember-400" aria-hidden />
           Accredited care
         </span>
-        <span className="flex items-center gap-1 text-ember-400" aria-label="Rated 5 out of 5">
+        <span
+          className="flex items-center gap-1 text-ember-400"
+          aria-label={`Rated ${stars || 5} out of 5`}
+        >
           {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden />
+            <Star
+              key={i}
+              className={`h-3.5 w-3.5 ${i < (stars || 5) ? 'fill-current' : 'opacity-30'}`}
+              aria-hidden
+            />
           ))}
         </span>
       </div>
@@ -63,7 +73,7 @@ function CarePanel() {
           <p className="text-[11px] uppercase tracking-[0.16em] text-sand-100/50">
             Satisfaction
           </p>
-          <p className="mt-1 font-display text-2xl text-sand-50">98%</p>
+          <p className="mt-1 font-display text-2xl text-sand-50">{satisfaction}%</p>
           <div className="mt-3 flex items-end gap-1" aria-hidden>
             {[40, 55, 48, 70, 84, 96].map((h, i) => (
               <span
@@ -98,7 +108,13 @@ export type HeroContent = {
   cta_href?: string
 }
 
-export function Section({ content }: { content?: HeroContent }) {
+export function Section({
+  content,
+  rating = 0,
+}: {
+  content?: HeroContent
+  rating?: number
+}) {
   const eyebrow = content?.eyebrow?.trim() || 'Kidney care · Since 2024'
   const heading = content?.heading?.trim() || 'Dialysis care that'
   const emphasis = content?.emphasis ?? 'feels personal.'
@@ -170,7 +186,7 @@ export function Section({ content }: { content?: HeroContent }) {
           </div>
 
           <Reveal delay={120} className="lg:pl-4">
-            <CarePanel />
+            <CarePanel rating={rating} />
           </Reveal>
         </div>
       </div>
