@@ -138,6 +138,12 @@ export default function LoginPage({ searchParams }: Props) {
                   autoComplete="current-password"
                   className="mt-1.5 w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-[15px] text-ink outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
                 />
+                <Link
+                  href="/login/forgot"
+                  className="mt-2 inline-block text-[12px] font-medium text-brand-700 transition-colors hover:text-brand-900"
+                >
+                  Forgot password?
+                </Link>
               </div>
 
               <button

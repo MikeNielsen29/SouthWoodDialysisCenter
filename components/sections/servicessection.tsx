@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import { Reveal } from '@/components/ui/reveal'
 
-const services = [
+const defaultServices = [
   {
     icon: Droplets,
     title: 'Hemodialysis',
@@ -49,23 +49,60 @@ const services = [
   },
 ]
 
-export function ServicesSection() {
+const iconMap: Record<string, typeof Droplets> = {
+  droplets: Droplets,
+  kidney: Droplets,
+  heart: HeartHandshake,
+  hearthandshake: HeartHandshake,
+  shield: ShieldPlus,
+  shieldplus: ShieldPlus,
+  salad: Salad,
+  nutrition: Salad,
+  education: GraduationCap,
+  graduationcap: GraduationCap,
+  ambulance: Ambulance,
+  urgent: Ambulance,
+}
+
+function iconFor(name: string) {
+  return iconMap[name.toLowerCase().replace(/[^a-z]/g, '')] ?? Droplets
+}
+
+export function ServicesSection({
+  items,
+  content,
+}: {
+  items?: { title: string; summary: string; icon: string }[]
+  content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+}) {
+  const services =
+    items && items.length > 0
+      ? items.map((item) => ({
+          icon: iconFor(item.icon),
+          title: item.title,
+          description: item.summary,
+        }))
+      : defaultServices
+
   return (
     <section className="relative py-20 sm:py-24 lg:py-28">
       <div className="shell">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <Reveal className="max-w-xl">
-            <span className="eyebrow">What we offer</span>
+            <span className="eyebrow">{content?.eyebrow || 'What we offer'}</span>
             <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
-              Complete kidney care,
-              <span className="italic text-brand-700"> under one roof.</span>
+              {content?.heading || 'Complete kidney care,'}
+              <span className="italic text-brand-700">
+                {' '}
+                {content?.emphasis || 'under one roof.'}
+              </span>
             </h2>
           </Reveal>
 
           <Reveal delay={80} className="md:pb-2">
             <p className="lead max-w-sm">
-              Six core programmes, one care team — designed around how treatment
-              actually fits into your week.
+              {content?.body ||
+                'Six core programmes, one care team — designed around how treatment actually fits into your week.'}
             </p>
           </Reveal>
         </div>

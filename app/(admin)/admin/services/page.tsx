@@ -37,7 +37,7 @@ export default async function ServicesPage({ searchParams }: { searchParams: { o
                 <Field><Labeled>Summary</Labeled><Textarea name="summary" defaultValue={service.summary} className="min-h-[70px]" /></Field>
                 <Field><Labeled>Icon name</Labeled><Input name="icon" defaultValue={service.icon} placeholder="kidney" /></Field>
                 <div className="flex justify-end gap-2">
-                  <Submit>Save</Submit>
+                  <Submit type="submit">Save</Submit>
                   <button type="submit" name="delete" formAction={deleteServiceAction} className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-sm text-ink-soft transition hover:border-ember-300 hover:text-ember-700">
                     Delete
                   </button>
@@ -60,7 +60,7 @@ export default async function ServicesPage({ searchParams }: { searchParams: { o
           </div>
           <Field><Labeled>Summary</Labeled><Textarea name="summary" className="min-h-[70px]" /></Field>
           <Field><Labeled>Icon name</Labeled><Input name="icon" placeholder="kidney" /></Field>
-          <Submit>Create service</Submit>
+          <Submit type="submit">Create service</Submit>
         </form>
       </Card>
     </div>

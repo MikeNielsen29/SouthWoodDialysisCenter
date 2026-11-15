@@ -1,7 +1,7 @@
 import { Quote, Star } from 'lucide-react'
 import { Reveal } from '@/components/ui/reveal'
 
-const testimonials = [
+const defaultTestimonials = [
   {
     quote:
       'Since starting hemodialysis at Southwood my energy has come back. The team explains everything, and the bay is always spotless.',
@@ -28,7 +28,43 @@ const testimonials = [
   },
 ]
 
-export function TestimonialsSection() {
+const tones = ['bg-brand-700', 'bg-ember-500', 'bg-brand-500']
+
+function initialsOf(name: string): string {
+  return (
+    name
+      .split(/\s+/)
+      .map((part) => part[0])
+      .filter(Boolean)
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'P'
+  )
+}
+
+function yearOf(value: string): string {
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? '' : String(date.getFullYear())
+}
+
+export function TestimonialsSection({
+  items,
+}: {
+  items?: { display_name: string; rating: string; body: string; created_at: string }[]
+}) {
+  const testimonials =
+    items && items.length > 0
+      ? items.slice(0, 3).map((item, index) => ({
+          quote: item.body,
+          name: item.display_name || 'Patient',
+          detail: yearOf(item.created_at)
+            ? `Patient since ${yearOf(item.created_at)}`
+            : 'Verified patient',
+          initials: initialsOf(item.display_name || 'Patient'),
+          tone: tones[index % tones.length],
+        }))
+      : defaultTestimonials
+
   return (
     <section className="py-20 sm:py-24 lg:py-28">
       <div className="shell">
@@ -44,7 +80,7 @@ export function TestimonialsSection() {
 
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {testimonials.map((item, index) => (
-            <Reveal key={item.name} delay={index * 70}>
+            <Reveal key={`${item.name}-${index}`} delay={index * 70}>
               <figure className="relative flex h-full flex-col rounded-2xl border border-ink/10 bg-white/80 p-7 transition-shadow duration-300 hover:shadow-lift">
                 <Quote
                   className="h-7 w-7 text-ember-200"

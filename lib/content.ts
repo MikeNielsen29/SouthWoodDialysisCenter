@@ -51,7 +51,7 @@ export async function getSiteContent(): Promise<SiteContent> {
     }
   }
   try {
-    const data = await callSheets('site.content')
+    const data = await callSheets('public.content')
     return (data as SiteContent) || {
       pages: [],
       sections: [],
@@ -74,11 +74,31 @@ export async function getSiteContent(): Promise<SiteContent> {
   }
 }
 
+function settingsText(value: unknown, fallback: string): string {
+  if (value === null || value === undefined) return fallback
+  const text = String(value).trim()
+  return text === '' ? fallback : text
+}
+
 export async function getSettings(): Promise<Settings> {
   if (!isSheetsConfigured()) return defaultSettings
   try {
-    const data = await callSheets('settings.get')
-    return (data as Settings) || defaultSettings
+    const data = (await callSheets<Record<string, unknown>>('content.getSettings')) || {}
+    return {
+      hotline: settingsText(data.hotline, defaultSettings.hotline),
+      email: settingsText(data.email, defaultSettings.email),
+      address: settingsText(data.address, defaultSettings.address),
+      hours: settingsText(data.hours, defaultSettings.hours),
+      facebook: settingsText(data.facebook, defaultSettings.facebook),
+      instagram: settingsText(data.instagram, defaultSettings.instagram),
+      x: settingsText(data.x, defaultSettings.x),
+      linkedin: settingsText(data.linkedin, defaultSettings.linkedin),
+      disclaimer: settingsText(data.disclaimer, defaultSettings.disclaimer),
+      consentVersion: settingsText(
+        data.consentVersion ?? data.consent_version,
+        defaultSettings.consentVersion
+      ),
+    }
   } catch {
     return defaultSettings
   }
@@ -95,7 +115,7 @@ export async function saveSettingsAction(formData: FormData): Promise<{ ok: bool
     }
   }
   try {
-    await callSheets('settings.update', payload)
+    await callSheets('content.updateSettings', { values: payload })
     return { ok: true }
   } catch {
     return { ok: false, error: 'Could not save settings' }

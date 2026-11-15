@@ -3,17 +3,24 @@ export type GalleryContent = {
   body?: string
 }
 
-/** One path per line (commas work too). Only local paths or https URLs pass. */
-function imagePaths(value?: string): string[] {
+/**
+ * One image per line (commas work too). Each line is `path` or `path | alt`.
+ * Only local paths or https URLs pass.
+ */
+function imageEntries(value?: string): { src: string; alt: string }[] {
   return (value || '')
-    .split(/[\n,]+/)
-    .map((path) => path.trim())
-    .filter((path) => path.startsWith('/') || path.startsWith('https://'))
+    .split(/\n+/)
+    .flatMap((line) => line.split(','))
+    .map((line) => {
+      const [src, ...rest] = line.split('|')
+      return { src: (src || '').trim(), alt: rest.join('|').trim() }
+    })
+    .filter((entry) => entry.src.startsWith('/') || entry.src.startsWith('https://'))
     .slice(0, 12)
 }
 
 export function GallerySection({ content }: { content?: GalleryContent }) {
-  const images = imagePaths(content?.image_url)
+  const images = imageEntries(content?.image_url)
   if (images.length === 0) return null
 
   return (
@@ -24,15 +31,15 @@ export function GallerySection({ content }: { content?: GalleryContent }) {
         ) : null}
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((src, index) => (
+          {images.map((image, index) => (
             <figure
-              key={`${src}-${index}`}
+              key={`${image.src}-${index}`}
               className="overflow-hidden rounded-2xl border border-ink/10 bg-sand-100 shadow-sm"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={src}
-                alt={`Southwood Dialysis Center — photo ${index + 1}`}
+                src={image.src}
+                alt={image.alt || `Southwood Dialysis Center — photo ${index + 1}`}
                 loading="lazy"
                 className="aspect-[4/3] w-full object-cover"
               />

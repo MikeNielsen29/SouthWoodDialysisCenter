@@ -27,32 +27,54 @@ const values = [
   },
 ]
 
-export function AboutSection() {
+export function AboutSection({
+  content,
+}: {
+  content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+}) {
+  const paragraphs = (content?.body || '')
+    .split(/\n{2,}/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
   return (
     <section className="relative bg-sand-100/70 py-20 sm:py-24 lg:py-28">
       <div className="shell">
         <div className="grid items-start gap-12 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
           <div>
             <Reveal>
-              <span className="eyebrow">About Southwood</span>
+              <span className="eyebrow">{content?.eyebrow || 'About Southwood'}</span>
               <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
-                A neighbourhood centre with
-                <span className="italic text-brand-700"> hospital-grade care.</span>
+                {content?.heading || 'A neighbourhood centre with'}
+                <span className="italic text-brand-700">
+                  {' '}
+                  {content?.emphasis || 'hospital-grade care.'}
+                </span>
               </h2>
             </Reveal>
 
             <Reveal delay={80}>
-              <p className="lead mt-6">
-                Southwood Dialysis Center opened in 2024 with a simple idea: kidney
-                care should feel calm, familiar, and close to home. Three modern
-                stations, a small clinical team, and schedules built around patients
-                rather than queues.
-              </p>
-              <p className="lead mt-4">
-                From your first assessment to your weekly sessions, the same
-                nephrologists and technicians follow your progress — so nothing about
-                your care gets lost between visits.
-              </p>
+              {paragraphs.length > 0 ? (
+                paragraphs.map((paragraph, index) => (
+                  <p key={index} className={index === 0 ? 'lead mt-6' : 'lead mt-4'}>
+                    {paragraph}
+                  </p>
+                ))
+              ) : (
+                <>
+                  <p className="lead mt-6">
+                    Southwood Dialysis Center opened in 2024 with a simple idea: kidney
+                    care should feel calm, familiar, and close to home. Three modern
+                    stations, a small clinical team, and schedules built around patients
+                    rather than queues.
+                  </p>
+                  <p className="lead mt-4">
+                    From your first assessment to your weekly sessions, the same
+                    nephrologists and technicians follow your progress — so nothing about
+                    your care gets lost between visits.
+                  </p>
+                </>
+              )}
             </Reveal>
 
             <Reveal delay={140}>

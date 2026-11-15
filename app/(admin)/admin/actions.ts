@@ -9,12 +9,6 @@ import { ADMIN_ROLES, STAFF_ROLES } from '@/lib/auth/jwt'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import { getSession } from '@/lib/auth/session'
 import { logAudit } from '@/lib/audit'
-import {
-  ALLOWED_MIME,
-  MAX_UPLOAD_BYTES,
-  encryptBuffer,
-  isFileEncryptionConfigured,
-} from '@/lib/files/telegram'
 import type { AuditEntry } from '@/lib/sheets/types'
 
 export async function savePageAction(formData: FormData) {
@@ -276,14 +270,14 @@ export async function saveServiceAction(formData: FormData) {
     status: (formData.get('status') as string | null) || 'published',
   }
 
-  const updated = await callSheets('services.upsert', payload)
+  const updated = await callSheets('content.upsertService', payload)
 
   if (!updated || typeof updated !== 'object') {
     return { ok: false as const, error: 'Could not save service' }
   }
 
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/admin/services?ok=Service%20saved')
 }
 
 export async function deleteServiceAction(formData: FormData) {
@@ -296,14 +290,14 @@ export async function deleteServiceAction(formData: FormData) {
     return { ok: false as const, error: 'Missing service id' }
   }
 
-  const updated = await callSheets('services.delete', { id })
+  const updated = await callSheets('content.deleteService', { id })
 
   if (!updated || typeof updated !== 'object') {
     return { ok: false as const, error: 'Could not delete service' }
   }
 
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/admin/services?ok=Service%20deleted')
 }
 
 export async function saveNewsAction(formData: FormData) {
@@ -330,14 +324,14 @@ export async function saveNewsAction(formData: FormData) {
     status: (formData.get('status') as string | null) || 'published',
   }
 
-  const updated = await callSheets('news.upsert', payload)
+  const updated = await callSheets('content.upsertNews', payload)
 
   if (!updated || typeof updated !== 'object') {
     return { ok: false as const, error: 'Could not save news' }
   }
 
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/admin/news?ok=Article%20saved')
 }
 
 export async function updateInquiryAction(formData: FormData) {
@@ -360,7 +354,7 @@ export async function updateInquiryAction(formData: FormData) {
   }
 
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/admin/inquiries?ok=Inquiry%20updated')
 }
 
 export async function moderateTestimonialAction(formData: FormData) {
@@ -382,58 +376,8 @@ export async function moderateTestimonialAction(formData: FormData) {
   }
 
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/admin/testimonials?ok=Testimonial%20updated')
 }
 
-export async function uploadFileAction(formData: FormData) {
-  if (!isSheetsConfigured()) {
-    return { ok: false as const, error: 'Backend not configured' }
-  }
 
-  if (!isFileEncryptionConfigured()) {
-    return { ok: false as const, error: 'File encryption not configured' }
-  }
-
-  const file = formData.get('file') as File | null
-  if (!file) {
-    return { ok: false as const, error: 'No file selected' }
-  }
-
-  if (!ALLOWED_MIME.includes(file.type)) {
-    return { ok: false as const, error: 'File type not allowed' }
-  }
-
-  if (file.size > MAX_UPLOAD_BYTES) {
-    return { ok: false as const, error: 'File too large' }
-  }
-
-  const checksum = typeof crypto !== 'undefined' && typeof crypto.subtle === 'object'
-    ? 'unavailable-in-browser-check'
-    : 'unavailable'
-
-  const patient_cn = (formData.get('patient_cn') as string | null)?.trim() || ''
-  if (!patient_cn) {
-    return { ok: false as const, error: 'Missing patient CN' }
-  }
-
-  const title = (formData.get('title') as string | null)?.trim() || file.name
-
-  type RegisterResponse = { id?: string }
-  const registered = await callSheets('files.register', {
-    patient_cn,
-    title,
-    category: file.type.startsWith('application/pdf') ? 'lab' : 'image',
-    mime: file.type,
-    size_bytes: file.size,
-    checksum_sha256: checksum,
-    encrypted: true,
-  })
-
-  if (!registered || typeof registered !== 'object') {
-    return { ok: false as const, error: 'Could not register file' }
-  }
-
-  revalidateTag('content')
-  return { ok: true as const, file_id: ((registered as RegisterResponse).id || 'unknown') as string }
-}
 

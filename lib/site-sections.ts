@@ -19,7 +19,7 @@ export type SectionFields = {
   status: 'published' | 'draft'
 }
 
-export type SectionKind = 'hero' | 'header' | 'cta' | 'gallery'
+export type SectionKind = 'hero' | 'header' | 'cta' | 'gallery' | 'about' | 'process'
 
 export type SectionDef = {
   key: string
@@ -76,6 +76,13 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Photos of the centre, the team and the stations.',
         sort_order: '2',
       }),
+      section('about', 'About Southwood block', 'about', {
+        eyebrow: 'About Southwood',
+        heading: 'A neighbourhood centre with',
+        emphasis: 'hospital-grade care.',
+        body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        sort_order: '3',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -83,7 +90,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '3',
+        sort_order: '4',
       }),
     ],
   },
@@ -103,6 +110,13 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Photos of the centre, the team and the stations.',
         sort_order: '2',
       }),
+      section('about', 'About Southwood block', 'about', {
+        eyebrow: 'About Southwood',
+        heading: 'A neighbourhood centre with',
+        emphasis: 'hospital-grade care.',
+        body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        sort_order: '3',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -110,7 +124,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '3',
+        sort_order: '4',
       }),
     ],
   },
@@ -130,6 +144,15 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Photos of the centre, the team and the stations.',
         sort_order: '2',
       }),
+      section('process', 'How it works block', 'process', {
+        eyebrow: 'How it works',
+        heading: 'Three steps to',
+        emphasis: 'your first session.',
+        body: 'No referrals required to start the conversation. We will walk you through insurance, transport, and scheduling before you commit to anything.',
+        cta_label: 'Talk to our care team',
+        cta_href: '/contact',
+        sort_order: '3',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -137,7 +160,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '3',
+        sort_order: '4',
       }),
     ],
   },

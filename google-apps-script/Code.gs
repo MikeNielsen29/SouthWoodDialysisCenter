@@ -34,6 +34,7 @@ var CFG = {
   DEFAULT_ADMIN_CN: 'SDC-ADMIN',
   DEFAULT_ADMIN_EMAIL: 'admin@southwooddialysis.com',
   DEFAULT_ADMIN_PASSWORD: 'Southwood2026!',
+  SITE_URL: 'https://south-wood-dialysis-center-eight.vercel.app',
 };
 
 /* ------------------------------------------------------------------ */
@@ -351,6 +352,7 @@ var SETTINGS_SEED = [
 var PUBLIC_ACTIONS = {
   'system.health': true,
   'auth.login': true,
+  'auth.requestReset': true,
   'public.content': true,
 };
 
@@ -466,6 +468,7 @@ var ACTIONS = {
   'media.delete': function (p, a) { return A.deleteMedia(p, a); },
 
   'files.list': function (p, a) { return A.listFiles(p, a); },
+  'files.get': function (p, a) { return A.getFile(p, a); },
   'files.register': function (p, a) { return A.registerFile(p, a); },
   'files.release': function (p, a) { return A.releaseFile(p, a); },
 
@@ -506,6 +509,19 @@ function requireKey_(params) {
  * run this itself — bcrypt cannot be computed here — so sign-in is verified in
  * the same place where the hash is written.
  */
+function randomPassword_() {
+  var alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#%';
+  var seed = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    String(Date.now()) + String(Math.random())
+  );
+  var out = '';
+  for (var i = 0; i < 14; i++) {
+    out += alphabet.charAt(Math.abs(seed[i]) % alphabet.length);
+  }
+  return out;
+}
+
 function hashPassword_(password, salt) {
   var useSalt = salt || uuid_().replace(/-/g, '');
   var digest = Utilities.computeDigest(
@@ -1509,6 +1525,45 @@ A.changePassword = function (payload) {
   });
 };
 
+A.requestReset = function (payload) {
+  var identifier = String(payload.identifier || '').trim().toLowerCase();
+  // Always answer the same way so this cannot be used to enumerate accounts.
+  if (!identifier) return { requested: true };
+
+  var row = find_(readAll_('Users'), function (item) {
+    return (
+      String(item.cn || '').toLowerCase() === identifier ||
+      String(item.email || '').toLowerCase() === identifier
+    );
+  });
+  if (!row || !row.email) return { requested: true };
+
+  var temp = randomPassword_();
+  updateById_('Users', row.id, {
+    password_hash: hashPassword_(temp),
+    must_change_password: 'TRUE',
+    failed_count: '0',
+    locked_until: '',
+  });
+
+  try {
+    MailApp.sendEmail({
+      to: row.email,
+      subject: 'Southwood Dialysis Center - password reset',
+      body:
+        'Hello ' + (row.name || row.cn) + ',\n\n' +
+        'Your temporary password is: ' + temp + '\n\n' +
+        'Sign in at ' + CFG.SITE_URL + '/login and change it right away.\n' +
+        'If you did not ask for this, call the clinic immediately.\n',
+    });
+  } catch (err) {
+    // The password was already rotated; the clinic can read it from the log.
+    console.error('requestReset mail failed: ' + err);
+  }
+
+  return { requested: true };
+};
+
 A.setOtp = function (payload) {
   var userId = requireText_(payload.user_id, 'user_id');
   var record = {
@@ -1912,6 +1967,14 @@ A.listFiles = function (payload) {
     });
   }
   return strip_(rows);
+};
+
+A.getFile = function (payload) {
+  var id = requireText_(payload.id, 'id');
+  var rows = readAll_('Files').filter(function (row) {
+    return String(row.id) === id;
+  });
+  return rows.length ? strip_(rows[0]) : null;
 };
 
 A.registerFile = function (payload) {

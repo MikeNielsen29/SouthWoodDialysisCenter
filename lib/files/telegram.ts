@@ -18,7 +18,12 @@ export function isTelegramConfigured() {
 }
 
 export function isFileEncryptionConfigured() {
-  return Boolean(FILE_ENCRYPTION_KEY_BASE64)
+  if (!FILE_ENCRYPTION_KEY_BASE64) return false
+  try {
+    return Buffer.from(FILE_ENCRYPTION_KEY_BASE64, 'base64').length === 32
+  } catch {
+    return false
+  }
 }
 
 export async function encryptBuffer(buffer: Buffer) {
@@ -85,6 +90,8 @@ export async function uploadDocument(file: Buffer, title: string) {
   return {
     telegram_file_id: result.result.document.file_id,
     telegram_message_id: String(result.result.message_id),
+    iv: encrypted.iv.toString('base64'),
+    auth_tag: encrypted.tag.toString('base64'),
   }
 }
 

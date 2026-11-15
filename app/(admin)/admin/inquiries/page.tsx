@@ -59,6 +59,9 @@ export default async function InquiriesPage({ searchParams }: { searchParams: { 
                       <option value="Read">Read</option>
                       <option value="Closed">Closed</option>
                     </Select>
+                    <Submit type="submit" className="mt-2 w-auto px-2 py-1 text-[11px]">
+                      Save
+                    </Submit>
                   </form>
                 </div>
                 <div className="text-ink-muted text-[12px]">{age(inquiry.created_at)}</div>

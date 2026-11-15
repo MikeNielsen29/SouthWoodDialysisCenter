@@ -1,5 +1,6 @@
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
+import { getPublicContent } from '@/lib/public-data'
 import { Section } from '@/components/sections/herosection'
 import { AboutSection } from '@/components/sections/aboutsection'
 import { ServicesSection } from '@/components/sections/servicessection'
@@ -12,17 +13,20 @@ import { GallerySection } from '@/components/sections/gallerysection'
 export const revalidate = 60 // SEO: sitemap-friendly
 
 export default async function HomePage() {
-  const content = await getPublishedSections('home')
+  const [content, data] = await Promise.all([
+    getPublishedSections('home'),
+    getPublicContent(),
+  ])
 
   return (
     <main>
       <Section content={content.hero} />
       <GallerySection content={content.gallery} />
-      <ServicesSection />
-      <AboutSection />
-      <ProcessSection />
-      <TestimonialsSection />
-      <NewsSection />
+      <ServicesSection items={data.services} />
+      <AboutSection content={content.about} />
+      <ProcessSection content={content.process} />
+      <TestimonialsSection items={data.testimonials} />
+      <NewsSection articles={data.news} />
       <CtaSection content={content.cta} />
     </main>
   )

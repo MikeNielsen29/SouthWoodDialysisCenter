@@ -232,7 +232,9 @@ export function ContentEditor({
                   <Link href="/admin/media" className="font-medium text-brand-700 underline">
                     Media library
                   </Link>
-                  , then paste their paths here. Walang path = hindi lumalabas ang section.
+                  , then paste their paths here — one per line. Add{' '}
+                  <code className="rounded bg-sand-100 px-1">| alt text</code> after a path for a
+                  custom description. Walang path = hindi lumalabas ang section.
                 </p>
               </Field>
             ) : (
@@ -324,8 +326,9 @@ export function ContentEditor({
               <div className="bg-sand-50 px-5 py-6">
                 {(() => {
                   const paths = values.image_url
-                    .split(/[\n,]+/)
-                    .map((path) => path.trim())
+                    .split(/\n+/)
+                    .flatMap((line) => line.split(','))
+                    .map((line) => (line.split('|')[0] ?? '').trim())
                     .filter((path) => path.startsWith('/') || path.startsWith('https://'))
                     .slice(0, 6)
                   if (paths.length === 0) {

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { Reveal } from '@/components/ui/reveal'
 
-const news = [
+const defaultNews = [
   {
     date: '15 Jan 2024',
     category: 'Facilities',
@@ -29,7 +29,31 @@ const news = [
   },
 ]
 
-export function NewsSection() {
+const accents = ['from-brand-800 to-brand-950', 'from-ember-500 to-ember-700', 'from-sand-300 to-sand-200']
+
+function formatDate(value: string): string {
+  if (!value) return ''
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value.slice(0, 10)
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
+export function NewsSection({
+  articles,
+}: {
+  articles?: { title: string; excerpt: string; published_at: string }[]
+}) {
+  const news =
+    articles && articles.length > 0
+      ? articles.slice(0, 3).map((article, index) => ({
+          date: formatDate(article.published_at),
+          category: 'Update',
+          title: article.title,
+          description: article.excerpt,
+          accent: accents[index % accents.length],
+        }))
+      : defaultNews
+
   return (
     <section className="bg-sand-100/70 py-20 sm:py-24 lg:py-28">
       <div className="shell">
@@ -56,7 +80,7 @@ export function NewsSection() {
           {news.map((item, index) => {
             const muted = index === 2
             return (
-              <Reveal key={item.title} delay={index * 70}>
+              <Reveal key={`${item.title}-${index}`} delay={index * 70}>
                 <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-sand-50 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
                   <div
                     className={`relative h-36 bg-gradient-to-br ${item.accent} p-5`}

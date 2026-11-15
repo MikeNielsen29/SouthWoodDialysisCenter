@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic'
 export default async function TestimonialsPage() {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
   const settings = await getSettings()
-  const raw = await load('testimonials.listAll', TestimonialSchema.array(), { limit: 50 })
+  const raw = await load('testimonials.list', TestimonialSchema.array(), { limit: 50 })
   const data = Array.isArray(raw) ? raw : []
   const error = typeof raw === 'object' && raw !== null && 'error' in raw ? String((raw as { error?: string }).error) : ''
 
@@ -73,7 +73,7 @@ export default async function TestimonialsPage() {
                   <TableData>
                     <form action={moderateTestimonialAction}>
                       <input type="hidden" name="id" value={item.id} />
-                      <Submit className="w-auto">Save</Submit>
+                      <Submit type="submit" className="w-auto">Save</Submit>
                     </form>
                   </TableData>
                 </TableRow>

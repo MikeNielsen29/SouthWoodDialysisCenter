@@ -43,7 +43,7 @@ export default async function NewsAdminPage({ searchParams }: { searchParams: { 
                 </div>
                 <Field label="Summary"><Textarea name="excerpt" defaultValue={post.excerpt} className="min-h-[70px]" /></Field>
                 <Field label="Full text"><Textarea name="body" defaultValue={post.body} /></Field>
-                <Submit>Save article</Submit>
+                <Submit type="submit">Save article</Submit>
               </form>
             ))}
           </div>
@@ -61,7 +61,7 @@ export default async function NewsAdminPage({ searchParams }: { searchParams: { 
           </div>
           <Field label="Summary"><Textarea name="excerpt" className="min-h-[70px]" /></Field>
           <Field label="Full text"><Textarea name="body" /></Field>
-          <Submit>Publish article</Submit>
+          <Submit type="submit">Publish article</Submit>
         </form>
       </Card>
     </div>

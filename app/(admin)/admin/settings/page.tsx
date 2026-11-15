@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { redirect, useSearchParams } from 'next/navigation'
+import { Notice, Submit } from '@/components/admin/ui'
+import { runBackupAction } from './actions'
 import { requireRoleOrRedirect } from '@/lib/auth/session'
 import { getSettings, saveSettingsAction, type Settings } from '@/lib/content'
 import { SettingsForm } from './SettingsForm'
@@ -11,7 +12,11 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: { backup?: string }
+}) {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
   const settings = await getSettings()
 
@@ -25,8 +30,25 @@ export default async function SettingsPage() {
           </p>
         </div>
 
+        {searchParams.backup === 'ok' ? (
+          <Notice variant="info">Backup saved to the clinic Drive folder.</Notice>
+        ) : null}
+        {searchParams.backup === 'error' ? (
+          <Notice variant="warning">Backup failed. Check the Apps Script logs.</Notice>
+        ) : null}
+
         <div className="rounded-xl border border-ink/10 bg-white p-5">
           <SettingsForm initial={settings as Settings} />
+        </div>
+
+        <div className="rounded-xl border border-ink/10 bg-white p-5">
+          <p className="font-medium text-ink">Backup</p>
+          <p className="mt-1 text-sm text-ink-muted">
+            Copies the spreadsheet to your Drive so a bad edit can always be undone.
+          </p>
+          <form action={runBackupAction} className="mt-3">
+            <Submit type="submit">Run backup now</Submit>
+          </form>
         </div>
 
         <div className="rounded-xl border border-ink/10 bg-white p-5 text-sm text-ink-muted">

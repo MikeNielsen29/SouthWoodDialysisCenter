@@ -24,7 +24,11 @@ const steps = [
   },
 ]
 
-export function ProcessSection() {
+export function ProcessSection({
+  content,
+}: {
+  content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string; cta_label?: string; cta_href?: string }
+}) {
   return (
     <section className="relative overflow-hidden bg-brand-950 py-20 text-sand-100 sm:py-24 lg:py-28">
       <div
@@ -35,22 +39,24 @@ export function ProcessSection() {
       <div className="shell relative">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
-            <span className="eyebrow text-ember-400">How it works</span>
+            <span className="eyebrow text-ember-400">{content?.eyebrow || 'How it works'}</span>
             <h2 className="display mt-5 text-[32px] leading-[1.1] text-sand-50 sm:text-[42px]">
-              Three steps to
-              <span className="italic text-ember-400"> your first session.</span>
+              {content?.heading || 'Three steps to'}
+              <span className="italic text-ember-400">
+                {' '}
+                {content?.emphasis || 'your first session.'}
+              </span>
             </h2>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-sand-100/65">
-              No referrals required to start the conversation. We will walk you
-              through insurance, transport, and scheduling before you commit to
-              anything.
+              {content?.body ||
+                'No referrals required to start the conversation. We will walk you through insurance, transport, and scheduling before you commit to anything.'}
             </p>
 
             <Link
-              href="/contact"
+              href={content?.cta_href || '/contact'}
               className={buttonClasses('light', 'lg', 'mt-8')}
             >
-              Talk to our care team
+              {content?.cta_label || 'Talk to our care team'}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Reveal>

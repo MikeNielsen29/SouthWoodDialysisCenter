@@ -3,9 +3,17 @@ import { ContactSection } from '@/components/sections/contactsection'
 import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
+import { getPublicContent } from '@/lib/public-data'
 
-export default async function ContactPage() {
-  const content = await getPublishedSections('contact')
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: { sent?: string; error?: string }
+}) {
+  const [content, data] = await Promise.all([
+    getPublishedSections('contact'),
+    getPublicContent(),
+  ])
   const header = content.header
 
   return (
@@ -20,7 +28,11 @@ export default async function ContactPage() {
         }
       />
       <GallerySection content={content.gallery} />
-      <ContactSection />
+      <ContactSection
+        settings={data.settings}
+        sent={searchParams.sent === '1'}
+        error={searchParams.error ? 'failed' : undefined}
+      />
     </main>
   )
 }

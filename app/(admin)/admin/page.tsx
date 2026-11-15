@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { requireRoleOrRedirect } from '@/lib/auth/session'
-import { getSettings } from '@/lib/content'
+import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import Link from 'next/link'
 import { Stat } from '@/components/admin/ui'
 
@@ -12,22 +12,62 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
+interface Stats {
+  patients: number
+  staff: number
+  appointmentsThisMonth: number
+  upcoming: number
+  pendingTestimonials: number
+  newInquiries: number
+  averageRating: number
+  files: number
+  revenueThisMonth: number
+}
+
+const EMPTY_STATS: Stats = {
+  patients: 0,
+  staff: 0,
+  appointmentsThisMonth: 0,
+  upcoming: 0,
+  pendingTestimonials: 0,
+  newInquiries: 0,
+  averageRating: 0,
+  files: 0,
+  revenueThisMonth: 0,
+}
+
+function num(value: unknown): number {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
+async function loadStats(): Promise<Stats> {
+  if (!isSheetsConfigured()) return EMPTY_STATS
+
+  try {
+    const raw = await callSheets<Record<string, unknown>>('analytics.summary', {})
+    if (!raw || typeof raw !== 'object') return EMPTY_STATS
+
+    return {
+      patients: num(raw.patients),
+      staff: num(raw.staff),
+      appointmentsThisMonth: num(raw.appointmentsThisMonth),
+      upcoming: num(raw.upcoming),
+      pendingTestimonials: num(raw.pendingTestimonials),
+      newInquiries: num(raw.newInquiries),
+      averageRating: num(raw.averageRating),
+      files: num(raw.files),
+      revenueThisMonth: num(raw.revenueThisMonth),
+    }
+  } catch {
+    return EMPTY_STATS
+  }
+}
+
 export default async function AdminOverviewPage() {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
-  const settings = await getSettings()
+  const stats = await loadStats()
 
-  // Stats are placeholders until the admin data layer is wired.
-  const stats = {
-    patients: 0,
-    staff: 0,
-    appointmentsThisMonth: 0,
-    upcoming: 0,
-    pendingTestimonials: 0,
-    newInquiries: 0,
-    averageRating: 0,
-    files: 0,
-    revenueThisMonth: 0,
-  }
 
   return (
     <div className="min-h-screen bg-sand-50">

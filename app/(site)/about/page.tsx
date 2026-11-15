@@ -5,9 +5,13 @@ import { CtaSection } from '@/components/sections/ctasection'
 import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
+import { getPublicContent } from '@/lib/public-data'
 
 export default async function AboutPage() {
-  const content = await getPublishedSections('about')
+  const [content, data] = await Promise.all([
+    getPublishedSections('about'),
+    getPublicContent(),
+  ])
   const header = content.header
 
   return (
@@ -22,8 +26,8 @@ export default async function AboutPage() {
         }
       />
       <GallerySection content={content.gallery} />
-      <AboutSection />
-      <TestimonialsSection />
+      <AboutSection content={content.about} />
+      <TestimonialsSection items={data.testimonials} />
       <CtaSection content={content.cta} />
     </main>
   )
