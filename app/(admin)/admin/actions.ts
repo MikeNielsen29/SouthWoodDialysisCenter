@@ -1,11 +1,13 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { hashPassword, passwordProblem } from '@/lib/auth/password'
 import { ADMIN_ROLES, STAFF_ROLES } from '@/lib/auth/jwt'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
+import { getSession } from '@/lib/auth/session'
 import { logAudit } from '@/lib/audit'
 import {
   ALLOWED_MIME,
@@ -104,6 +106,152 @@ export async function saveSectionAction(formData: FormData): Promise<void> {
 
   revalidateTag('content')
   redirect(`${back}&saved=1`)
+}
+
+/* ------------------------------------------------------------------ */
+/* Accounts                                                            */
+/* ------------------------------------------------------------------ */
+
+const USER_ROLES = ['Super Admin', 'Admin', 'Page Editor', 'Patient'] as const
+
+async function requireSuperAdmin() {
+  const session = await getSession()
+  if (!session) redirect('/login?next=/admin/user-management')
+  if (session.role !== 'Super Admin') redirect('/admin')
+  return session
+}
+
+function backToUsers(params: string): never {
+  redirect(`/admin/user-management?${params}`)
+}
+
+function roleFrom(value: FormDataEntryValue | null): (typeof USER_ROLES)[number] | null {
+  const role = String(value || '')
+  return (USER_ROLES as readonly string[]).includes(role)
+    ? (role as (typeof USER_ROLES)[number])
+    : null
+}
+
+export async function createUserAction(formData: FormData): Promise<void> {
+  await requireSuperAdmin()
+
+  const cn = (formData.get('cn') as string | null)?.trim() || ''
+  const fullName = (formData.get('full_name') as string | null)?.trim() || ''
+  const email = (formData.get('email') as string | null)?.trim().toLowerCase() || ''
+  const role = roleFrom(formData.get('role'))
+  const password = String(formData.get('password') || '')
+
+  if (!cn || !fullName || !email) backToUsers('error=Fill in every field')
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) backToUsers('error=Enter a valid email')
+  if (!role) backToUsers('error=Choose a valid role')
+
+  const problem = passwordProblem(password)
+  if (problem) backToUsers(`error=${encodeURIComponent(problem)}`)
+
+  if (!isSheetsConfigured()) backToUsers('error=Backend not configured')
+
+  try {
+    await callSheets('users.create', {
+      cn,
+      full_name: fullName,
+      email,
+      role,
+      password,
+      otp_required: false,
+      must_change_password: true,
+    })
+  } catch {
+    backToUsers('error=Could not create the account')
+  }
+
+  backToUsers(`created=${encodeURIComponent(cn)}`)
+}
+
+export async function updateUserRoleAction(formData: FormData): Promise<void> {
+  await requireSuperAdmin()
+
+  const id = (formData.get('id') as string | null)?.trim() || ''
+  const role = roleFrom(formData.get('role'))
+  if (!id || !role) backToUsers('error=Choose a valid role')
+
+  try {
+    await callSheets('users.update', { id, patch: { role } })
+  } catch {
+    backToUsers('error=Could not change the role')
+  }
+
+  backToUsers('updated=role')
+}
+
+export async function toggleUserActiveAction(formData: FormData): Promise<void> {
+  await requireSuperAdmin()
+
+  const id = (formData.get('id') as string | null)?.trim() || ''
+  const active = String(formData.get('is_active') || '') === 'TRUE'
+  if (!id) backToUsers('error=Missing account')
+
+  try {
+    await callSheets('users.update', { id, patch: { is_active: active ? 'TRUE' : 'FALSE' } })
+  } catch {
+    backToUsers('error=Could not update the account')
+  }
+
+  backToUsers('updated=status')
+}
+
+export async function resetUserPasswordAction(formData: FormData): Promise<void> {
+  await requireSuperAdmin()
+
+  const id = (formData.get('id') as string | null)?.trim() || ''
+  if (!id) backToUsers('error=Missing account')
+
+  let password = ''
+  try {
+    const result = await callSheets<{ password?: string }>('users.resetPassword', { id })
+    password = String(result?.password || '')
+  } catch {
+    backToUsers('error=Could not reset the password')
+  }
+  if (!password) backToUsers('error=Could not reset the password')
+
+  // Shown once on the next render, never placed in the URL.
+  const store = await cookies()
+  store.set('temp_password', password, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 180,
+    path: '/admin/user-management',
+  })
+
+  backToUsers('reset=1')
+}
+
+export async function deleteUserAction(formData: FormData): Promise<void> {
+  const session = await requireSuperAdmin()
+
+  const id = (formData.get('id') as string | null)?.trim() || ''
+  if (!id) backToUsers('error=Missing account')
+  if (id === session.sub) backToUsers('error=You cannot delete your own account')
+
+  try {
+    await callSheets('users.delete', { id, actor_id: session.sub })
+  } catch {
+    backToUsers('error=The account could not be deleted')
+  }
+
+  await logAudit({
+    actor_id: session.sub,
+    actor_role: session.role,
+    action: 'users.deleted',
+    entity: 'user',
+    entity_id: id,
+    meta_json: '{}',
+    ip_hash: '',
+    created_at: new Date().toISOString(),
+  } as AuditEntry)
+
+  backToUsers('deleted=1')
 }
 
 export async function saveServiceAction(formData: FormData) {

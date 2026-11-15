@@ -100,7 +100,7 @@ const ITEMS: Item[] = [
   { href: '/admin/content', label: 'Page content', icon: STETHOSCOPE, roles: ['Super Admin', 'Admin', 'Page Editor'] },
   { href: '/admin/services', label: 'Services', icon: PACKAGE, roles: ['Super Admin', 'Admin', 'Page Editor'] },
   { href: '/admin/news', label: 'News', icon: NEWSPAPER, roles: ['Super Admin', 'Admin', 'Page Editor'] },
-  { href: '/admin/users', label: 'Users', icon: USERS, roles: ['Super Admin', 'Admin'] },
+  { href: '/admin/user-management', label: 'Users', icon: USERS, roles: ['Super Admin'] },
   { href: '/admin/inquiries', label: 'Inquiries', icon: INBOX, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/testimonials', label: 'Testimonials', icon: STAR, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/operations', label: 'Operations', icon: CALENDAR_CLOCK, roles: ['Super Admin', 'Admin'] },

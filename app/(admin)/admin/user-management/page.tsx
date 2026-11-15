@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { requireRoleOrRedirect } from '@/lib/auth/session'
-import { getSettings } from '@/lib/content'
-import { UserTable } from './UserTable'
+import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
+import { Notice } from '@/components/admin/ui'
+import { UserAdmin, type ManagedUser } from './UserAdmin'
 
 export const metadata: Metadata = {
   title: 'User management',
@@ -10,55 +12,96 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function UserManagementPage() {
+async function loadUsers(): Promise<{ users: ManagedUser[]; error?: string }> {
+  if (!isSheetsConfigured()) {
+    return {
+      users: [],
+      error:
+        'The database is not connected yet. Set GS_WEBAPP_URL and GS_SHARED_SECRET, then reload.',
+    }
+  }
+
+  try {
+    const rows = await callSheets<unknown>('users.list', {})
+    if (!Array.isArray(rows)) return { users: [] }
+
+    const users: ManagedUser[] = rows
+      .filter((row): row is Record<string, unknown> => Boolean(row) && typeof row === 'object')
+      .map((row) => ({
+        id: String(row.id ?? ''),
+        cn: String(row.cn ?? ''),
+        full_name: String(row.full_name ?? ''),
+        email: String(row.email ?? ''),
+        role: String(row.role ?? 'Patient'),
+        is_active: String(row.is_active ?? 'TRUE'),
+        must_change_password: String(row.must_change_password ?? 'FALSE'),
+        last_login_at: String(row.last_login_at ?? ''),
+        created_at: String(row.created_at ?? ''),
+      }))
+      .filter((user) => user.id)
+
+    return { users }
+  } catch {
+    return {
+      users: [],
+      error:
+        'Could not read the accounts. Check that the Apps Script deployment is live and that GS_SHARED_SECRET matches.',
+    }
+  }
+}
+
+export default async function UserManagementPage({
+  searchParams,
+}: {
+  searchParams: {
+    created?: string
+    updated?: string
+    deleted?: string
+    reset?: string
+    error?: string
+  }
+}) {
   await requireRoleOrRedirect(['Super Admin'], '/admin')
-  const settings = await getSettings()
+
+  const { users, error } = await loadUsers()
+  const store = await cookies()
+  const tempPassword = searchParams.reset ? store.get('temp_password')?.value : undefined
+
+  const flash = searchParams.error
+    ? { tone: 'error' as const, message: searchParams.error }
+    : searchParams.created
+      ? { tone: 'ok' as const, message: `Account ${searchParams.created} created.` }
+      : searchParams.updated
+        ? {
+            tone: 'ok' as const,
+            message:
+              searchParams.updated === 'role'
+                ? 'Role updated.'
+                : 'Account status updated.',
+          }
+        : searchParams.deleted
+          ? { tone: 'ok' as const, message: 'Account deleted.' }
+          : searchParams.reset
+            ? { tone: 'ok' as const, message: 'Password reset. The temporary password is below.' }
+            : undefined
 
   return (
-    <div className="min-h-screen bg-sand-50">
-      <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-xl text-ink">User management</h1>
-            <p className="mt-1 text-sm text-ink-muted">
-              Super admins can create, reset, and deactivate staff and patient accounts.
-            </p>
-          </div>
-          <a
-            href="/admin/settings?tab=users"
-            className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-ink-muted transition hover:border-brand-300 hover:text-brand-700"
-          >
-            Back to settings
-          </a>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-          <div className="rounded-xl border border-ink/10 bg-white p-5">
-            <UserTable />
-          </div>
-
-          <aside className="space-y-5">
-            <div className="rounded-xl border border-ink/10 bg-white p-5 text-sm text-ink-muted">
-              <p className="font-medium text-ink mb-2">What you can do here</p>
-              <ul className="space-y-2">
-                <li>Create new staff or patient accounts.</li>
-                <li>Reset a user&apos;s password, which sends a one-time login code.</li>
-                <li>Deactivate accounts that should no longer sign in.</li>
-              </ul>
-              <p className="mt-4 text-xs text-ink-muted">
-                Passwords are never stored in plain text. Resets use the same email OTP flow as self-service sign-in.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-ink/10 bg-white p-5 text-sm">
-              <p className="font-medium text-ink mb-1">Need help?</p>
-              <p className="text-ink-muted">
-                If a user reports they cannot sign in, check that their email on file is correct before resetting.
-              </p>
-            </div>
-          </aside>
-        </div>
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+      <div className="mb-6">
+        <h1 className="font-display text-xl text-ink">User management</h1>
+        <p className="mt-1 max-w-2xl text-sm text-ink-muted">
+          Create staff and patient accounts, change roles, reset passwords, deactivate access, or
+          delete an account. Everything here is restricted to Super Admin.
+        </p>
       </div>
+
+      {error ? (
+        <div className="mb-5">
+          <Notice variant="warning">{error}</Notice>
+        </div>
+      ) : null}
+
+      <UserAdmin users={users} flash={flash} tempPassword={tempPassword} />
     </div>
   )
 }

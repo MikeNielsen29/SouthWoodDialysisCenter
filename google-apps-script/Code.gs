@@ -433,6 +433,8 @@ var ACTIONS = {
   'users.list': function (p, a) { return A.listUsers(p, a); },
   'users.create': function (p, a) { return A.createUser(p, a); },
   'users.update': function (p, a) { return A.updateUser(p, a); },
+  'users.resetPassword': function (p, a) { return A.resetPassword(p, a); },
+  'users.delete': function (p, a) { return A.deleteUser(p, a); },
 
   'inquiries.create': function (p, a) { return A.createInquiry(p, a); },
   'inquiries.list': function (p, a) { return A.listInquiries(p, a); },
@@ -930,6 +932,26 @@ function updateById_(tabName, id, patch) {
       }
     }
     return null;
+  });
+}
+
+function deleteById_(tabName, id) {
+  return withLock_(function () {
+    var sheet = table_(tabName);
+    var head = headers_(sheet);
+    var idIndex = head.indexOf('id');
+    if (idIndex === -1) throw apiError_('INTERNAL', 'Tab has no id column');
+
+    var lastRow = sheet.getLastRow();
+    if (lastRow < 2) return false;
+    var ids = sheet.getRange(2, idIndex + 1, lastRow - 1, 1).getValues();
+    for (var i = 0; i < ids.length; i++) {
+      if (String(ids[i][0]) === String(id)) {
+        sheet.deleteRow(i + 2);
+        return true;
+      }
+    }
+    return false;
   });
 }
 
@@ -1639,6 +1661,58 @@ A.updateUser = function (payload) {
   if (!Object.keys(clean).length) throw apiError_('BAD_REQUEST', 'Nothing to update');
   updateById_('Users', id, clean);
   return { updated: true };
+};
+
+/** Issues a random temporary password; the account must change it on next sign-in. */
+A.resetPassword = function (payload) {
+  return withLock_(function () {
+    var id = requireText_(payload.id, 'id');
+    var row = find_(readAll_('Users'), function (item) {
+      return item.id === id;
+    });
+    if (!row) throw apiError_('NOT_FOUND', 'User not found');
+
+    var temp = 'Sd-' + uuid_().replace(/-/g, '').slice(0, 10);
+    updateById_('Users', id, {
+      password_hash: hashPassword_(temp),
+      must_change_password: 'TRUE',
+      failed_count: '0',
+      locked_until: '',
+    });
+    return { password: temp };
+  });
+};
+
+/**
+ * Deletes an account. Refuses to remove the caller's own row and refuses to
+ * remove the last Super Admin, so the dashboard cannot be orphaned.
+ */
+A.deleteUser = function (payload) {
+  return withLock_(function () {
+    var id = requireText_(payload.id, 'id');
+    var actorId = text_(payload.actor_id);
+    if (actorId && actorId === id) {
+      throw apiError_('BAD_REQUEST', 'You cannot delete your own account');
+    }
+
+    var rows = readAll_('Users');
+    var row = find_(rows, function (item) {
+      return item.id === id;
+    });
+    if (!row) throw apiError_('NOT_FOUND', 'User not found');
+
+    if (String(row.role) === 'Super Admin') {
+      var admins = rows.filter(function (item) {
+        return String(item.role) === 'Super Admin';
+      });
+      if (admins.length <= 1) {
+        throw apiError_('BAD_REQUEST', 'The last Super Admin cannot be deleted');
+      }
+    }
+
+    deleteById_('Users', id);
+    return { deleted: true };
+  });
 };
 
 /* ------------------------------------------------------------------ */
