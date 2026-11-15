@@ -7,6 +7,7 @@ import { ProcessSection } from '@/components/sections/processsection'
 import { NewsSection } from '@/components/sections/newsection'
 import { TestimonialsSection } from '@/components/sections/testimonialssection'
 import { CtaSection } from '@/components/sections/ctasection'
+import { GallerySection } from '@/components/sections/gallerysection'
 
 export const revalidate = 60 // SEO: sitemap-friendly
 
@@ -16,6 +17,7 @@ export default async function HomePage() {
   return (
     <main>
       <Section content={content.hero} />
+      <GallerySection content={content.gallery} />
       <ServicesSection />
       <AboutSection />
       <ProcessSection />

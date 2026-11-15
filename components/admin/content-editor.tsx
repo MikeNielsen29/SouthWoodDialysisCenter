@@ -218,41 +218,62 @@ export function ContentEditor({
               />
             </Field>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Button label">
-                <Input
-                  name="cta_label"
-                  value={values.cta_label}
-                  onChange={(event) => update('cta_label', event.target.value)}
-                />
-              </Field>
-              <Field label="Button link">
-                <Input
-                  name="cta_href"
-                  value={values.cta_href}
-                  onChange={(event) => update('cta_href', event.target.value)}
-                  placeholder="/contact"
-                />
-              </Field>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Image path or URL (optional)">
-                <Input
+            {section.kind === 'gallery' ? (
+              <Field label="Image paths — one per line">
+                <Textarea
                   name="image_url"
+                  rows={4}
                   value={values.image_url}
                   onChange={(event) => update('image_url', event.target.value)}
-                  placeholder="/SBDC.png or /api/media/…"
+                  placeholder={'/api/media/AgAC…\n/api/media/AgAD…'}
                 />
+                <p className="text-[11px] leading-relaxed text-ink-muted">
+                  Upload the photos in the{' '}
+                  <Link href="/admin/media" className="font-medium text-brand-700 underline">
+                    Media library
+                  </Link>
+                  , then paste their paths here. Walang path = hindi lumalabas ang section.
+                </p>
               </Field>
-              <Field label="Image alt text">
-                <Input
-                  name="image_alt"
-                  value={values.image_alt}
-                  onChange={(event) => update('image_alt', event.target.value)}
-                />
-              </Field>
-            </div>
+            ) : (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field label="Button label">
+                    <Input
+                      name="cta_label"
+                      value={values.cta_label}
+                      onChange={(event) => update('cta_label', event.target.value)}
+                    />
+                  </Field>
+                  <Field label="Button link">
+                    <Input
+                      name="cta_href"
+                      value={values.cta_href}
+                      onChange={(event) => update('cta_href', event.target.value)}
+                      placeholder="/contact"
+                    />
+                  </Field>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field label="Image path or URL (optional)">
+                    <Input
+                      name="image_url"
+                      value={values.image_url}
+                      onChange={(event) => update('image_url', event.target.value)}
+                      placeholder="/SBDC.png or /api/media/…"
+                    />
+                  </Field>
+                  <Field label="Image alt text">
+                    <Input
+                      name="image_alt"
+                      value={values.image_alt}
+                      onChange={(event) => update('image_alt', event.target.value)}
+                    />
+                  </Field>
+                </div>
+              </>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Order on the page">
@@ -299,7 +320,37 @@ export function ContentEditor({
           </div>
 
           <div className="mt-3 overflow-hidden rounded-lg border border-ink/10">
-            {section.kind === 'cta' ? (
+            {section.kind === 'gallery' ? (
+              <div className="bg-sand-50 px-5 py-6">
+                {(() => {
+                  const paths = values.image_url
+                    .split(/[\n,]+/)
+                    .map((path) => path.trim())
+                    .filter((path) => path.startsWith('/') || path.startsWith('https://'))
+                    .slice(0, 6)
+                  if (paths.length === 0) {
+                    return (
+                      <p className="text-[12px] text-ink-muted">
+                        No image paths yet — the section stays hidden on the page.
+                      </p>
+                    )
+                  }
+                  return (
+                    <div className="grid grid-cols-3 gap-2">
+                      {paths.map((path, index) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={`${path}-${index}`}
+                          src={path}
+                          alt=""
+                          className="aspect-[4/3] w-full rounded-md border border-ink/10 bg-white object-cover"
+                        />
+                      ))}
+                    </div>
+                  )
+                })()}
+              </div>
+            ) : section.kind === 'cta' ? (
               <div className="bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-5 py-7 text-center">
                 {values.eyebrow ? (
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ember-400">

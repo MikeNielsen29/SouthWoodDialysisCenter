@@ -2,6 +2,7 @@ import { PageHeader } from '@/components/sections/pageheader'
 import { ServicesSection } from '@/components/sections/servicessection'
 import { ProcessSection } from '@/components/sections/processsection'
 import { CtaSection } from '@/components/sections/ctasection'
+import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
 
@@ -20,6 +21,7 @@ export default async function ServicesPage() {
           'From in-centre hemodialysis to at-home programmes, each service comes with the same care team and the same clear answers.'
         }
       />
+      <GallerySection content={content.gallery} />
       <ServicesSection />
       <ProcessSection />
       <CtaSection content={content.cta} />

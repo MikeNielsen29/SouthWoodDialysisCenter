@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/sections/pageheader'
 import { ContactSection } from '@/components/sections/contactsection'
+import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
 
@@ -18,6 +19,7 @@ export default async function ContactPage() {
           'We answer the phone during opening hours and reply to requests within one working day.'
         }
       />
+      <GallerySection content={content.gallery} />
       <ContactSection />
     </main>
   )

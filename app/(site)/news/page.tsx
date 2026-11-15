@@ -1,6 +1,7 @@
 import { PageHeader } from '@/components/sections/pageheader'
 import { NewsSection } from '@/components/sections/newsection'
 import { CtaSection } from '@/components/sections/ctasection'
+import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
 
@@ -19,6 +20,7 @@ export default async function NewsPage() {
           'Centre updates, patient workshops, and practical health notes from our clinical team.'
         }
       />
+      <GallerySection content={content.gallery} />
       <NewsSection />
       <CtaSection content={content.cta} />
     </main>

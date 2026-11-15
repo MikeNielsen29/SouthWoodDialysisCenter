@@ -2,6 +2,7 @@ import { PageHeader } from '@/components/sections/pageheader'
 import { AboutSection } from '@/components/sections/aboutsection'
 import { TestimonialsSection } from '@/components/sections/testimonialssection'
 import { CtaSection } from '@/components/sections/ctasection'
+import { GallerySection } from '@/components/sections/gallerysection'
 import { generateSeoMetadata } from '@/lib/seo'
 import { getPublishedSections } from '@/lib/site-content'
 
@@ -20,6 +21,7 @@ export default async function AboutPage() {
           'A small team, three modern stations, and a schedule built around patients rather than queues.'
         }
       />
+      <GallerySection content={content.gallery} />
       <AboutSection />
       <TestimonialsSection />
       <CtaSection content={content.cta} />

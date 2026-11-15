@@ -19,7 +19,7 @@ export type SectionFields = {
   status: 'published' | 'draft'
 }
 
-export type SectionKind = 'hero' | 'header' | 'cta'
+export type SectionKind = 'hero' | 'header' | 'cta' | 'gallery'
 
 export type SectionDef = {
   key: string
@@ -72,6 +72,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         cta_href: '/contact',
         sort_order: '1',
       }),
+      section('gallery', 'Image gallery (optional)', 'gallery', {
+        body: 'Photos of the centre, the team and the stations.',
+        sort_order: '2',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -79,7 +83,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '2',
+        sort_order: '3',
       }),
     ],
   },
@@ -95,6 +99,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'A small team, three modern stations, and a schedule built around patients rather than queues.',
         sort_order: '1',
       }),
+      section('gallery', 'Image gallery (optional)', 'gallery', {
+        body: 'Photos of the centre, the team and the stations.',
+        sort_order: '2',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -102,7 +110,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '2',
+        sort_order: '3',
       }),
     ],
   },
@@ -118,6 +126,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'From in-centre hemodialysis to at-home programmes, each service comes with the same care team and the same clear answers.',
         sort_order: '1',
       }),
+      section('gallery', 'Image gallery (optional)', 'gallery', {
+        body: 'Photos of the centre, the team and the stations.',
+        sort_order: '2',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -125,7 +137,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '2',
+        sort_order: '3',
       }),
     ],
   },
@@ -141,6 +153,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Centre updates, patient workshops, and practical health notes from our clinical team.',
         sort_order: '1',
       }),
+      section('gallery', 'Image gallery (optional)', 'gallery', {
+        body: 'Photos of the centre, the team and the stations.',
+        sort_order: '2',
+      }),
       section('cta', 'Closing call to action', 'cta', {
         eyebrow: 'Get started',
         heading: 'Ready to talk about',
@@ -148,7 +164,7 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Tell us a little about your situation and we will call you back within one working day. No referrals needed to start the conversation.',
         cta_label: 'Book an appointment',
         cta_href: '/contact',
-        sort_order: '2',
+        sort_order: '3',
       }),
     ],
   },
@@ -163,6 +179,10 @@ export const EDITABLE_PAGES: PageDef[] = [
         emphasis: 'ask us anything.',
         body: 'We answer the phone during opening hours and reply to requests within one working day.',
         sort_order: '1',
+      }),
+      section('gallery', 'Image gallery (optional)', 'gallery', {
+        body: 'Photos of the centre, the team and the stations.',
+        sort_order: '2',
       }),
     ],
   },
