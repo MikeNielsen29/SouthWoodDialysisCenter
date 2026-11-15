@@ -1,7 +1,0 @@
-CB_LINES 16
-[contentbase] Falling back to seed for "settings" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used revalidate: 0 fetch https://script.google.co
-  digest: 'DYNAMIC_SERVER_USAGE'
-[contentbase] Falling back to seed for "listings" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/mac
-  digest: 'DYNAMIC_SERVER_USAGE'
-[contentbase] Falling back to seed for "posts" Error: Dynamic server usage: Route /sitemap.xml couldn't be rendered statically because it used no-store fetch https://script.google.com/macros
-  digest: 'DYNAMIC_SERVER_USAGE'

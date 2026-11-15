@@ -1,2 +1,0 @@
- M app/admin/login/page.tsx
-d2eec71 fix(seo,a11y): every page was shipping "{Page Title}" as its title

@@ -1,6 +1,0 @@
-MARKERS 5
-components\blocks\newsletter-signup.tsx:15  * TODO (Phase 6): i-post sa `/api/newsletter` na may:
-components\listings\inquiry-form.tsx:76  // PH mobile: 09XX XXX XXXX (±63, spaces, dashes)
-components\ui\media-client.tsx:32  placeholderLabel = "Photo coming soon",
-components\ui\media.tsx:33  placeholderLabel = "Photo coming soon",
-lib\leads\schema.ts:20  /** 09XX XXX XXXX · +63 917 123 4567 · 09171234567 → 9171234567 */

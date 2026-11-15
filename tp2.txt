@@ -1,6 +1,0 @@
-===TITLEPATTERN-SEED=== 
-content\examples\site-settings.example.json:131:    "titlePattern": "{Page Title} | {Brand}",
-content\examples\site-settings.example.json:132:    "listingTitlePattern": "{Beds}BR {Property Type} for Sale in {Location} — {Price}",
-FINDSTR: Cannot open lib\*.ts
-FINDSTR: Cannot open lib\**\*.ts
-===BRACE-TITLE=== 

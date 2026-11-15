@@ -1,4 +1,0 @@
-abbcd83 docs(tasks): leave a handoff — owner reported problems not yet listed
-3d8e4e6 docs(roadmap): record real phase status instead of an empty checklist
-55bfd96 test(e2e,security,format): E2E suite, CSP + headers, 26 more tests
-## main...origin/main

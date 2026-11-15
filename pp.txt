@@ -1,3 +1,0 @@
-PRETTIER ^3.9.9
-PWTEST ^1.63.0
-SCRIPTS dev,dev:watch,clean,build,start,typecheck,lint,lint:fix,test,test:watch,qa,connect,test:contentbase

@@ -1,2 +1,0 @@
-SHOTS 7
-HAS_QA_IGNORE false

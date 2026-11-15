@@ -1,2 +1,0 @@
-[main 8187efa] fix(admin): stop doubling the section name in the login title
- 1 file changed, 12 insertions(+), 1 deletion(-)

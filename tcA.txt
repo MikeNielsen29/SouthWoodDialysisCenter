@@ -1,2 +1,0 @@
-lib/listings/__tests__/cluster.test.ts(128,31): error TS2345: Argument of type 'Pin[]' is not assignable to parameter of type 'Listing[]'.
-  Type 'Pin' is missing the following properties from type 'Listing': title, slug, status, listingType, and 2 more.

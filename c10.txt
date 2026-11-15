@@ -1,5 +1,0 @@
-[main d2eec71] fix(seo,a11y): every page was shipping "{Page Title}" as its title
- 8 files changed, 265 insertions(+), 3 deletions(-)
- create mode 100644 lib/seo/title.ts
- create mode 100644 lib/utils/__tests__/title-template.test.ts
- create mode 100644 scripts/csp-check.mjs

@@ -1,2 +1,0 @@
-To https://github.com/MikeNielsen29/real-estate-website.git
-   95a6d4a..bbb87d6  main -> main

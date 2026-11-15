@@ -1,8 +1,0 @@
-M  TASKS.md
-A  lib/listings/__tests__/cluster.test.ts
-A  lib/listings/__tests__/filters.test.ts
-A  lib/listings/__tests__/mortgage.test.ts
-A  lib/listings/__tests__/valuation.test.ts
-M  package-lock.json
-M  package.json
-A  vitest.config.ts
