@@ -20,9 +20,10 @@ export default async function SetupPage({
 }) {
   const expected = process.env.SETUP_TOKEN
   const token = searchParams.token || ''
+  const tokenOk = expected ? token === expected : true
 
   let userCount: number | null = null
-  if (isSheetsConfigured() && expected && token === expected) {
+  if (isSheetsConfigured() && tokenOk) {
     try {
       const usersRaw = await callSheets('users.list', {})
       const users = Array.isArray(usersRaw) ? usersRaw : []
@@ -32,7 +33,7 @@ export default async function SetupPage({
     }
   }
 
-  const ready = Boolean(expected) && token === expected && userCount === 0
+  const ready = tokenOk && userCount === 0
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-sand-50 px-5 py-12">
@@ -42,14 +43,7 @@ export default async function SetupPage({
         </Link>
         <h1 className="display mt-4 text-[28px] leading-tight">First-time setup</h1>
 
-        {!expected ? (
-          <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-            Add a <code className="rounded bg-sand-100 px-1">SETUP_TOKEN</code> environment
-            variable, then reload this page with{' '}
-            <code className="rounded bg-sand-100 px-1">/setup?token=…</code>. This page refuses to
-            run without it so nobody can claim the administrator account on a live site.
-          </p>
-        ) : token !== expected ? (
+        {!tokenOk ? (
           <p className="mt-4 text-sm text-ember-700">The setup token is missing or incorrect.</p>
         ) : !isSheetsConfigured() ? (
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
@@ -75,7 +69,15 @@ export default async function SetupPage({
         ) : null}
 
         {ready ? (
-          <form action={createAdminAction} className="mt-6 space-y-4">
+          <>
+            {!expected ? (
+              <p className="mt-6 rounded-xl bg-sand-100 px-4 py-3 text-[13px] leading-relaxed text-ink-soft">
+                No <code className="rounded bg-white px-1">SETUP_TOKEN</code> is configured, so
+                this page stays open only while the site has no accounts. It locks itself as
+                soon as the first administrator exists.
+              </p>
+            ) : null}
+            <form action={createAdminAction} className="mt-6 space-y-4">
             <input type="hidden" name="token" value={token} />
             <div>
               <label htmlFor="cn" className="block text-[13px] font-medium text-ink">
@@ -133,6 +135,7 @@ export default async function SetupPage({
               Create administrator
             </button>
           </form>
+          </>
         ) : null}
       </div>
     </main>

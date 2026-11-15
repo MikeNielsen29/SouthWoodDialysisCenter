@@ -11,7 +11,10 @@ const AnyArray = z.array(z.unknown())
 
 function tokenMatches(candidate: string): boolean {
   const expected = process.env.SETUP_TOKEN
-  return Boolean(expected) && candidate === expected
+  // Without a configured token the page is still gated by "no accounts exist":
+  // createAdminAction refuses as soon as the Users tab has a single row.
+  if (!expected) return true
+  return candidate === expected
 }
 
 export async function createAdminAction(formData: FormData): Promise<void> {
@@ -50,6 +53,9 @@ export async function createAdminAction(formData: FormData): Promise<void> {
       role: 'Super Admin',
       password_hash: await hashPassword(password),
       must_change_password: false,
+      // Bootstrap admin signs in with the password alone; the email OTP step is
+      // enabled later from user-management once mail is configured.
+      otp_required: false,
     })
   } catch {
     redirect('/setup?error=Could+not+create+the+account')

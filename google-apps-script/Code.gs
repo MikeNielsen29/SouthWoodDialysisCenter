@@ -551,6 +551,10 @@ function setup_() {
       }
     }
 
+    // Remember which spreadsheet this project owns: the web app has no active
+    // sheet, so getDb_() falls back to this property.
+    PropertiesService.getScriptProperties().setProperty(CFG.SHEET_ID_PROP, ss.getId());
+
     seedSettings_(ss);
     if (!getMeta_('installed_at')) setMeta_('installed_at', nowIso_());
     setMeta_('schema_version', CFG.SCHEMA_VERSION);
@@ -595,6 +599,9 @@ function health_() {
     missingTabs: missing,
     configured: {
       sharedSecret: !!props.getProperty(CFG.SECRET_PROP),
+      sharedSecretLength: props.getProperty(CFG.SECRET_PROP)
+        ? props.getProperty(CFG.SECRET_PROP).length
+        : 0,
       hashPepper: !!props.getProperty(CFG.PEPPER_PROP),
       telegramToken: !!props.getProperty('TELEGRAM_BOT_TOKEN'),
       telegramChat: !!props.getProperty('TELEGRAM_CHAT_ID'),
@@ -911,9 +918,86 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('CloudBase DB')
     .addItem('Run setup / migrate', 'menuSetup')
+    .addItem('Set shared secret…', 'menuSetSecret')
+    .addItem('Diagnose configuration', 'menuDiagnose')
     .addItem('Health check', 'menuHealth')
     .addItem('Backup now', 'menuBackup')
     .addToUi();
+}
+
+/**
+ * Writes GS_SHARED_SECRET from inside the script project, so the value lands in
+ * the same Script Properties store that the deployed web app reads. The prompt
+ * is trimmed: a single trailing space is enough to make every signed request
+ * fail validation.
+ */
+function menuSetSecret() {
+  var ui = SpreadsheetApp.getUi();
+  var props = PropertiesService.getScriptProperties();
+  var answer = ui.prompt(
+    CFG.SECRET_PROP,
+    'Paste the exact value from the Vercel environment variable:\n(it is stored in Script Properties only)',
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (answer.getSelectedButton() !== ui.Button.OK) return;
+
+  var value = answer.getResponseText().trim();
+  if (!value) {
+    ui.alert('Nothing was entered — Script Properties left unchanged.');
+    return;
+  }
+
+  props.setProperty(CFG.SECRET_PROP, value);
+  ui.alert(
+    'Saved to Script Properties.\n\n' +
+      'Key: ' + CFG.SECRET_PROP +
+      '\nLength: ' + value.length + ' characters' +
+      '\nFingerprint: ' + value.slice(0, 4) + '…' + value.slice(-4) +
+      "\n\nThis project's web app URL:\n" + (webAppUrl_() || '(not deployed from this project)') +
+      '\n\nIf this URL is not the one in Vercel, the /exec URL belongs to a ' +
+      'different Apps Script project — set the property in that one instead.'
+  );
+}
+
+/** The deployed web app URL of THIS script project, or '' when there is none. */
+function webAppUrl_() {
+  try {
+    return ScriptApp.getService().getUrl() || '';
+  } catch (error) {
+    return '';
+  }
+}
+
+/**
+ * One-shot report that makes a project mismatch obvious: the URL printed here
+ * must be byte-for-byte the GS_WEBAPP_URL configured in Vercel.
+ */
+function menuDiagnose() {
+  var ui = SpreadsheetApp.getUi();
+  var props = PropertiesService.getScriptProperties();
+  var secret = props.getProperty(CFG.SECRET_PROP);
+  var pepper = props.getProperty(CFG.PEPPER_PROP);
+  var url = webAppUrl_();
+
+  var dbName = '(unavailable)';
+  try {
+    var ss = getDb_();
+    dbName = ss.getName() + ' — ' + TABS.length + ' tabs, Users: ' +
+      Math.max(0, ss.getSheetByName('Users').getLastRow() - 1) + ' rows';
+  } catch (error) {
+    dbName = 'cannot open spreadsheet: ' + String(error);
+  }
+
+  ui.alert(
+    'CloudBase DB diagnosis\n\n' +
+      'Project web app URL:\n' + (url || '(not deployed from this project!)') +
+      '\n\n' + CFG.SECRET_PROP + ': ' +
+      (secret ? 'set, ' + secret.length + ' chars, ' + secret.slice(0, 4) + '…' + secret.slice(-4) : 'MISSING') +
+      '\n' + CFG.PEPPER_PROP + ': ' + (pepper ? 'set' : 'missing') +
+      '\n\nSpreadsheet: ' + dbName +
+      '\n\nCompare the URL above with GS_WEBAPP_URL in Vercel. ' +
+      'They must be identical, and the secret must be set in the same project that serves that URL.'
+  );
 }
 
 function menuSetup() {
@@ -940,7 +1024,9 @@ function menuHealth() {
       '\nLast backup: ' +
       (result.lastBackupAt || 'never') +
       '\nSecrets ok: ' +
-      (result.configured.sharedSecret ? 'yes' : 'NO — set GS_SHARED_SECRET') +
+      (result.configured.sharedSecret
+        ? 'yes (' + result.configured.sharedSecretLength + ' chars)'
+        : 'NO — set GS_SHARED_SECRET') +
       '\n\n' +
       lines.join('\n')
   );
