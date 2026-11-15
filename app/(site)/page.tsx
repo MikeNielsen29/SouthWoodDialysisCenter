@@ -27,7 +27,12 @@ export default async function HomePage() {
 
   return (
     <main>
-      <Section content={content.hero} rating={averageRating} />
+      <Section
+        content={content.hero}
+        extraContent={content.hero_extra}
+        statsContent={content.stats}
+        rating={averageRating}
+      />
       <GallerySection content={content.gallery} />
       <ServicesSection items={data.services} content={content.services} />
       <AboutSection

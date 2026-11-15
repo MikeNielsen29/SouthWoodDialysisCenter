@@ -7,6 +7,7 @@ import { saveSectionAction } from '@/app/(admin)/admin/actions'
 import { EDITABLE_PAGES, type PageDef, type SectionDef, type SectionFields } from '@/lib/site-sections'
 import { Field, Input, Notice, Select, Submit, Textarea } from '@/components/admin/ui'
 import { ImageUploadButton } from '@/components/admin/image-upload-button'
+import { PagePreview, type PreviewData } from '@/components/admin/page-preview'
 
 export type SavedSections = Record<string, SectionFields>
 
@@ -28,11 +29,13 @@ function firstSection(page: PageDef): SectionDef {
 
 export function ContentEditor({
   saved,
+  previewData,
   initialPage,
   initialSection,
   flash,
 }: {
   saved: SavedSections
+  previewData: PreviewData
   initialPage?: string
   initialSection?: string
   flash?: { tone: 'ok' | 'error'; message: string }
@@ -70,6 +73,15 @@ export function ContentEditor({
   }
 
   const hasSavedRow = Boolean(stored)
+
+  const previewValues: Record<string, SectionFields> = {}
+  for (const def of page.sections) {
+    previewValues[def.key] = {
+      ...def.defaults,
+      ...(saved[savedKey(page.slug, def.key)] || {}),
+    }
+  }
+  previewValues[section.key] = values
 
   return (
     <div className="space-y-5">
@@ -214,9 +226,13 @@ export function ContentEditor({
               label={
                 section.kind === 'values' || section.kind === 'steps'
                   ? 'Cards — one per line: Title | Copy'
-                  : section.kind === 'promise'
-                    ? 'Checklist — one per line'
-                    : 'Body'
+                  : section.kind === 'stats'
+                    ? 'Stats — one per line: Value | Label'
+                    : section.kind === 'hero_extra'
+                      ? 'Hero extras — one key=value per line'
+                      : section.kind === 'promise'
+                        ? 'Checklist — one per line'
+                        : 'Body'
               }
             >
               <Textarea
@@ -265,7 +281,7 @@ export function ContentEditor({
                   custom description. Walang path = hindi lumalabas ang section.
                 </p>
               </Field>
-            ) : ['about', 'services', 'stories', 'news', 'contact', 'values', 'promise', 'steps', 'form', 'footer'].includes(section.kind) ? null : (
+            ) : ['about', 'services', 'stories', 'news', 'contact', 'values', 'promise', 'steps', 'form', 'footer', 'hero_extra', 'stats'].includes(section.kind) ? null : (
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Button label">
@@ -343,7 +359,7 @@ export function ContentEditor({
         <aside className="rounded-xl border border-ink/10 bg-white p-4 xl:sticky xl:top-4 xl:self-start">
           <div className="flex items-center justify-between">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-              Live preview
+              Section preview
             </p>
             <span className="text-[11px] text-brand-700">
               {values.status === 'draft' ? 'Draft' : 'In sync'}
@@ -444,6 +460,8 @@ export function ContentEditor({
           </p>
         </aside>
       </div>
+
+      <PagePreview slug={page.slug} values={previewValues} data={previewData} />
     </div>
   )
 }

@@ -35,6 +35,8 @@ export type SectionKind =
   | 'steps'
   | 'form'
   | 'footer'
+  | 'hero_extra'
+  | 'stats'
 
 export type SectionDef = {
   key: string
@@ -86,6 +88,14 @@ export const EDITABLE_PAGES: PageDef[] = [
         cta_label: 'Book an appointment',
         cta_href: '/contact',
         sort_order: '1',
+      }),
+      section('hero_extra', 'Hero: care panel & social proof', 'hero_extra', {
+        body: 'badge=Accredited care\npanel_title=Every session, monitored closely.\npanel_body=Advanced water treatment & certified technicians\nsessions_label=Sessions weekly\nsessions=120+\nsessions_note=Gentle, steady care\nsocial=5,000+ patients cared for across the region',
+        sort_order: '1.2',
+      }),
+      section('stats', 'Hero: stat strip', 'stats', {
+        body: '2024 | Established\n5,000+ | Patients treated\n3 | Dialysis stations\n24/7 | Support line',
+        sort_order: '1.4',
       }),
       section('gallery', 'Image gallery (optional)', 'gallery', {
         body: 'Photos of the centre, the team and the stations.',

@@ -2,15 +2,32 @@ import Link from 'next/link'
 import { ArrowRight, Droplets, HeartPulse, ShieldCheck, Star } from 'lucide-react'
 import { buttonClasses } from '@/components/ui/button-styles'
 import { Reveal } from '@/components/ui/reveal'
+import { parseSectionList } from '@/lib/section-list'
 
-const stats = [
+const defaultStats = [
   { value: '2024', label: 'Established' },
   { value: '5,000+', label: 'Patients treated' },
   { value: '3', label: 'Dialysis stations' },
   { value: '24/7', label: 'Support line' },
 ]
 
-function CarePanel({ rating = 0 }: { rating?: number }) {
+function parseKeyed(body?: string): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const line of (body || '').split(/\n+/)) {
+    const at = line.indexOf('=')
+    if (at <= 0) continue
+    out[line.slice(0, at).trim().toLowerCase()] = line.slice(at + 1).trim()
+  }
+  return out
+}
+
+function CarePanel({
+  rating = 0,
+  extra = {},
+}: {
+  rating?: number
+  extra?: Record<string, string>
+}) {
   const stars = Math.round(Math.min(5, Math.max(0, rating)))
   const satisfaction = rating > 0 ? Math.round((rating / 5) * 100) : 98
 
@@ -38,7 +55,7 @@ function CarePanel({ rating = 0 }: { rating?: number }) {
       <div className="relative flex items-center justify-between">
         <span className="inline-flex items-center gap-2 rounded-full border border-sand-50/15 bg-sand-50/5 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-sand-100/80">
           <ShieldCheck className="h-3.5 w-3.5 text-ember-400" aria-hidden />
-          Accredited care
+          {extra.badge || 'Accredited care'}
         </span>
         <span
           className="flex items-center gap-1 text-ember-400"
@@ -60,10 +77,10 @@ function CarePanel({ rating = 0 }: { rating?: number }) {
         </div>
         <div>
           <p className="font-display text-[22px] leading-snug text-sand-50">
-            Every session, monitored closely.
+            {extra.panel_title || 'Every session, monitored closely.'}
           </p>
           <p className="mt-1 text-sm text-sand-100/60">
-            Advanced water treatment &amp; certified technicians
+            {extra.panel_body || 'Advanced water treatment & certified technicians'}
           </p>
         </div>
       </div>
@@ -86,12 +103,12 @@ function CarePanel({ rating = 0 }: { rating?: number }) {
         </div>
         <div className="rounded-2xl border border-sand-50/10 bg-sand-50/[0.06] p-4 backdrop-blur-sm">
           <p className="text-[11px] uppercase tracking-[0.16em] text-sand-100/50">
-            Sessions weekly
+            {extra.sessions_label || 'Sessions weekly'}
           </p>
-          <p className="mt-1 font-display text-2xl text-sand-50">120+</p>
+          <p className="mt-1 font-display text-2xl text-sand-50">{extra.sessions || '120+'}</p>
           <p className="mt-3 flex items-center gap-1.5 text-[11px] text-sand-100/60">
             <Droplets className="h-3.5 w-3.5 text-ember-400" aria-hidden />
-            Gentle, steady care
+            {extra.sessions_note || 'Gentle, steady care'}
           </p>
         </div>
       </div>
@@ -110,11 +127,20 @@ export type HeroContent = {
 
 export function Section({
   content,
+  extraContent,
+  statsContent,
   rating = 0,
 }: {
   content?: HeroContent
+  extraContent?: { body?: string }
+  statsContent?: { body?: string }
   rating?: number
 }) {
+  const extra = parseKeyed(extraContent?.body)
+  const savedStats = parseSectionList(statsContent?.body)
+  const statItems = savedStats.length
+    ? savedStats.map((item) => ({ value: item.title, label: item.copy }))
+    : defaultStats
   const eyebrow = content?.eyebrow?.trim() || 'Kidney care · Since 2024'
   const heading = content?.heading?.trim() || 'Dialysis care that'
   const emphasis = content?.emphasis ?? 'feels personal.'
@@ -178,15 +204,19 @@ export function Section({
                   ))}
                 </div>
                 <p className="text-sm text-ink-muted">
-                  <span className="font-medium text-ink">5,000+ patients</span> cared
-                  for across the region
+                  {extra.social || (
+                    <>
+                      <span className="font-medium text-ink">5,000+ patients</span> cared for
+                      across the region
+                    </>
+                  )}
                 </p>
               </div>
             </Reveal>
           </div>
 
           <Reveal delay={120} className="lg:pl-4">
-            <CarePanel rating={rating} />
+            <CarePanel rating={rating} extra={extra} />
           </Reveal>
         </div>
       </div>
@@ -194,7 +224,7 @@ export function Section({
       {/* Stat strip */}
       <div className="relative border-y border-ink/10 bg-sand-50/60">
         <div className="shell grid grid-cols-2 divide-ink/10 sm:grid-cols-4 sm:divide-x">
-          {stats.map((stat) => (
+          {statItems.map((stat) => (
             <div key={stat.label} className="px-2 py-6 first:pl-0 sm:px-6">
               <p className="font-display text-[26px] leading-none text-brand-800">
                 {stat.value}

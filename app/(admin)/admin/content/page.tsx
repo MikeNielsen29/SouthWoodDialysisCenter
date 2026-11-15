@@ -1,6 +1,7 @@
 import { ContentEditor, type SavedSections } from '@/components/admin/content-editor'
 import { Notice } from '@/components/admin/ui'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
+import { getPublicContent } from '@/lib/public-data'
 import type { SectionFields } from '@/lib/site-sections'
 
 export const dynamic = 'force-dynamic'
@@ -59,7 +60,10 @@ export default async function ContentPage({
 }: {
   searchParams: { page?: string; section?: string; saved?: string; error?: string }
 }) {
-  const { saved, error } = await loadSections()
+  const [{ saved, error }, publicData] = await Promise.all([
+    loadSections(),
+    getPublicContent(),
+  ])
 
   const flash = searchParams.error
     ? { tone: 'error' as const, message: searchParams.error }
@@ -86,12 +90,17 @@ export default async function ContentPage({
         </div>
       ) : null}
 
-      <ContentEditor
-        saved={saved}
-        initialPage={searchParams.page}
-        initialSection={searchParams.section}
-        flash={flash}
-      />
+              <ContentEditor
+          saved={saved}
+          previewData={{
+            services: publicData.services,
+            news: publicData.news,
+            testimonials: publicData.testimonials,
+          }}
+          initialPage={searchParams.page}
+          initialSection={searchParams.section}
+          flash={flash}
+        />
     </div>
   )
 }
