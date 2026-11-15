@@ -25,8 +25,11 @@ export function generateSeoMetadata(data: SeoData): Metadata {
     title,
     description,
     canonical,
+    // One favicon everywhere: the transparent mark. /SBDC.png is a fully
+    // opaque square and reads as a solid tile in the tab.
     icons = {
-      icon: '/SBDC.png',
+      icon: '/favicon.png',
+      apple: '/favicon.png',
     },
     openGraph,
     twitterCard = 'summary_large_image',
