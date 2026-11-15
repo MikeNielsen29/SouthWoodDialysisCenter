@@ -17,7 +17,7 @@ export async function GET(
 
   try {
     const file = (await callSheets('files.get', { id })) as PatientFileRow | null
-    if (!file || !file.telegram_file_id) {
+    if (!file || !file.vault_file_id) {
       return NextResponse.json({ error: 'File not found' }, { status: 404 })
     }
 

@@ -31,10 +31,10 @@ export default async function SettingsPage({
         </div>
 
         {searchParams.backup === 'ok' ? (
-          <Notice variant="info">Backup saved to the clinic Drive folder.</Notice>
+          <Notice variant="info">Backup saved to the clinic backup vault.</Notice>
         ) : null}
         {searchParams.backup === 'error' ? (
-          <Notice variant="warning">Backup failed. Check the Apps Script logs.</Notice>
+          <Notice variant="warning">Backup failed. Check the CloudBase service logs.</Notice>
         ) : null}
 
         <div className="rounded-xl border border-ink/10 bg-white p-5">
@@ -44,7 +44,7 @@ export default async function SettingsPage({
         <div className="rounded-xl border border-ink/10 bg-white p-5">
           <p className="font-medium text-ink">Backup</p>
           <p className="mt-1 text-sm text-ink-muted">
-            Copies the spreadsheet to your Drive so a bad edit can always be undone.
+            Copies every table into the backup vault so a bad edit can always be undone.
           </p>
           <form action={runBackupAction} className="mt-3">
             <Submit type="submit">Run backup now</Submit>
@@ -54,7 +54,7 @@ export default async function SettingsPage({
         <div className="rounded-xl border border-ink/10 bg-white p-5 text-sm text-ink-muted">
           <p className="font-medium text-ink mb-2">Tips</p>
           <ul className="space-y-2">
-            <li>Changes are saved to the spreadsheet and shown on the public site immediately.</li>
+            <li>Changes are saved to CloudBase and shown on the public site immediately.</li>
             <li>The disclaimer and consent version appear in the patient portal privacy notice.</li>
             <li>Social links can be left blank if the clinic does not use that platform.</li>
           </ul>

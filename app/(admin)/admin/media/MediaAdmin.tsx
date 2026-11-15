@@ -6,7 +6,7 @@ import { Field, Input, Notice, Submit } from '@/components/admin/ui'
 
 export type MediaRow = {
   id: string
-  telegram_file_id: string
+  vault_file_id: string
   name?: string
   alt?: string
   mime?: string
@@ -33,7 +33,7 @@ export function MediaAdmin({
   const [copied, setCopied] = useState<string | null>(null)
 
   async function copyPath(row: MediaRow) {
-    const path = `/api/media/${row.telegram_file_id}`
+    const path = `/api/media/${row.vault_file_id}`
     try {
       await navigator.clipboard.writeText(path)
       setCopied(row.id)
@@ -50,8 +50,8 @@ export function MediaAdmin({
       <section className="rounded-xl border border-ink/10 bg-white p-5">
         <h2 className="font-display text-base text-ink">Upload an image</h2>
         <p className="mt-1 text-xs text-ink-muted">
-          The image is sent to your Telegram bot and served from there. Nothing is stored in the
-          repository. PNG, JPEG or WebP up to 8 MB.
+          Images are stored in the Media Vault and served through this site. Nothing is kept in
+          the repository. PNG, JPEG or WebP up to 8 MB.
         </p>
 
         <form action={uploadMediaAction} className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -62,7 +62,7 @@ export function MediaAdmin({
             <Input name="alt" placeholder="Dialysis station at Southwood" />
           </Field>
           <div className="sm:col-span-2">
-            <Submit type="submit">Upload to Telegram</Submit>
+            <Submit type="submit">Upload image</Submit>
           </div>
         </form>
       </section>
@@ -80,7 +80,7 @@ export function MediaAdmin({
         ) : (
           <ul className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3">
             {media.map((row) => {
-              const path = `/api/media/${row.telegram_file_id}`
+              const path = `/api/media/${row.vault_file_id}`
               return (
                 <li key={row.id} className="overflow-hidden rounded-lg border border-ink/10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}

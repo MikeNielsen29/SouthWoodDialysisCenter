@@ -51,7 +51,7 @@ export async function createAdminAction(formData: FormData): Promise<void> {
       full_name: name,
       email,
       role: 'Super Admin',
-      // Hashed inside Apps Script, which is also where sign-in is verified.
+      // Hashed inside the CloudBase service, which is also where sign-in is verified.
       password,
       must_change_password: false,
       otp_required: false,

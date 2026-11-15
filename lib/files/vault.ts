@@ -9,18 +9,18 @@ export const ALLOWED_MIME = [
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
-const FILE_ENCRYPTION_KEY_BASE64 = process.env.FILE_ENCRYPTION_KEY ?? ''
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? ''
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID ?? ''
+const FILE_VAULT_KEY_BASE64 = process.env.FILE_VAULT_KEY ?? ''
+const VAULT_TOKEN = process.env.MEDIA_VAULT_TOKEN ?? ''
+const VAULT_CHAT = process.env.MEDIA_VAULT_CHAT ?? ''
 
-export function isTelegramConfigured() {
-  return Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID)
+export function isVaultConfigured() {
+  return Boolean(VAULT_TOKEN && VAULT_CHAT)
 }
 
 export function isFileEncryptionConfigured() {
-  if (!FILE_ENCRYPTION_KEY_BASE64) return false
+  if (!FILE_VAULT_KEY_BASE64) return false
   try {
-    return Buffer.from(FILE_ENCRYPTION_KEY_BASE64, 'base64').length === 32
+    return Buffer.from(FILE_VAULT_KEY_BASE64, 'base64').length === 32
   } catch {
     return false
   }
@@ -28,12 +28,12 @@ export function isFileEncryptionConfigured() {
 
 export async function encryptBuffer(buffer: Buffer) {
   if (!isFileEncryptionConfigured()) {
-    throw new Error('FILE_ENCRYPTION_KEY is not configured')
+    throw new Error('The file vault key is not configured')
   }
 
-  const key = Buffer.from(FILE_ENCRYPTION_KEY_BASE64, 'base64')
+  const key = Buffer.from(FILE_VAULT_KEY_BASE64, 'base64')
   if (key.length !== 32) {
-    throw new Error('FILE_ENCRYPTION_KEY must be a 32-byte base64 value')
+    throw new Error('The file vault key must be a 32-byte base64 value')
   }
 
   const iv = crypto.randomBytes(16)
@@ -50,10 +50,10 @@ export async function encryptBuffer(buffer: Buffer) {
 
 export async function decryptBuffer(payload: { encrypted: Buffer; iv: Buffer; tag: Buffer }) {
   if (!isFileEncryptionConfigured()) {
-    throw new Error('FILE_ENCRYPTION_KEY is not configured')
+    throw new Error('The file vault key is not configured')
   }
 
-  const key = Buffer.from(FILE_ENCRYPTION_KEY_BASE64, 'base64')
+  const key = Buffer.from(FILE_VAULT_KEY_BASE64, 'base64')
   const decipher = crypto.createDecipheriv('aes-256-gcm', key, payload.iv)
   decipher.setAuthTag(payload.tag)
 
@@ -62,7 +62,7 @@ export async function decryptBuffer(payload: { encrypted: Buffer; iv: Buffer; ta
 }
 
 export async function uploadDocument(file: Buffer, title: string) {
-  if (!isTelegramConfigured()) {
+  if (!isVaultConfigured()) {
     return null
   }
 
@@ -74,10 +74,10 @@ export async function uploadDocument(file: Buffer, title: string) {
   ])
 
   const form = new FormData()
-  form.append('chat_id', TELEGRAM_CHAT_ID)
+  form.append('chat_id', VAULT_CHAT)
   form.append('document', new Blob([payload]), `${title}.enc`)
 
-  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, {
+  const response = await fetch(`https://api.telegram.org/bot${VAULT_TOKEN}/sendDocument`, {
     method: 'POST',
     body: form,
   })
@@ -88,19 +88,19 @@ export async function uploadDocument(file: Buffer, title: string) {
   }
 
   return {
-    telegram_file_id: result.result.document.file_id,
-    telegram_message_id: String(result.result.message_id),
+    vault_file_id: result.result.document.file_id,
+    vault_message_id: String(result.result.message_id),
     iv: encrypted.iv.toString('base64'),
     auth_tag: encrypted.tag.toString('base64'),
   }
 }
 
 export async function downloadFile(fileId: string) {
-  if (!isTelegramConfigured()) {
+  if (!isVaultConfigured()) {
     return null
   }
 
-  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile`, {
+  const response = await fetch(`https://api.telegram.org/bot${VAULT_TOKEN}/getFile`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ file_id: fileId }),
@@ -111,7 +111,7 @@ export async function downloadFile(fileId: string) {
     return null
   }
 
-  const downloadUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${result.result.file_path}`
+  const downloadUrl = `https://api.telegram.org/file/bot${VAULT_TOKEN}/${result.result.file_path}`
   const fileResponse = await fetch(downloadUrl)
   if (!fileResponse.ok) {
     return null

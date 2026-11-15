@@ -1,6 +1,6 @@
 /**
  * Deterministic JSON serialisation, byte-for-byte identical to `canonical_()`
- * in google-apps-script/Code.gs. Both sides sign the same string, so any
+ * in the CloudBase service. Both sides sign the same string, so any
  * change here must be mirrored there (and vice versa).
  */
 export function canonicalJson(value: unknown): string {

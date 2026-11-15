@@ -47,13 +47,13 @@ export default async function SetupPage({
           <p className="mt-4 text-sm text-ember-700">The setup token is missing or incorrect.</p>
         ) : !isSheetsConfigured() ? (
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-            The database is not connected. Add <code>GS_WEBAPP_URL</code> and{' '}
-            <code>GS_SHARED_SECRET</code>, then deploy the Apps Script and run{' '}
-            <strong>CloudBase DB → Run setup</strong>.
+            The database is not connected. Add the CloudBase URL and access key to the
+            environment, deploy the CloudBase service, then run{' '}
+            <strong>CloudBase → Run setup</strong>.
           </p>
         ) : userCount === null ? (
           <p className="mt-4 text-sm text-ember-700">
-            Could not reach the database. Check the Apps Script deployment and the shared secret.
+            Could not reach the database. Check the CloudBase service and the access key.
           </p>
         ) : userCount > 0 ? (
           <p className="mt-4 text-sm text-ink-soft">

@@ -110,11 +110,11 @@ export async function loginAction(formData: FormData): Promise<void> {
   if (!isSheetsConfigured()) {
     fail(
       next,
-      'The database is not connected yet. Add GS_WEBAPP_URL and GS_SHARED_SECRET to the environment.'
+      'The database is not connected yet. Finish the CloudBase setup, then try again.'
     )
   }
 
-  // The Apps Script verifies the password itself (it owns the hashes), and the
+  // CloudBase verifies the password itself (it owns the hashes), and the
   // action is public, so sign-in cannot be blocked by a bad API key.
   let user: UserRow
   try {
@@ -130,7 +130,7 @@ export async function loginAction(formData: FormData): Promise<void> {
       fail(next, 'Incorrect control number/email or password.')
     }
     if (code === 'NOT_CONFIGURED') {
-      fail(next, 'The database is not set up yet. Run “CloudBase DB → Run setup” in the spreadsheet.')
+      fail(next, 'The database is not set up yet. Run “CloudBase → Run setup”, then try again.')
     }
     fail(next, 'Could not reach the database. Please try again later.')
   }

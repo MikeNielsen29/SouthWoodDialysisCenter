@@ -1,6 +1,7 @@
 /**
- * Patient lab files: encrypted in memory, stored in the Telegram bot chat,
- * decrypted only when a permitted user downloads them.
+ * Secure Vault: patient lab files are encrypted in memory, stored in the
+ * clinic's private vault, and decrypted only when a permitted user downloads
+ * them.
  *
  * SERVER ONLY — never import this from a client component.
  */
@@ -13,16 +14,16 @@ import {
   decryptBuffer,
   downloadFile,
   isFileEncryptionConfigured,
-  isTelegramConfigured,
+  isVaultConfigured,
   uploadDocument,
-} from './files/telegram'
+} from './files/vault'
 
 export interface PatientFileRow {
   id: string
   patient_cn: string
   title: string
   category: string
-  telegram_file_id: string
+  vault_file_id: string
   mime: string
   size_bytes: string
   iv: string
@@ -33,11 +34,11 @@ export interface PatientFileRow {
 }
 
 export function fileUploadProblem(): string | null {
-  if (!isTelegramConfigured()) {
-    return 'Telegram is not configured. Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.'
+  if (!isVaultConfigured()) {
+    return 'The Secure Vault is not configured. Ask an administrator to finish storage setup.'
   }
   if (!isFileEncryptionConfigured()) {
-    return 'FILE_ENCRYPTION_KEY must be a 32-byte base64 value.'
+    return 'The file vault key must be a 32-byte base64 value.'
   }
   return null
 }
@@ -64,15 +65,15 @@ export async function uploadPatientFile(input: {
 
   const uploaded = await uploadDocument(buffer, input.title)
   if (!uploaded) {
-    return { ok: false, error: 'Telegram rejected the upload. Check the bot token and chat id.' }
+    return { ok: false, error: 'The Secure Vault rejected the upload. Check the vault credentials.' }
   }
 
   const registered = await callSheets('files.register', {
     patient_cn: input.patient_cn,
     title: input.title,
     category: input.category ?? (input.file.type.startsWith('application/pdf') ? 'lab' : 'image'),
-    telegram_file_id: uploaded.telegram_file_id,
-    telegram_message_id: uploaded.telegram_message_id,
+    vault_file_id: uploaded.vault_file_id,
+    vault_message_id: uploaded.vault_message_id,
     mime: input.file.type,
     size_bytes: input.file.size,
     checksum_sha256: checksum,
@@ -94,9 +95,9 @@ export async function uploadPatientFile(input: {
 
 /** Returns the decrypted bytes for a Files row, or null when unavailable. */
 export async function readPatientFile(row: PatientFileRow): Promise<Buffer | null> {
-  if (!row.telegram_file_id) return null
+  if (!row.vault_file_id) return null
 
-  const stored = await downloadFile(row.telegram_file_id)
+  const stored = await downloadFile(row.vault_file_id)
   if (!stored) return null
 
   if (!row.iv || !row.auth_tag) return stored

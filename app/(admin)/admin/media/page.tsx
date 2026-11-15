@@ -24,7 +24,7 @@ async function loadMedia(): Promise<{ media: MediaRow[]; error?: string }> {
       .filter((row): row is Record<string, unknown> => Boolean(row) && typeof row === 'object')
       .map((row) => ({
         id: String(row.id ?? ''),
-        telegram_file_id: String(row.telegram_file_id ?? ''),
+        vault_file_id: String(row.vault_file_id ?? ''),
         name: String(row.name ?? ''),
         alt: String(row.alt ?? ''),
         mime: String(row.mime ?? ''),
@@ -32,14 +32,14 @@ async function loadMedia(): Promise<{ media: MediaRow[]; error?: string }> {
         uploaded_by: String(row.uploaded_by ?? ''),
         created_at: String(row.created_at ?? ''),
       }))
-      .filter((row) => row.id && row.telegram_file_id)
+      .filter((row) => row.id && row.vault_file_id)
 
     return { media }
   } catch {
     return {
       media: [],
       error:
-        'Could not read the Media table. Re-deploy the Apps Script so the media actions exist, then reload.',
+        'Could not read the Media table. Re-deploy the CloudBase service so the media actions exist, then reload.',
     }
   }
 }
@@ -66,7 +66,7 @@ export default async function MediaPage({
       <div className="mb-6">
         <h1 className="font-display text-xl text-ink">Media library</h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-          Photos for the public site live in your Telegram bot. Upload here, then paste the
+          Photos for the public site live in the Media Vault. Upload here, then paste the
           <code className="mx-1 rounded bg-sand-100 px-1">/api/media/…</code> path into a section&apos;s
           image field.
         </p>

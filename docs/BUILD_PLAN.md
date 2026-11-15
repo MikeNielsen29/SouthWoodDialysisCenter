@@ -178,7 +178,7 @@ Conventions: `id` = `crypto.randomUUID()` string; timestamps = ISO-8601 UTC stri
 ### 6.1 Deployment (user does this once)
 
 1. Create a blank Google Sheet named `CloudBase DB`.
-2. `Extensions → Apps Script`. Paste the `.gs` from `google-apps-script/` (bound script → `SpreadsheetApp.getActive()`, so no Spreadsheet ID needs to be passed anywhere).
+2. `Extensions → Apps Script`. Paste the `.gs` from `cloudbase-service/` (bound script → `SpreadsheetApp.getActive()`, so no Spreadsheet ID needs to be passed anywhere).
 3. `Project Settings → Script Properties`: `GS_SHARED_SECRET`, `HASH_PEPPER`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 4. `Deploy → New deployment → Web app`: **Execute as: Me**, **Who has access: Anyone** (required so Vercel can call it; access is gated by the shared secret + HMAC).
 5. Copy the `/exec` URL into Vercel as `GS_WEBAPP_URL`.
@@ -353,7 +353,7 @@ Each phase ends with: build passing, preview healthy, public pages visually iden
 
 ### Phase 0 — Contract & safety ✅
 - [x] `git tag v1.0-design` on the shipped design (commit `37b6353`)
-- [x] `google-apps-script/Code.gs` + `appsscript.json` + `README.md` (no secrets; reads from Script Properties)
+- [x] `cloudbase-service/Code.gs` + `appsscript.json` + `README.md` (no secrets; reads from Script Properties)
 - [x] `setup_()`, `health_()`, `backup()`, `applyHeader_`/`migrateHeader_`, HMAC verify, RPC router, error envelope, `withLock_`
 - [x] `lib/sheets/client.ts` — signed fetch, 8 s timeout, 3 attempts with backoff, typed `SheetsError`, `isSheetsConfigured()`, `getSystemHealth()`
 - [x] `lib/sheets/canonical.ts` — serializer mirrored in `Code.gs`
@@ -481,7 +481,7 @@ components/
 lib/
   sheets/client.ts  sheets/types.ts
   content.ts  auth/  files/  security/  mail/
-google-apps-script/
+cloudbase-service/
   Code.gs  appsscript.json  README.md
 docs/
   BUILD_PLAN.md (this file)  RUNBOOK.md

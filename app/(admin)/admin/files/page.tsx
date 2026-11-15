@@ -26,7 +26,7 @@ async function loadFiles(): Promise<{ files: PatientFileRow[]; error?: string }>
         patient_cn: String(row.patient_cn ?? ''),
         title: String(row.title ?? ''),
         category: String(row.category ?? ''),
-        telegram_file_id: String(row.telegram_file_id ?? ''),
+        vault_file_id: String(row.vault_file_id ?? ''),
         mime: String(row.mime ?? ''),
         size_bytes: String(row.size_bytes ?? '0'),
         iv: String(row.iv ?? ''),
@@ -39,7 +39,7 @@ async function loadFiles(): Promise<{ files: PatientFileRow[]; error?: string }>
 
     return { files }
   } catch {
-    return { files: [], error: 'Could not read the Files table. Check the Apps Script deployment.' }
+    return { files: [], error: 'Could not read the Files table. Check the CloudBase service.' }
   }
 }
 
@@ -65,8 +65,8 @@ export default async function FilesPage({
       <div className="mb-6">
         <h1 className="font-display text-xl text-ink">Lab files</h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-          Upload a patient result and it is encrypted, stored in Telegram, and published to that
-          patient&apos;s portal. Only the patient can download it.
+          Upload a patient result: it is encrypted, stored in the Secure Vault, and published to
+          that patient&apos;s portal. Only the patient can download it.
         </p>
       </div>
 

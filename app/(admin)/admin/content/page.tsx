@@ -14,7 +14,7 @@ async function loadSections(): Promise<{ saved: SavedSections; error?: string }>
     return {
       saved: {},
       error:
-        'The database is not connected yet. Set GS_WEBAPP_URL and GS_SHARED_SECRET, then reload.',
+        'The database is not connected yet. Finish the CloudBase setup, then reload.',
     }
   }
 
@@ -49,7 +49,7 @@ async function loadSections(): Promise<{ saved: SavedSections; error?: string }>
     return {
       saved: {},
       error:
-        'Could not read the content table. Check that the Apps Script deployment is live and the shared secret matches.',
+        'Could not read the content table. Check that the CloudBase service is live and the access key matches.',
     }
   }
 }

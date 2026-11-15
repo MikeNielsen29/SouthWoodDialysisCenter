@@ -28,7 +28,7 @@ export async function GET(
     if (file.status !== 'Released') {
       return NextResponse.json({ error: 'File not released' }, { status: 403 })
     }
-    if (!file.telegram_file_id) {
+    if (!file.vault_file_id) {
       return NextResponse.json({ error: 'No file attached' }, { status: 500 })
     }
 

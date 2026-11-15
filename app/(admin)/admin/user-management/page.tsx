@@ -17,7 +17,7 @@ async function loadUsers(): Promise<{ users: ManagedUser[]; error?: string }> {
     return {
       users: [],
       error:
-        'The database is not connected yet. Set GS_WEBAPP_URL and GS_SHARED_SECRET, then reload.',
+        'The database is not connected yet. Finish the CloudBase setup, then reload.',
     }
   }
 
@@ -45,7 +45,7 @@ async function loadUsers(): Promise<{ users: ManagedUser[]; error?: string }> {
     return {
       users: [],
       error:
-        'Could not read the accounts. Check that the Apps Script deployment is live and that GS_SHARED_SECRET matches.',
+        'Could not read the accounts. Check that the CloudBase service is live and the access key matches.',
     }
   }
 }

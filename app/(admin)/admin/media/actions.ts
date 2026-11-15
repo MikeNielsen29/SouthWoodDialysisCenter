@@ -30,7 +30,7 @@ export async function uploadMediaAction(formData: FormData): Promise<void> {
   if (!isMediaConfigured()) {
     redirect(
       `/admin/media?error=${encodeURIComponent(
-        'Telegram is not configured. Add TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.'
+        'The Media Vault is not configured. Ask an administrator to finish the storage setup.'
       )}`
     )
   }
@@ -44,12 +44,12 @@ export async function uploadMediaAction(formData: FormData): Promise<void> {
   try {
     uploaded = await uploadMedia(Buffer.from(await file.arrayBuffer()), filename, file.type)
   } catch {
-    redirect('/admin/media?error=Telegram rejected the image')
+    redirect('/admin/media?error=The%20Media%20Vault%20rejected%20the%20image')
   }
 
   try {
     await callSheets('media.create', {
-      telegram_file_id: uploaded.fileId,
+      vault_file_id: uploaded.fileId,
       name: filename,
       alt,
       mime: file.type,
@@ -57,7 +57,7 @@ export async function uploadMediaAction(formData: FormData): Promise<void> {
       uploaded_by: session.cn,
     })
   } catch {
-    redirect('/admin/media?error=Image reached Telegram but the library row could not be saved')
+    redirect('/admin/media?error=Image%20reached%20the%20vault%20but%20the%20library%20row%20could%20not%20be%20saved')
   }
 
   redirect('/admin/media?uploaded=1')

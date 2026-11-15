@@ -5,7 +5,7 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * Public image proxy. The browser asks for /api/media/<telegram_file_id> and
+ * Public image proxy. The browser asks for /api/media/<vault_file_id> and
  * this route fetches the bytes with the bot token, which stays on the server.
  */
 export async function GET(

@@ -1,34 +1,34 @@
 /**
- * Public-site media lives in the Telegram bot's private chat: it is free,
- * permanent, and keeps the repo and the spreadsheet free of binaries.
+ * Media Vault: public-site images live in the clinic's private storage chat,
+ * which keeps both the repository and CloudBase free of binaries.
  *
- * SERVER ONLY. The bot token never leaves this module.
+ * SERVER ONLY. The vault token never leaves this module.
  */
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? ''
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID ?? ''
+const VAULT_TOKEN = process.env.MEDIA_VAULT_TOKEN ?? ''
+const VAULT_CHAT = process.env.MEDIA_VAULT_CHAT ?? ''
 
 export const MEDIA_MIME = ['image/png', 'image/jpeg', 'image/webp'] as const
 export const MAX_MEDIA_BYTES = 8 * 1024 * 1024
 
 export function isMediaConfigured(): boolean {
-  return Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID)
+  return Boolean(VAULT_TOKEN && VAULT_CHAT)
 }
 
 function api(method: string): string {
-  return `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`
+  return `https://api.telegram.org/bot${VAULT_TOKEN}/${method}`
 }
 
-/** Sends the image as a document so Telegram stores the exact bytes. */
+/** Sends the image as a document so the vault keeps the exact bytes. */
 export async function uploadMedia(
   file: Buffer,
   filename: string,
   mime: string
 ): Promise<{ fileId: string; size: number }> {
-  if (!isMediaConfigured()) throw new Error('Telegram is not configured')
+  if (!isMediaConfigured()) throw new Error('Media Vault is not configured')
 
   const form = new FormData()
-  form.append('chat_id', TELEGRAM_CHAT_ID)
+  form.append('chat_id', VAULT_CHAT)
   form.append('document', new Blob([new Uint8Array(file)], { type: mime }), filename)
   form.append('caption', `Website media · ${filename}`)
 
@@ -40,7 +40,7 @@ export async function uploadMedia(
 
   const document = result.result?.document
   if (!result.ok || !document?.file_id) {
-    throw new Error('Telegram rejected the image')
+    throw new Error('The Media Vault rejected the image')
   }
 
   return { fileId: document.file_id, size: Number(document.file_size ?? file.length) }
@@ -63,7 +63,7 @@ export async function fetchMedia(
   if (!info.ok || !info.result?.file_path) return null
 
   const fileResponse = await fetch(
-    `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${info.result.file_path}`,
+    `https://api.telegram.org/file/bot${VAULT_TOKEN}/${info.result.file_path}`,
     { cache: 'no-store' }
   )
   if (!fileResponse.ok) return null

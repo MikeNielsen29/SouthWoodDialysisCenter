@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 /**
- * Client for the Google Apps Script backend (google-apps-script/Code.gs).
+ * Client for the CloudBase service (cloudbase-service/Code.gs).
  *
  * SERVER ONLY. The shared secret is passed as `?key=` and must never reach the
  * browser. Sign-in is a public action, so access to the dashboard never depends
@@ -114,7 +114,7 @@ async function post(
     try {
       parsed = JSON.parse(raw)
     } catch {
-      // Apps Script returns an HTML error page when the deployment is broken.
+      // CloudBase returns an HTML error page when the deployment is broken.
       throw new SheetsError('BAD_RESPONSE', 'Backend did not return JSON')
     }
 
@@ -141,7 +141,7 @@ async function post(
 }
 
 /**
- * Calls an Apps Script action and optionally validates the payload.
+ * Calls a CloudBase action and optionally validates the payload.
  * Retries transient failures with a short backoff; never retries auth errors.
  */
 export async function callSheets<T>(

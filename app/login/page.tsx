@@ -97,8 +97,8 @@ export default function LoginPage({ searchParams }: Props) {
 
           {!configured ? (
             <p className="mt-5 rounded-xl border border-ink/10 bg-white px-4 py-3 text-sm text-ink-soft">
-              The database is not connected yet. Add <code>GS_WEBAPP_URL</code> and{' '}
-              <code>GS_SHARED_SECRET</code> to the environment, then run the Apps Script setup.
+              The database is not connected yet. Finish the CloudBase setup, then reload this
+              page.
             </p>
           ) : null}
 
