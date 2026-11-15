@@ -249,6 +249,87 @@ A.findUser = function (payload) {
   return row ? stripOne_(row) : null;
 };
 
+/**
+ * Sign-in happens here, on the server that owns the password hashes. It is a
+ * public action: no API key is required, so a misconfigured secret can never
+ * lock the owner out of the dashboard again.
+ */
+A.login = function (payload) {
+  return withLock_(function () {
+    var identifier = String(payload.identifier || payload.cn || '')
+      .trim()
+      .toLowerCase();
+    var password = String(payload.password || '');
+    if (!identifier || !password) {
+      throw apiError_('BAD_REQUEST', 'Enter your control number and password');
+    }
+
+    var row = find_(readAll_('Users'), function (item) {
+      return (
+        String(item.cn || '').toLowerCase() === identifier ||
+        String(item.email || '').toLowerCase() === identifier
+      );
+    });
+
+    var generic = 'Incorrect control number/email or password.';
+    if (!row || String(row.is_active || 'TRUE').toUpperCase() === 'FALSE') {
+      throw apiError_('INVALID_CREDENTIALS', generic);
+    }
+    if (row.locked_until && new Date(row.locked_until) > new Date()) {
+      throw apiError_('LOCKED', 'Too many failed attempts. This account is locked for 15 minutes.');
+    }
+    if (!verifyPassword_(password, row.password_hash)) {
+      A.registerFailure({ id: row.id });
+      throw apiError_('INVALID_CREDENTIALS', generic);
+    }
+
+    A.clearFailures({ id: row.id });
+    A.touchLogin({ id: row.id });
+
+    return {
+      id: row.id,
+      cn: row.cn,
+      full_name: row.full_name,
+      email: row.email,
+      role: row.role,
+      must_change_password: row.must_change_password,
+    };
+  });
+};
+
+A.changePassword = function (payload) {
+  return withLock_(function () {
+    var identifier = String(payload.identifier || payload.cn || '')
+      .trim()
+      .toLowerCase();
+    var current = String(payload.current || '');
+    var next = String(payload.next || '');
+    if (!identifier || !current || !next) throw apiError_('BAD_REQUEST', 'Fill in every field');
+
+    var row = find_(readAll_('Users'), function (item) {
+      return (
+        String(item.cn || '').toLowerCase() === identifier ||
+        String(item.email || '').toLowerCase() === identifier
+      );
+    });
+    if (!row) throw apiError_('NOT_FOUND', 'Could not find your account.');
+    if (!verifyPassword_(current, row.password_hash)) {
+      throw apiError_('INVALID_CREDENTIALS', 'Current password is incorrect.');
+    }
+    if (next.length < 10) {
+      throw apiError_('BAD_REQUEST', 'Password must be at least 10 characters');
+    }
+
+    updateById_('Users', row.id, {
+      password_hash: hashPassword_(next),
+      must_change_password: 'FALSE',
+      failed_count: '0',
+      locked_until: '',
+    });
+    return { updated: true };
+  });
+};
+
 A.setOtp = function (payload) {
   var userId = requireText_(payload.user_id, 'user_id');
   var record = {
@@ -390,7 +471,11 @@ A.createUser = function (payload) {
     email: text_(payload.email).toLowerCase(),
     phone: text_(payload.phone),
     role: payload.role || 'Patient',
-    password_hash: requireText_(payload.password_hash, 'password_hash'),
+    // Plaintext is hashed here, so the Apps Script stays the only place that
+    // can verify a password.
+    password_hash: payload.password
+      ? hashPassword_(String(payload.password))
+      : requireText_(payload.password_hash, 'password_hash'),
     otp_required: payload.otp_required === false ? 'FALSE' : 'TRUE',
     is_active: 'TRUE',
     must_change_password: payload.must_change_password === false ? 'FALSE' : 'TRUE',

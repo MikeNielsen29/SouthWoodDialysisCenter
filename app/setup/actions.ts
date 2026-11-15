@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
-import { hashPassword, passwordProblem } from '@/lib/auth/password'
+import { passwordProblem } from '@/lib/auth/password'
 import { logAudit } from '@/lib/audit'
 import type { AuditEntry } from '@/lib/sheets/types'
 
@@ -51,10 +51,9 @@ export async function createAdminAction(formData: FormData): Promise<void> {
       full_name: name,
       email,
       role: 'Super Admin',
-      password_hash: await hashPassword(password),
+      // Hashed inside Apps Script, which is also where sign-in is verified.
+      password,
       must_change_password: false,
-      // Bootstrap admin signs in with the password alone; the email OTP step is
-      // enabled later from user-management once mail is configured.
       otp_required: false,
     })
   } catch {

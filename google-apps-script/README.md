@@ -30,18 +30,26 @@ Pagkatapos ng setup, 18 tabs na ang nasa spreadsheet, may headers, frozen row, d
 | Health check | Tab names, row counts, schema version, kung may naka-set na secrets, at last backup. |
 | Backup now | Kopya ng buong spreadsheet sa Drive folder `CloudBase DB Backups`. May automatic daily trigger (2 AM, Asia/Manila) at 30-day retention. |
 
-## Bakit naka-sign ang bawat request
+## Paano tinatawag ang backend
 
-Ang web app ay "Anyone with access" dahil kailangan itong tawagan ng Vercel. Kaya bawat request ay may:
+Ang web app ay "Anyone with access" dahil kailangan itong tawagan ng Vercel. Ang action at key ay nasa query string, tulad ng LCC Calendar Notebook backend:
 
 ```
-{ action, payload, auth: { key, ts, nonce, sig } }
-sig = hex(HMAC_SHA256(GS_SHARED_SECRET, ts + "\n" + action + "\n" + canonical(payload)))
+POST <exec-url>?action=<action>&key=<GS_SHARED_SECRET>
+Body: { ...payload }
 ```
 
-- `ts` ay dapat nasa loob ng ±300 segundo (replay protection)
-- `nonce` ay isang beses lang pwedeng gamitin (CacheService, 10 minuto)
-- Ang signature ay nasa **body**, dahil hindi kayang basahin ng Apps Script ang custom HTTP headers
+- **`auth.login`** at **`system.health`** ay **public** — walang key. Ang password ay vine-verify ng Apps Script mismo, kaya hindi ka makakalock out kahit mali ang key.
+- Lahat ng ibang action ay nangangailangan ng `key` na kapareho ng `GS_SHARED_SECRET` sa Script Properties.
+- Password hash: `sha256$<salt>$<hex>` na may 500 rounds, sinusulat at vine-verify rito (hindi kayang mag-bcrypt ang Apps Script).
+
+## Default administrator
+
+Ang **Run setup / migrate** ay gumagawa ng isang admin **kung blangko pa ang Users tab**:
+
+- Control number: `SDC-ADMIN`
+- Email: `admin@southwooddialysis.com`
+- Password: `Southwood2026!` — **palitan agad** pagkatapos ng unang sign-in (may `must_change_password` na nakatakda).
 
 ## Troubleshooting
 

@@ -4,19 +4,17 @@ import { createHash } from 'node:crypto'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
-import { hashPassword, passwordProblem, verifyPassword } from '@/lib/auth/password'
-import { DEV_OTP, generateOtp, hashOtp, devOtpActive, OTP_TTL_MS } from '@/lib/auth/otp'
+import { callSheets, isSheetsConfigured, SheetsError } from '@/lib/sheets/client'
+import { passwordProblem } from '@/lib/auth/password'
+import { hashOtp } from '@/lib/auth/otp'
 import { signSession, type Role } from '@/lib/auth/jwt'
 import {
   clearOtpCookie,
   clearSessionCookie,
   getSession,
   getOtpChallenge,
-  setOtpCookie,
   setSessionCookie,
 } from '@/lib/auth/session'
-import { isMailConfigured, sendMail } from '@/lib/mail'
 import { logAudit } from '@/lib/audit'
 
 /** Row shape returned by `auth.findUser` (strings, per Sheets conventions). */
@@ -116,87 +114,29 @@ export async function loginAction(formData: FormData): Promise<void> {
     )
   }
 
-  let user: UserRow | null = null
+  // The Apps Script verifies the password itself (it owns the hashes), and the
+  // action is public, so sign-in cannot be blocked by a bad API key.
+  let user: UserRow
   try {
-    user = await findUser(identifier)
-  } catch {
+    user = await callSheets<UserRow>('auth.login', { identifier, password })
+  } catch (error) {
+    const code = error instanceof SheetsError ? error.code : 'NETWORK'
+    if (code === 'LOCKED') {
+      await recordAttempt(identifier, false)
+      fail(next, 'Too many failed attempts. This account is locked for 15 minutes.')
+    }
+    if (code === 'INVALID_CREDENTIALS') {
+      await recordAttempt(identifier, false)
+      fail(next, 'Incorrect control number/email or password.')
+    }
+    if (code === 'NOT_CONFIGURED') {
+      fail(next, 'The database is not set up yet. Run “CloudBase DB → Run setup” in the spreadsheet.')
+    }
     fail(next, 'Could not reach the database. Please try again later.')
   }
 
-  const generic = 'Incorrect control number/email or password.'
-  if (!user || user.is_active === 'FALSE') {
-    await recordAttempt(identifier, false)
-    fail(next, generic)
-  }
-
-  if (user.locked_until && new Date(user.locked_until) > new Date()) {
-    await recordAttempt(identifier, false)
-    fail(next, 'Too many failed attempts. This account is locked for 15 minutes.')
-  }
-
-  const passwordOk = await verifyPassword(password, user.password_hash || '')
-  if (!passwordOk) {
-    try {
-      await callSheets('auth.registerFailure', { id: user.id })
-    } catch {
-      console.error('[auth] could not register failure')
-    }
-    await recordAttempt(identifier, false)
-    fail(next, generic)
-  }
-
-  // Password accepted.
-  try {
-    await callSheets('auth.clearFailures', { id: user.id })
-  } catch {
-    console.error('[auth] could not clear failures')
-  }
   await recordAttempt(identifier, true)
-
-  const otpRequired = user.otp_required !== 'FALSE'
-
-  if (!otpRequired) {
-    await issueSession(user, next)
-    return
-  }
-
-  const code = devOtpActive() ? DEV_OTP : generateOtp()
-  try {
-    await callSheets('auth.setOtp', {
-      user_id: user.id,
-      code_hash: hashOtp(code),
-      purpose: 'login',
-      expires_at: new Date(Date.now() + OTP_TTL_MS).toISOString(),
-    })
-  } catch {
-    fail(next, 'Could not create a verification code. Please try again later.')
-  }
-
-  if (!devOtpActive()) {
-    if (!isMailConfigured() || !user.email) {
-      fail(next, 'Email is not configured for verification codes.')
-    }
-    const sent = await sendMail(
-      user.email,
-      'Your Southwood sign-in code',
-      `<p>Your sign-in code is:</p><p style="font-size:28px;letter-spacing:8px;font-weight:700">${code}</p><p>It expires in 10 minutes. If you did not request this, ignore this email.</p>`
-    )
-    if (!sent.ok) {
-      fail(next, 'We could not send the code. Please try again later.')
-    }
-  }
-
-  await setOtpCookie({
-    sub: user.id,
-    cn: user.cn,
-    role: user.role,
-    full_name: user.full_name,
-    email: user.email,
-  })
-
-  const params = new URLSearchParams({ step: 'otp' })
-  if (next) params.set('next', next)
-  redirect(`/login?${params.toString()}`)
+  await issueSession(user, next)
 }
 
 /** Step 2 — verify the one-time code and issue the session. */
@@ -320,57 +260,50 @@ export async function changePasswordAction(formData: FormData): Promise<void> {
     redirect(`${backTo}?error=${encodeURIComponent('The database is not connected yet.')}`)
   }
 
-  let user: UserRow | null = null
-  try {
-    user = await findUser(session.cn)
-  } catch {
-    user = null
-  }
-  if (!user) {
-    redirect(`${backTo}?error=${encodeURIComponent('Could not find your account.')}`)
-  }
-
-  const currentOk = await verifyPassword(parsed.data.current, user.password_hash || '')
-  if (!currentOk) {
-    redirect(`${backTo}?error=${encodeURIComponent('Current password is incorrect.')}`)
-  }
-
   const problem = passwordProblem(parsed.data.password)
   if (problem) {
     redirect(`${backTo}?error=${encodeURIComponent(problem)}`)
   }
 
   try {
-    await callSheets('auth.setPasswordHash', {
-      id: user.id,
-      password_hash: await hashPassword(parsed.data.password),
+    await callSheets('auth.changePassword', {
+      identifier: session.cn,
+      current: parsed.data.current,
+      next: parsed.data.password,
     })
-  } catch {
-    redirect(`${backTo}?error=${encodeURIComponent('Could not save the new password.')}`)
+  } catch (error) {
+    const code = error instanceof SheetsError ? error.code : 'NETWORK'
+    const message =
+      code === 'INVALID_CREDENTIALS'
+        ? 'Current password is incorrect.'
+        : code === 'BAD_REQUEST'
+          ? 'The new password is not accepted.'
+          : 'Could not save the new password.'
+    redirect(`${backTo}?error=${encodeURIComponent(message)}`)
   }
 
   // Re-issue the session so the `ver` claim matches the new credentials.
   const token = await signSession({
-    sub: user.id,
-    cn: user.cn,
-    role: user.role,
-    full_name: user.full_name,
-    email: user.email,
+    sub: session.sub,
+    cn: session.cn,
+    role: session.role,
+    full_name: session.full_name,
+    email: session.email,
   })
   await setSessionCookie(token)
 
   const { ip_hash } = await requestMeta()
   await logAudit({
     id: crypto.randomUUID(),
-    actor_id: user.id,
-    actor_role: user.role,
+    actor_id: session.sub,
+    actor_role: session.role,
     action: 'auth.password_changed',
     entity: 'user',
-    entity_id: user.id,
+    entity_id: session.sub,
     meta_json: '{}',
     ip_hash,
     created_at: new Date().toISOString(),
   })
 
-  redirect(homeFor(user.role))
+  redirect(homeFor(session.role))
 }

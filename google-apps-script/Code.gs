@@ -27,10 +27,12 @@ var CFG = {
   SHEET_ID_PROP: 'SHEET_ID',
   BACKUP_FOLDER: 'CloudBase DB Backups',
   BACKUP_RETENTION_DAYS: 30,
-  MAX_SKEW_SECONDS: 300,
-  NONCE_TTL_SECONDS: 600,
   SCHEMA_VERSION: '1',
   META_TAB: '_Meta',
+  PASSWORD_ROUNDS: 500,
+  DEFAULT_ADMIN_CN: 'SDC-ADMIN',
+  DEFAULT_ADMIN_EMAIL: 'admin@southwooddialysis.com',
+  DEFAULT_ADMIN_PASSWORD: 'Southwood2026!',
 };
 
 /* ------------------------------------------------------------------ */
@@ -327,37 +329,50 @@ var SETTINGS_SEED = [
 /* Web app entry points                                                */
 /* ------------------------------------------------------------------ */
 
-function doGet() {
-  return json_({
-    ok: false,
-    error: { code: 'METHOD_NOT_ALLOWED', message: 'Use POST' },
-  });
+/**
+ * Actions that intentionally skip the API key. Sign-in is one of them: the
+ * password is verified here, and gating it behind a secret that can be
+ * misconfigured is what locked the owner out of his own dashboard.
+ */
+var PUBLIC_ACTIONS = {
+  'system.health': true,
+  'auth.login': true,
+  'public.content': true,
+};
+
+function doGet(e) {
+  return handleRequest_(e);
 }
 
 function doPost(e) {
+  return handleRequest_(e);
+}
+
+function handleRequest_(e) {
   var started = Date.now();
   try {
-    var raw = e && e.postData ? e.postData.contents : '';
-    if (!raw) throw apiError_('BAD_REQUEST', 'Empty request body');
+    var params = (e && e.parameter) || {};
+    var action = String(params.action || '');
 
-    var body;
-    try {
-      body = JSON.parse(raw);
-    } catch (parseError) {
-      throw apiError_('BAD_REQUEST', 'Malformed JSON');
+    var body = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        body = JSON.parse(e.postData.contents) || {};
+      } catch (parseError) {
+        throw apiError_('BAD_REQUEST', 'Malformed JSON');
+      }
     }
+    if (!action && typeof body.action === 'string') action = body.action;
+    if (!action) throw apiError_('BAD_REQUEST', 'Missing action');
 
-    if (!body || typeof body.action !== 'string') {
-      throw apiError_('BAD_REQUEST', 'Missing action');
-    }
+    if (!PUBLIC_ACTIONS[action]) requireKey_(params);
 
-    authorize_(body);
-
-    var handler = ACTIONS[body.action];
+    var handler = ACTIONS[action];
     if (!handler) throw apiError_('UNKNOWN_ACTION', 'Unknown action');
 
-    var data = handler(body.payload || {}, body.actor || null) || {};
-    return json_({ ok: true, data: data, meta: { action: body.action, ms: Date.now() - started } });
+    var payload = body.payload && typeof body.payload === 'object' ? body.payload : body;
+    var data = handler(payload, null) || {};
+    return json_({ ok: true, data: data, meta: { action: action, ms: Date.now() - started } });
   } catch (error) {
     var code = (error && error.code) || 'INTERNAL';
     var message = (error && error.publicMessage) || 'Request failed';
@@ -403,6 +418,8 @@ var ACTIONS = {
   'content.getSettings': function (p, a) { return A.getSettings(p, a); },
   'content.updateSettings': function (p, a) { return A.updateSettings(p, a); },
 
+  'auth.login': function (p, a) { return A.login(p, a); },
+  'auth.changePassword': function (p, a) { return A.changePassword(p, a); },
   'auth.findUser': function (p, a) { return A.findUser(p, a); },
   'auth.setOtp': function (p, a) { return A.setOtp(p, a); },
   'auth.consumeOtp': function (p, a) { return A.consumeOtp(p, a); },
@@ -452,40 +469,44 @@ var ACTIONS = {
 /* Auth / signing                                                      */
 /* ------------------------------------------------------------------ */
 
-function authorize_(body) {
-  var props = PropertiesService.getScriptProperties();
-  var secret = props.getProperty(CFG.SECRET_PROP);
+/** API-key check for every non-public action (`?key=…`). */
+function requireKey_(params) {
+  var secret = PropertiesService.getScriptProperties().getProperty(CFG.SECRET_PROP);
   if (!secret) throw apiError_('NOT_CONFIGURED', 'Script properties are missing');
 
-  var auth = body.auth;
-  if (!auth || !auth.key || !auth.ts || !auth.nonce || !auth.sig) {
-    throw apiError_('UNAUTHORIZED', 'Missing credentials');
-  }
-  if (!constantTimeEquals_(String(auth.key), secret)) {
+  var provided = params && params.key ? String(params.key) : '';
+  if (!constantTimeEquals_(provided, secret)) {
     throw apiError_('UNAUTHORIZED', 'Invalid credentials');
   }
-
-  var now = Math.floor(Date.now() / 1000);
-  var ts = Number(auth.ts);
-  if (!isFinite(ts) || Math.abs(now - ts) > CFG.MAX_SKEW_SECONDS) {
-    throw apiError_('EXPIRED', 'Request expired');
-  }
-
-  var expected = sign_(secret, auth.ts, body.action, body.payload || {});
-  if (!constantTimeEquals_(expected, String(auth.sig))) {
-    throw apiError_('UNAUTHORIZED', 'Invalid signature');
-  }
-
-  var cache = CacheService.getScriptCache();
-  var nonceKey = 'nonce:' + auth.nonce;
-  if (cache.get(nonceKey)) throw apiError_('REPLAY', 'Duplicate request');
-  cache.put(nonceKey, '1', CFG.NONCE_TTL_SECONDS);
 }
 
-function sign_(secret, ts, action, payload) {
-  var input = String(ts) + '\n' + String(action) + '\n' + canonical_(payload);
-  var bytes = Utilities.computeHmacSha256Signature(input, secret);
-  return bytesToHex_(bytes);
+/**
+ * Password hashing, same shape as the LCC Calendar Notebook backend:
+ * `sha256$<salt>$<hex>` with a few hundred extra rounds. Apps Script can only
+ * run this itself — bcrypt cannot be computed here — so sign-in is verified in
+ * the same place where the hash is written.
+ */
+function hashPassword_(password, salt) {
+  var useSalt = salt || uuid_().replace(/-/g, '');
+  var digest = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    useSalt + ':' + password,
+    Utilities.Charset.UTF_8
+  );
+  for (var i = 0; i < CFG.PASSWORD_ROUNDS; i++) {
+    digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, digest);
+  }
+  return 'sha256$' + useSalt + '$' + bytesToHex_(digest);
+}
+
+function verifyPassword_(password, stored) {
+  var value = String(stored || '');
+  if (!value) return false;
+  var parts = value.split('$');
+  if (parts.length === 3 && parts[0] === 'sha256') {
+    return constantTimeEquals_(hashPassword_(password, parts[1]), value);
+  }
+  return false;
 }
 
 function canonical_(value) {
@@ -556,6 +577,7 @@ function setup_() {
     PropertiesService.getScriptProperties().setProperty(CFG.SHEET_ID_PROP, ss.getId());
 
     seedSettings_(ss);
+    var defaultAdmin = seedAdmin_(ss);
     if (!getMeta_('installed_at')) setMeta_('installed_at', nowIso_());
     setMeta_('schema_version', CFG.SCHEMA_VERSION);
     setMeta_('last_setup_at', nowIso_());
@@ -567,8 +589,43 @@ function setup_() {
       tabCount: TABS.length,
       schemaVersion: CFG.SCHEMA_VERSION,
       spreadsheet: ss.getName(),
+      defaultAdmin: defaultAdmin,
     };
   });
+}
+
+/**
+ * Seeded exactly once, only while the Users tab is empty, so a fresh clone of
+ * the database is usable immediately. The password is hashed here (sign-in is
+ * verified here too) and must be changed on first sign-in.
+ */
+function seedAdmin_(ss) {
+  var users = ss.getSheetByName('Users');
+  if (!users) return null;
+  if (Math.max(0, users.getLastRow() - 1) > 0) return null;
+
+  appendObject_('Users', {
+    id: uuid_(),
+    cn: CFG.DEFAULT_ADMIN_CN,
+    full_name: 'Administrator',
+    email: CFG.DEFAULT_ADMIN_EMAIL,
+    phone: '',
+    role: 'Super Admin',
+    password_hash: hashPassword_(CFG.DEFAULT_ADMIN_PASSWORD),
+    otp_required: 'FALSE',
+    is_active: 'TRUE',
+    must_change_password: 'TRUE',
+    failed_count: '0',
+    locked_until: '',
+    last_login_at: '',
+    created_at: nowIso_(),
+  });
+
+  return {
+    cn: CFG.DEFAULT_ADMIN_CN,
+    email: CFG.DEFAULT_ADMIN_EMAIL,
+    password: CFG.DEFAULT_ADMIN_PASSWORD,
+  };
 }
 
 function health_() {
@@ -1002,13 +1059,21 @@ function menuDiagnose() {
 
 function menuSetup() {
   var result = setup_();
+  var admin = result.defaultAdmin
+    ? '\n\nDefault administrator (change the password on first sign-in):' +
+      '\nControl number: ' + result.defaultAdmin.cn +
+      '\nEmail: ' + result.defaultAdmin.email +
+      '\nPassword: ' + result.defaultAdmin.password
+    : '\n\nUsers tab already has accounts — no administrator was seeded.';
+
   SpreadsheetApp.getUi().alert(
     'Setup complete\n\nCreated: ' +
       (result.created.join(', ') || 'none') +
       '\nExisting: ' +
       (result.existing.length ? result.existing.length + ' tabs' : 'none') +
       '\nSchema version: ' +
-      result.schemaVersion
+      result.schemaVersion +
+      admin
   );
 }
 

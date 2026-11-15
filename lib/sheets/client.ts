@@ -1,11 +1,11 @@
 import { z } from 'zod'
-import { canonicalJson } from './canonical'
 
 /**
- * Signed client for the Google Apps Script backend (google-apps-script/Code.gs).
+ * Client for the Google Apps Script backend (google-apps-script/Code.gs).
  *
- * SERVER ONLY. Importing this module pulls in Web Crypto API, and the shared
- * secret must never reach the browser.
+ * SERVER ONLY. The shared secret is passed as `?key=` and must never reach the
+ * browser. Sign-in is a public action, so access to the dashboard never depends
+ * on this key being configured — only data reads and writes do.
  *
  * The script always answers HTTP 200, so success is decided by the `ok` field
  * in the JSON body, never by `res.ok`.
@@ -44,7 +44,7 @@ const HealthSchema = z.object({
   timeZone: z.string().optional(),
   tabs: z.record(z.union([z.number(), z.null()])).optional(),
   missingTabs: z.array(z.string()).optional(),
-  configured: z.record(z.boolean()).optional(),
+  configured: z.record(z.unknown()).optional(),
 })
 
 export type Health = z.infer<typeof HealthSchema>
@@ -67,23 +67,6 @@ export function isSheetsConfigured(): boolean {
   return Boolean(process.env.GS_WEBAPP_URL?.trim() && process.env.GS_SHARED_SECRET?.trim())
 }
 
-async function hmacSha256Hex(secret: string, data: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  )
-  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data))
-  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, '0')).join('')
-}
-
-async function sign(secret: string, ts: string, action: string, payload: unknown): Promise<string> {
-  const input = `${ts}\n${action}\n${canonicalJson(payload)}`
-  return hmacSha256Hex(secret, input)
-}
-
 const SuccessEnvelopeSchema = z.object({
   ok: z.literal(true),
   data: z.unknown(),
@@ -104,21 +87,18 @@ async function post(
   action: string,
   payload: Record<string, unknown>
 ): Promise<unknown> {
-  const ts = Math.floor(Date.now() / 1000).toString()
-  const body = JSON.stringify({
-    action,
-    payload,
-    auth: { key: secret, ts, nonce: crypto.randomUUID(), sig: await sign(secret, ts, action, payload) },
-  })
+  const target = `${url}${url.includes('?') ? '&' : '?'}action=${encodeURIComponent(
+    action
+  )}&key=${encodeURIComponent(secret)}`
 
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(target, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body,
+      body: JSON.stringify(payload),
       cache: 'no-store',
       redirect: 'follow',
       signal: controller.signal,
