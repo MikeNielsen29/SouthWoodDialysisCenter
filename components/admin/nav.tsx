@@ -105,6 +105,7 @@ const ITEMS: Item[] = [
   { href: '/admin/testimonials', label: 'Testimonials', icon: STAR, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/operations', label: 'Operations', icon: CALENDAR_CLOCK, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/files', label: 'Lab files', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
+  { href: '/admin/media', label: 'Media', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/settings', label: 'Settings', icon: SETTINGS, roles: ['Super Admin'] },
   { href: '/admin/audit', label: 'Audit log', icon: SCROLL_TEXT, roles: ['Super Admin'] },
 ]

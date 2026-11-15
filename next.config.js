@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    // Media library uploads go through a Server Action (images up to 8 MB).
+    serverActions: { bodySizeLimit: '10mb' },
+  },
   images: {
     domains: ['localhost', '127.0.0.1'],
     remotePatterns: [

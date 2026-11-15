@@ -305,6 +305,19 @@ var TABS = [
     ],
   },
   {
+    name: 'Media',
+    columns: [
+      col('id', 300),
+      col('telegram_file_id', 380),
+      col('name', 220),
+      col('alt', 240),
+      col('mime', 120),
+      col('size_bytes', 110),
+      col('uploaded_by', 170),
+      col('created_at', 170),
+    ],
+  },
+  {
     name: CFG.META_TAB,
     columns: [col('key', 220), col('value', 520)],
   },
@@ -447,6 +460,10 @@ var ACTIONS = {
   'appointments.list': function (p, a) { return A.listAppointments(p, a); },
   'appointments.create': function (p, a) { return A.createAppointment(p, a); },
   'appointments.update': function (p, a) { return A.updateAppointment(p, a); },
+
+  'media.list': function (p, a) { return A.listMedia(p, a); },
+  'media.create': function (p, a) { return A.createMedia(p, a); },
+  'media.delete': function (p, a) { return A.deleteMedia(p, a); },
 
   'files.list': function (p, a) { return A.listFiles(p, a); },
   'files.register': function (p, a) { return A.registerFile(p, a); },
@@ -1850,6 +1867,37 @@ A.updateAppointment = function (payload) {
 /* ------------------------------------------------------------------ */
 /* Files                                                               */
 /* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* Media library (public site images, stored in Telegram)              */
+/* ------------------------------------------------------------------ */
+
+A.listMedia = function () {
+  return strip_(readAll_('Media')).sort(function (a, b) {
+    return String(b.created_at).localeCompare(String(a.created_at));
+  });
+};
+
+A.createMedia = function (payload) {
+  var record = {
+    id: uuid_(),
+    telegram_file_id: requireText_(payload.telegram_file_id, 'telegram_file_id'),
+    name: text_(payload.name),
+    alt: text_(payload.alt),
+    mime: text_(payload.mime),
+    size_bytes: text_(payload.size_bytes),
+    uploaded_by: text_(payload.uploaded_by),
+    created_at: nowIso_(),
+  };
+  appendObject_('Media', record);
+  return { id: record.id };
+};
+
+A.deleteMedia = function (payload) {
+  var id = requireText_(payload.id, 'id');
+  deleteById_('Media', id);
+  return { deleted: true };
+};
 
 A.listFiles = function (payload) {
   var rows = readAll_('Files').sort(byDesc_('uploaded_at'));

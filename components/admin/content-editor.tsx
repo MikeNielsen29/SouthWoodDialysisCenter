@@ -242,7 +242,7 @@ export function ContentEditor({
                   name="image_url"
                   value={values.image_url}
                   onChange={(event) => update('image_url', event.target.value)}
-                  placeholder="/SBDC.png"
+                  placeholder="/SBDC.png or /api/media/…"
                 />
               </Field>
               <Field label="Image alt text">
