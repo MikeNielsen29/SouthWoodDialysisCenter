@@ -113,7 +113,9 @@ export function ContentEditor({
         </Link>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_340px]">
+      <PagePreview slug={page.slug} values={previewValues} data={previewData} />
+
+      <div className="grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
         <aside className="rounded-xl border border-ink/10 bg-white">
           <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
@@ -360,7 +362,7 @@ export function ContentEditor({
           </div>
         </form>
 
-        <aside className="rounded-xl border border-ink/10 bg-white p-4 xl:sticky xl:top-4 xl:self-start">
+        <aside className="hidden">
           <div className="flex items-center justify-between">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
               Section preview
@@ -464,8 +466,6 @@ export function ContentEditor({
           </p>
         </aside>
       </div>
-
-      <PagePreview slug={page.slug} values={previewValues} data={previewData} />
     </div>
   )
 }

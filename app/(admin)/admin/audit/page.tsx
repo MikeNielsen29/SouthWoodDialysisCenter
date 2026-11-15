@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { requireRoleOrRedirect } from '@/lib/auth/session'
 import { load } from '@/lib/admin/data'
 import { AuditEntrySchema } from '@/lib/sheets/types'
 import {
@@ -36,6 +37,8 @@ export default async function AuditLogPage({
 }: {
   searchParams: { q?: string }
 }) {
+  await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
+
   const auditRaw = await load('audit.list', AuditEntrySchema.array(), { limit: 200 })
   const rows: AuditEntry[] = (auditRaw as AuditEntry[] | null) ?? []
 

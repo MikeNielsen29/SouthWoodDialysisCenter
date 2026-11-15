@@ -132,7 +132,7 @@ export function PagePreview({
         </p>
         <span className="text-[11px] text-ink-muted">Updates as you type</span>
       </div>
-      <div className="max-h-[75vh] overflow-y-auto bg-sand-50/40">{body}</div>
+      <div className="bg-sand-50/40">{body}</div>
     </div>
   )
 }

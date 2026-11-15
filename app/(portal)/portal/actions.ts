@@ -6,38 +6,74 @@ import { requireUser } from '@/lib/auth/session'
 import { load, callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import { logAudit, type AuditEntry } from '@/lib/audit'
 
-export async function requestAppointmentAction(formData: FormData) {
-  const user = await requireUser('/portal')
-  const data = {
-    patient_cn: formData.get('patient_cn') as string | null,
-    date: formData.get('date') as string | null,
-    time: formData.get('time') as string | null,
-    notes: formData.get('notes') as string | null,
+export async function requestAppointmentAction(formData: FormData): Promise<void> {
+  const user = await requireUser('/portal/appointments')
+  const date = String(formData.get('date') ?? '').trim()
+  const time = String(formData.get('time') ?? '').trim()
+  const notes = String(formData.get('notes') ?? '').trim()
+
+  if (!date || !time) {
+    redirect('/portal/appointments?error=' + encodeURIComponent('Pick a date and time.'))
   }
-  if (!data.patient_cn || !data.date || !data.time) {
-    return { ok: false as const, error: 'Missing required fields' }
+
+  if (!isSheetsConfigured()) {
+    redirect('/portal/appointments?error=' + encodeURIComponent('The database is not connected.'))
   }
+
+  try {
+    await callSheets('appointments.create', {
+      patient_cn: user.cn,
+      scheduled_at: `${date}T${time}`,
+      status: 'Requested',
+      notes,
+    })
+  } catch {
+    redirect(
+      '/portal/appointments?error=' + encodeURIComponent('We could not send the request.')
+    )
+  }
+
   await logAudit({
     id: crypto.randomUUID(),
-    actor_id: data.patient_cn || user.cn,
+    actor_id: user.cn,
     actor_role: 'Patient',
     action: 'portal.appointment_requested',
     entity: 'appointment',
-    entity_id: 'new',
-    meta_json: JSON.stringify(data),
+    entity_id: user.cn,
+    meta_json: JSON.stringify({ date, time }),
     ip_hash: '',
     created_at: new Date().toISOString(),
-  })
+  } as AuditEntry)
+
   revalidateTag('content')
-  return { ok: true as const }
+  redirect('/portal/appointments?requested=1')
 }
 
-export async function cancelAppointmentAction(formData: FormData) {
-  const user = await requireUser('/portal')
-  const id = formData.get('id') as string | null
+export async function cancelAppointmentAction(formData: FormData): Promise<void> {
+  const user = await requireUser('/portal/appointments')
+  const id = String(formData.get('id') ?? '').trim()
   if (!id) {
-    return { ok: false as const, error: 'Missing appointment id' }
+    redirect('/portal/appointments?error=' + encodeURIComponent('Missing appointment.'))
   }
+
+  // Only the patient's own appointments can be cancelled.
+  let mine: { id?: string }[] = []
+  try {
+    const rows = await callSheets<unknown>('appointments.list', { patient_cn: user.cn })
+    mine = Array.isArray(rows) ? (rows as { id?: string }[]) : []
+  } catch {
+    mine = []
+  }
+  if (!mine.some((row) => row.id === id)) {
+    redirect('/portal/appointments?error=' + encodeURIComponent('Appointment not found.'))
+  }
+
+  try {
+    await callSheets('appointments.update', { id, status: 'Cancelled' })
+  } catch {
+    redirect('/portal/appointments?error=' + encodeURIComponent('Could not cancel.'))
+  }
+
   await logAudit({
     id: crypto.randomUUID(),
     actor_id: user.cn,
@@ -48,8 +84,10 @@ export async function cancelAppointmentAction(formData: FormData) {
     meta_json: '{}',
     ip_hash: '',
     created_at: new Date().toISOString(),
-  })
-  return { ok: true as const }
+  } as AuditEntry)
+
+  revalidateTag('content')
+  redirect('/portal/appointments?cancelled=1')
 }
 
 export async function submitTestimonialAction(formData: FormData): Promise<void> {
