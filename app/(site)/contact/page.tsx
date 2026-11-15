@@ -30,6 +30,7 @@ export default async function ContactPage({
       <GallerySection content={content.gallery} />
       <ContactSection
         settings={data.settings}
+        content={content.contact}
         sent={searchParams.sent === '1'}
         error={searchParams.error ? 'failed' : undefined}
       />

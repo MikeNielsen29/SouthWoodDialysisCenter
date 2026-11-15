@@ -22,11 +22,11 @@ export default async function HomePage() {
     <main>
       <Section content={content.hero} />
       <GallerySection content={content.gallery} />
-      <ServicesSection items={data.services} />
+      <ServicesSection items={data.services} content={content.services} />
       <AboutSection content={content.about} />
       <ProcessSection content={content.process} />
-      <TestimonialsSection items={data.testimonials} />
-      <NewsSection articles={data.news} />
+      <TestimonialsSection items={data.testimonials} content={content.stories} />
+      <NewsSection articles={data.news} content={content.news} />
       <CtaSection content={content.cta} />
     </main>
   )

@@ -26,7 +26,7 @@ export default async function ServicesPage() {
         }
       />
       <GallerySection content={content.gallery} />
-      <ServicesSection items={data.services} />
+      <ServicesSection items={data.services} content={content.services} />
       <ProcessSection content={content.process} />
       <CtaSection content={content.cta} />
     </main>

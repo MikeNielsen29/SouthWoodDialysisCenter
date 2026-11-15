@@ -49,8 +49,10 @@ function yearOf(value: string): string {
 
 export function TestimonialsSection({
   items,
+  content,
 }: {
   items?: { display_name: string; rating: string; body: string; created_at: string }[]
+  content?: { eyebrow?: string; heading?: string; body?: string }
 }) {
   const testimonials =
     items && items.length > 0
@@ -69,12 +71,12 @@ export function TestimonialsSection({
     <section className="py-20 sm:py-24 lg:py-28">
       <div className="shell">
         <Reveal className="max-w-2xl">
-          <span className="eyebrow">Patient stories</span>
+          <span className="eyebrow">{content?.eyebrow || 'Patient stories'}</span>
           <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
-            In their own words.
+            {content?.heading || 'In their own words.'}
           </h2>
           <p className="lead mt-4">
-            Real feedback from people who sit in our chairs every week.
+            {content?.body || 'Real feedback from people who sit in our chairs every week.'}
           </p>
         </Reveal>
 

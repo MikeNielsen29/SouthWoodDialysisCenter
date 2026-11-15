@@ -25,7 +25,7 @@ export default async function NewsPage() {
         }
       />
       <GallerySection content={content.gallery} />
-      <NewsSection articles={data.news} />
+      <NewsSection articles={data.news} content={content.news} />
       <CtaSection content={content.cta} />
     </main>
   )

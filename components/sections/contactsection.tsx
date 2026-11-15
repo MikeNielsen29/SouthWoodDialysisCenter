@@ -15,10 +15,12 @@ const fieldClass =
 
 export function ContactSection({
   settings,
+  content,
   sent,
   error,
 }: {
   settings?: ContactSettings
+  content?: { heading?: string; body?: string; cta_label?: string }
   sent?: boolean
   error?: string
 }) {
@@ -46,11 +48,11 @@ export function ContactSection({
         <div>
           <Reveal>
             <h2 className="display text-[26px] leading-tight sm:text-[30px]">
-              Talk to a real person.
+              {content?.heading || 'Talk to a real person.'}
             </h2>
             <p className="lead mt-4">
-              Call us during opening hours, or send a request and we will get back to
-              you within one working day. No referral is needed to ask a question.
+              {content?.body ||
+                'Call us during opening hours, or send a request and we will get back to you within one working day. No referral is needed to ask a question.'}
             </p>
           </Reveal>
 
@@ -166,7 +168,7 @@ export function ContactSection({
                 type="submit"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-medium text-sand-50 transition-colors hover:bg-brand-900"
               >
-                Send request
+                {content?.cta_label || 'Send request'}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </button>
 

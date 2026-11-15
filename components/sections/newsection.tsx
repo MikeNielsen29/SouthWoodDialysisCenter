@@ -40,8 +40,10 @@ function formatDate(value: string): string {
 
 export function NewsSection({
   articles,
+  content,
 }: {
   articles?: { title: string; excerpt: string; published_at: string }[]
+  content?: { eyebrow?: string; heading?: string; body?: string }
 }) {
   const news =
     articles && articles.length > 0
@@ -59,10 +61,11 @@ export function NewsSection({
       <div className="shell">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <Reveal>
-            <span className="eyebrow">Latest news</span>
+            <span className="eyebrow">{content?.eyebrow || 'Latest news'}</span>
             <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
-              News &amp; updates.
+              {content?.heading || 'News & updates.'}
             </h2>
+            {content?.body ? <p className="lead mt-4">{content.body}</p> : null}
           </Reveal>
 
           <Reveal delay={80}>

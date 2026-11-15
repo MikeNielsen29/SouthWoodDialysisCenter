@@ -237,7 +237,7 @@ export function ContentEditor({
                   custom description. Walang path = hindi lumalabas ang section.
                 </p>
               </Field>
-            ) : (
+            ) : ['about', 'services', 'stories', 'news', 'contact'].includes(section.kind) ? null : (
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Button label">
