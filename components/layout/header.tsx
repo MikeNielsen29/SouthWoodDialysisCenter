@@ -55,7 +55,7 @@ export function Header() {
       <div className="border-b border-ink/10 bg-sand-50/85 backdrop-blur-md">
         <div className="shell flex h-[68px] items-center justify-between gap-6">
           <Link href="/" className="flex items-center gap-2.5" aria-label="Southwoods Bicutan Dialysis and Medical Center home">
-            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-brand-800">
+            <span className="flex h-10 w-10 items-center justify-center">
               <Image
                 src="/favicon.png"
                 alt=""

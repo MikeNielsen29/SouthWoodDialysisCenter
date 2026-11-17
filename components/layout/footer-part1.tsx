@@ -50,7 +50,7 @@ export function FooterLinks({
     <div className="grid gap-10 border-b border-sand-50/10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
       <div>
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-sand-50/10">
+          <span className="flex h-10 w-10 items-center justify-center">
             <Image
               src="/favicon.png"
               alt=""
