@@ -3,6 +3,7 @@
 import { useFormStatus } from 'react-dom'
 import { Clock, FileText, Phone, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import { logoutAction } from '@/app/login/actions'
 
 export function Header() {
   return (
@@ -30,9 +31,17 @@ export function Header() {
           <Link href="/portal/billing" className="hover:text-brand-700">
             Billing
           </Link>
+          <Link href="/portal/testimonials" className="hover:text-brand-700">
+            Reviews
+          </Link>
           <Link href="/portal/privacy" className="hover:text-brand-700">
             Privacy
           </Link>
+          <form action={logoutAction}>
+            <button type="submit" className="text-ink-muted hover:text-ember-700">
+              Sign out
+            </button>
+          </form>
         </nav>
         <span className="hidden items-center gap-1.5 rounded-full bg-ink/5 px-2.5 py-1 text-xs text-ink-soft lg:flex">
           <Clock className="h-3.5 w-3.5 text-ember-500" />
@@ -52,9 +61,17 @@ export function Header() {
         <Link href="/portal/billing" className="whitespace-nowrap hover:text-brand-700">
           Billing
         </Link>
+        <Link href="/portal/testimonials" className="whitespace-nowrap hover:text-brand-700">
+          Reviews
+        </Link>
         <Link href="/portal/privacy" className="whitespace-nowrap hover:text-brand-700">
           Privacy
         </Link>
+        <form action={logoutAction}>
+          <button type="submit" className="whitespace-nowrap text-ink-muted hover:text-ember-700">
+            Sign out
+          </button>
+        </form>
       </nav>
     </header>
   )

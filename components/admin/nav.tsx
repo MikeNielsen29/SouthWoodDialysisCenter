@@ -108,7 +108,7 @@ const ITEMS: Item[] = [
   { href: '/admin/files', label: 'Lab files', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/media', label: 'Media', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
   { href: '/admin/settings', label: 'Settings', icon: SETTINGS, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/audit', label: 'Audit log', icon: SCROLL_TEXT, roles: ['Super Admin', 'Admin'] },
+  { href: '/admin/audit', label: 'Audit log', icon: SCROLL_TEXT, roles: ['Super Admin'] },
 ]
 
 export function AdminNav({ role, name }: { role: Role; name: string }) {

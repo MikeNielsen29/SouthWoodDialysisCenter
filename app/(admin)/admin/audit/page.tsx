@@ -37,7 +37,7 @@ export default async function AuditLogPage({
 }: {
   searchParams: { q?: string; from?: string; to?: string }
 }) {
-  await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
+  await requireRoleOrRedirect(['Super Admin'], '/admin')
 
   const auditRaw = await load('audit.list', AuditEntrySchema.array(), { limit: 200 })
   const rows: AuditEntry[] = (auditRaw as AuditEntry[] | null) ?? []

@@ -3,7 +3,7 @@ import { requireRoleOrRedirect } from '@/lib/auth/session'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import { fileUploadProblem, type PatientFileRow } from '@/lib/patient-files'
 import { Card, Empty, Field, Input, Notice, Pill, Submit, Table, TableData, TableHead, TableHeadCell, TableRow, TableRows } from '@/components/admin/ui'
-import { uploadPatientFileAction } from './actions'
+import { releasePatientFileAction, uploadPatientFileAction } from './actions'
 
 export const metadata: Metadata = {
   title: 'Lab files',
@@ -154,6 +154,17 @@ export default async function FilesPage({
                       >
                         Download
                       </a>
+                      {file.status !== 'Released' ? (
+                        <form action={releasePatientFileAction}>
+                          <input type="hidden" name="id" value={file.id} />
+                          <button
+                            type="submit"
+                            className="text-xs font-medium text-brand-700 underline"
+                          >
+                            Release
+                          </button>
+                        </form>
+                      ) : null}
                     </div>
                   </TableData>
                 </TableRow>
