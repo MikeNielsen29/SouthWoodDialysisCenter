@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getSettings } from '@/lib/content'
+import { logoutAction } from '@/app/login/actions'
 
 export async function Header() {
   const settings = await getSettings()
@@ -19,29 +20,25 @@ export async function Header() {
           </Link>
           <nav className="flex items-center gap-4 text-sm">
             <Link
-              href="/admin"
-              className="text-ink-soft hover:text-ink transition-colors"
-            >
-              Overview
-            </Link>
-            <Link
-              href="/admin/settings"
-              className="text-ink-soft hover:text-ink transition-colors"
-            >
-              Settings
-            </Link>
-            <Link
-              href="/admin/audit"
-              className="text-ink-soft hover:text-ink transition-colors"
-            >
-              Audit
-            </Link>
-            <Link
               href="/"
               className="rounded-lg border border-ink/10 bg-sand-100 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
             >
               View site
             </Link>
+            <Link
+              href="/admin/profile"
+              className="text-ink-soft hover:text-ink transition-colors"
+            >
+              Profile
+            </Link>
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className="text-xs font-medium text-ink-muted transition-colors hover:text-ember-700"
+              >
+                Sign out
+              </button>
+            </form>
           </nav>
         </div>
       </div>

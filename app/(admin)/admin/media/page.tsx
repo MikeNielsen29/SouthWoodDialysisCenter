@@ -47,7 +47,7 @@ async function loadMedia(): Promise<{ media: MediaRow[]; error?: string }> {
 export default async function MediaPage({
   searchParams,
 }: {
-  searchParams: { uploaded?: string; deleted?: string; error?: string }
+  searchParams: { uploaded?: string; deleted?: string; updated?: string; error?: string }
 }) {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
 
@@ -57,6 +57,8 @@ export default async function MediaPage({
     ? { tone: 'error' as const, message: searchParams.error }
     : searchParams.uploaded
       ? { tone: 'ok' as const, message: 'Image uploaded. Copy its path into a section field.' }
+      : searchParams.updated
+        ? { tone: 'ok' as const, message: 'Alt text saved.' }
       : searchParams.deleted
         ? { tone: 'ok' as const, message: 'Image removed from the library.' }
         : undefined

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { deleteMediaAction, uploadMediaAction } from './actions'
+import { deleteMediaAction, updateMediaAltAction, uploadMediaAction } from './actions'
 import { Field, Input, Notice, Submit } from '@/components/admin/ui'
 
 export type MediaRow = {
@@ -92,10 +92,22 @@ export function MediaAdmin({
                   />
                   <div className="space-y-2 p-3">
                     <p className="truncate text-sm font-medium text-ink">{row.name || 'image'}</p>
-                    <p className="text-[11px] text-ink-muted">
-                      {sizeLabel(row.size_bytes)}
-                      {row.alt ? ` · ${row.alt}` : ''}
-                    </p>
+                    <p className="text-[11px] text-ink-muted">{sizeLabel(row.size_bytes)}</p>
+                    <form action={updateMediaAltAction} className="flex items-center gap-1.5">
+                      <input type="hidden" name="id" value={row.id} />
+                      <input
+                        name="alt"
+                        defaultValue={row.alt || ''}
+                        placeholder="Alt text"
+                        className="min-w-0 flex-1 rounded-md border border-ink/15 px-2 py-1 text-[11px] text-ink"
+                      />
+                      <button
+                        type="submit"
+                        className="shrink-0 rounded-md border border-ink/15 px-2 py-1 text-[11px] text-ink-soft transition hover:border-brand-400 hover:text-brand-700"
+                      >
+                        Save
+                      </button>
+                    </form>
                     <code className="block truncate rounded bg-sand-50 px-2 py-1 text-[11px] text-ink-soft">
                       {path}
                     </code>

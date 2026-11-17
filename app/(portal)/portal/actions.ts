@@ -10,9 +10,11 @@ export async function requestAppointmentAction(formData: FormData): Promise<void
   const user = await requireUser('/portal/appointments')
   const date = String(formData.get('date') ?? '').trim()
   const time = String(formData.get('time') ?? '').trim()
+  const scheduledAt = String(formData.get('scheduled_at') ?? '').trim()
   const notes = String(formData.get('notes') ?? '').trim()
+  const when = scheduledAt || (date && time ? `${date}T${time}` : '')
 
-  if (!date || !time) {
+  if (!when) {
     redirect('/portal/appointments?error=' + encodeURIComponent('Pick a date and time.'))
   }
 
@@ -23,7 +25,7 @@ export async function requestAppointmentAction(formData: FormData): Promise<void
   try {
     await callSheets('appointments.create', {
       patient_cn: user.cn,
-      scheduled_at: `${date}T${time}`,
+      scheduled_at: when,
       status: 'Requested',
       notes,
     })
@@ -145,10 +147,26 @@ export async function submitTestimonialAction(formData: FormData): Promise<void>
   redirect('/portal/testimonials?sent=1')
 }
 
-export async function fetchMyFilesAction() {
-  await requireUser('/portal')
-  const files = await load('files.listMine', undefined, { limit: 50 })
-  return files as { id: string; title: string; category: string }[]
+export async function fetchMyFilesAction(): Promise<
+  { id: string; title: string; category: string; uploaded_at: string }[]
+> {
+  const user = await requireUser('/portal')
+  try {
+    const rows = await callSheets<unknown>('files.list', { patient_cn: user.cn })
+    if (!Array.isArray(rows)) return []
+    return rows
+      .filter((row): row is Record<string, unknown> => Boolean(row) && typeof row === 'object')
+      .filter((row) => String(row.status ?? '') === 'Released')
+      .map((row) => ({
+        id: String(row.id ?? ''),
+        title: String(row.title ?? ''),
+        category: String(row.category ?? ''),
+        uploaded_at: String(row.uploaded_at ?? ''),
+      }))
+      .filter((file) => file.id)
+  } catch {
+    return []
+  }
 }
 
 export async function downloadFileAction(formData: FormData) {

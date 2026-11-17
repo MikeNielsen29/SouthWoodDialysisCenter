@@ -466,6 +466,7 @@ var ACTIONS = {
   'media.list': function (p, a) { return A.listMedia(p, a); },
   'media.create': function (p, a) { return A.createMedia(p, a); },
   'media.delete': function (p, a) { return A.deleteMedia(p, a); },
+  'media.update': function (p, a) { return A.updateMedia(p, a); },
 
   'files.list': function (p, a) { return A.listFiles(p, a); },
   'files.get': function (p, a) { return A.getFile(p, a); },
@@ -1959,6 +1960,12 @@ A.deleteMedia = function (payload) {
   var id = requireText_(payload.id, 'id');
   deleteById_('Media', id);
   return { deleted: true };
+};
+
+A.updateMedia = function (payload) {
+  var id = requireText_(payload.id, 'id');
+  updateById_('Media', id, { alt: text_(payload.alt) });
+  return { updated: true };
 };
 
 A.listFiles = function (payload) {

@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/session'
 import { STAFF_ROLES } from '@/lib/auth/jwt'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
+import { logAdminAction } from '@/lib/audit'
 import { MAX_MEDIA_BYTES, MEDIA_MIME, isMediaConfigured, uploadMedia } from '@/lib/media'
 
 async function requireStaff() {
@@ -112,6 +113,23 @@ export async function uploadMediaAction(formData: FormData): Promise<void> {
   }
 
   redirect('/admin/media?uploaded=1')
+}
+
+export async function updateMediaAltAction(formData: FormData): Promise<void> {
+  const session = await requireStaff()
+
+  const id = String(formData.get('id') ?? '').trim()
+  const alt = String(formData.get('alt') ?? '').trim()
+  if (!id) redirect('/admin/media?error=Missing image')
+
+  try {
+    await callSheets('media.update', { id, alt })
+    await logAdminAction(session, 'media.alt_updated', 'media', id, { alt })
+  } catch {
+    redirect('/admin/media?error=Could not save the alt text')
+  }
+
+  redirect('/admin/media?updated=1')
 }
 
 export async function deleteMediaAction(formData: FormData): Promise<void> {

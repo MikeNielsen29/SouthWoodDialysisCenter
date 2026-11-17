@@ -15,3 +15,24 @@ export async function logAudit(entry: AuditEntry): Promise<void> {
 }
 
 export type { AuditEntry }
+
+/** A one-line audit call for admin writes, with the actor taken from the session. */
+export async function logAdminAction(
+  user: { cn: string; role: string },
+  action: string,
+  entity: string,
+  entityId: string,
+  meta: Record<string, unknown> = {}
+): Promise<void> {
+  await logAudit({
+    id: crypto.randomUUID(),
+    actor_id: user.cn,
+    actor_role: user.role,
+    action,
+    entity,
+    entity_id: entityId,
+    meta_json: JSON.stringify(meta),
+    ip_hash: '',
+    created_at: new Date().toISOString(),
+  })
+}

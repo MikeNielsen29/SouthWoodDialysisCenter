@@ -2,8 +2,14 @@ import type { Metadata } from 'next'
 import { requireUserOrRedirect } from '@/lib/auth/session'
 import { getSettings } from '@/lib/content'
 import Link from 'next/link'
-import { Header, Footer } from './shared'
-import { AppointmentsList, FilesList, BillingList, EmergencyPanel, TestimonialForm } from './shared'
+import { callSheets } from '@/lib/sheets/client'
+import {
+  AppointmentsList,
+  FilesListWithFiles,
+  BillingListWithRecords,
+  EmergencyPanel,
+  TestimonialForm,
+} from './shared'
 import { requestAppointmentAction, cancelAppointmentAction, submitTestimonialAction } from './actions'
 
 export const metadata: Metadata = {
@@ -13,9 +19,27 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
+type Row = Record<string, unknown>
+
+async function loadRows(action: string, payload: Record<string, unknown>): Promise<Row[]> {
+  try {
+    const rows = await callSheets<unknown>(action, payload)
+    return Array.isArray(rows)
+      ? rows.filter((row): row is Row => Boolean(row) && typeof row === 'object')
+      : []
+  } catch {
+    return []
+  }
+}
+
 export default async function PortalPage() {
   const session = await requireUserOrRedirect('/portal')
   const settings = await getSettings()
+  const [appointments, files, billing] = await Promise.all([
+    loadRows('appointments.list', { patient_cn: session.cn }),
+    loadRows('files.list', { patient_cn: session.cn }),
+    loadRows('billing.list', { patient_cn: session.cn }),
+  ])
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
@@ -50,16 +74,39 @@ export default async function PortalPage() {
             session={session}
             onRequestAppointment={requestAppointmentAction}
             onCancelAppointment={cancelAppointmentAction}
+            appointments={appointments.map((row) => ({
+              id: String(row.id ?? ''),
+              scheduled_at: String(row.scheduled_at ?? ''),
+              status: String(row.status ?? ''),
+              chair: String(row.chair ?? ''),
+            }))}
           />
         </section>
         <section className="rounded-xl border border-ink/10 bg-white p-5">
           <EmergencyPanel settings={settings} />
         </section>
         <section className="rounded-xl border border-ink/10 bg-white p-5">
-          <FilesList session={session} />
+          <FilesListWithFiles
+            files={files
+              .filter((row) => String(row.status ?? '') === 'Released')
+              .map((row) => ({
+                id: String(row.id ?? ''),
+                title: String(row.title ?? ''),
+                category: String(row.category ?? ''),
+              }))}
+          />
         </section>
         <section className="rounded-xl border border-ink/10 bg-white p-5">
-          <BillingList />
+          <BillingListWithRecords
+            records={billing.map((row) => ({
+              id: String(row.id ?? ''),
+              invoice_no: String(row.invoice_no ?? ''),
+              description: String(row.description ?? ''),
+              amount_php: String(row.amount_php ?? '0'),
+              status: String(row.status ?? ''),
+              issued_at: String(row.issued_at ?? ''),
+            }))}
+          />
         </section>
         <div className="lg:col-span-2">
           <section className="rounded-xl border border-ink/10 bg-white p-5">

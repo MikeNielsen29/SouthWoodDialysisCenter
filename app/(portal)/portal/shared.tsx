@@ -17,13 +17,45 @@ export function Header() {
             <p className="text-[11px] text-ink-muted">Signed in as a patient</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 rounded-full bg-ink/5 px-2.5 py-1 text-xs text-ink-soft">
-            <Clock className="h-3.5 w-3.5 text-ember-500" />
-            Patient portal
-          </span>
-        </div>
+        <nav className="hidden items-center gap-4 text-xs font-medium text-ink-soft sm:flex">
+          <Link href="/portal" className="hover:text-brand-700">
+            Overview
+          </Link>
+          <Link href="/portal/appointments" className="hover:text-brand-700">
+            Appointments
+          </Link>
+          <Link href="/portal/files" className="hover:text-brand-700">
+            Files
+          </Link>
+          <Link href="/portal/billing" className="hover:text-brand-700">
+            Billing
+          </Link>
+          <Link href="/portal/privacy" className="hover:text-brand-700">
+            Privacy
+          </Link>
+        </nav>
+        <span className="hidden items-center gap-1.5 rounded-full bg-ink/5 px-2.5 py-1 text-xs text-ink-soft lg:flex">
+          <Clock className="h-3.5 w-3.5 text-ember-500" />
+          Patient portal
+        </span>
       </div>
+      <nav className="flex gap-4 overflow-x-auto border-t border-ink/5 px-4 py-2 text-xs font-medium text-ink-soft sm:hidden">
+        <Link href="/portal" className="whitespace-nowrap hover:text-brand-700">
+          Overview
+        </Link>
+        <Link href="/portal/appointments" className="whitespace-nowrap hover:text-brand-700">
+          Appointments
+        </Link>
+        <Link href="/portal/files" className="whitespace-nowrap hover:text-brand-700">
+          Files
+        </Link>
+        <Link href="/portal/billing" className="whitespace-nowrap hover:text-brand-700">
+          Billing
+        </Link>
+        <Link href="/portal/privacy" className="whitespace-nowrap hover:text-brand-700">
+          Privacy
+        </Link>
+      </nav>
     </header>
   )
 }
@@ -73,10 +105,12 @@ export function AppointmentsList({
   session,
   onRequestAppointment,
   onCancelAppointment,
+  appointments = [],
 }: {
-  session: any
+  session: { cn: string }
   onRequestAppointment: (formData: FormData) => void
   onCancelAppointment: (formData: FormData) => void
+  appointments?: { id: string; scheduled_at: string; status: string; chair?: string }[]
 }) {
   return (
     <>
@@ -93,7 +127,37 @@ export function AppointmentsList({
 
       <div className="mt-4 space-y-2">
         <p className="text-xs font-medium uppercase tracking-wider text-ink-muted">Upcoming</p>
-        <p className="text-sm text-ink-muted">No appointments on file yet.</p>
+        {appointments.length === 0 ? (
+          <p className="text-sm text-ink-muted">No appointments on file yet.</p>
+        ) : (
+          <ul className="divide-y divide-ink/5">
+            {appointments.map((appointment) => (
+              <li
+                key={appointment.id}
+                className="flex items-center justify-between gap-3 py-2.5 text-sm"
+              >
+                <div className="min-w-0">
+                  <p className="text-ink">{appointment.scheduled_at}</p>
+                  <p className="text-xs text-ink-muted">
+                    {appointment.status}
+                    {appointment.chair ? ` · Chair ${appointment.chair}` : ''}
+                  </p>
+                </div>
+                {appointment.status === 'Requested' || appointment.status === 'Confirmed' ? (
+                  <form action={onCancelAppointment}>
+                    <input type="hidden" name="id" value={appointment.id} />
+                    <button
+                      type="submit"
+                      className="rounded-md border border-ink/15 px-2 py-1 text-xs text-ink-soft hover:border-ember-300 hover:text-ember-700"
+                    >
+                      Cancel
+                    </button>
+                  </form>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   )
@@ -154,9 +218,14 @@ export function FilesListWithFiles({ files }: { files: { id: string; title: stri
     <>
       <div className="flex items-center justify-between">
         <h2 className="font-display text-base text-ink">Lab files</h2>
-        <span className="rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-medium text-ink-soft">
-          {files.length} file{files.length === 1 ? '' : 's'}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-medium text-ink-soft">
+            {files.length} file{files.length === 1 ? '' : 's'}
+          </span>
+          <Link href="/portal/files" className="text-xs text-brand-700 hover:underline">
+            View all
+          </Link>
+        </div>
       </div>
 
       {files.length === 0 ? (
@@ -178,9 +247,80 @@ export function FilesListWithFiles({ files }: { files: { id: string; title: stri
                   <FileText className="h-4 w-4 text-ember-500" />
                   <span className="font-medium text-ink">{file.title}</span>
                 </div>
-                <span className="rounded-full bg-ink/5 px-2 py-0.5 text-[11px] text-ink-muted">
-                  {file.category}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-ink/5 px-2 py-0.5 text-[11px] text-ink-muted">
+                    {file.category}
+                  </span>
+                  <a
+                    href={`/api/portal/files/${file.id}`}
+                    className="text-xs font-medium text-brand-700 hover:underline"
+                  >
+                    Download
+                  </a>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  )
+}
+
+export function BillingListWithRecords({
+  records,
+}: {
+  records: {
+    id: string
+    invoice_no: string
+    description?: string
+    amount_php: string
+    status: string
+    issued_at: string
+  }[]
+}) {
+  const outstanding = records
+    .filter((record) => record.status !== 'Paid' && record.status !== 'Void')
+    .reduce((sum, record) => sum + (parseInt(record.amount_php || '0', 10) || 0), 0)
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-base text-ink">Billing</h2>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-medium text-ink-soft">
+            {records.length} statement{records.length === 1 ? '' : 's'}
+          </span>
+          <Link href="/portal/billing" className="text-xs text-brand-700 hover:underline">
+            View all
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between rounded-lg border border-ink/10 bg-brand-50 p-4 text-sm">
+        <span className="text-ink-soft">Outstanding balance</span>
+        <span className="font-medium text-brand-800">
+          ₱{outstanding.toLocaleString('en-PH')}
+        </span>
+      </div>
+
+      {records.length === 0 ? (
+        <p className="mt-2 text-xs text-ink-muted">
+          Posted statements and payment history will appear here.
+        </p>
+      ) : (
+        <ul className="mt-3 divide-y divide-ink/5 text-sm">
+          {records.map((record) => (
+            <li key={record.id} className="flex items-center justify-between gap-3 py-2.5">
+              <div className="min-w-0">
+                <p className="truncate text-ink">{record.invoice_no}</p>
+                <p className="text-xs text-ink-muted">{record.issued_at}</p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p className="text-ink">
+                  ₱{(parseInt(record.amount_php || '0', 10) || 0).toLocaleString('en-PH')}
+                </p>
+                <p className="text-xs text-ink-muted">{record.status}</p>
               </div>
             </li>
           ))}

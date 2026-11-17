@@ -35,7 +35,7 @@ interface AuditEntry {
 export default async function AuditLogPage({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams: { q?: string; from?: string; to?: string }
 }) {
   await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
 
@@ -43,14 +43,20 @@ export default async function AuditLogPage({
   const rows: AuditEntry[] = (auditRaw as AuditEntry[] | null) ?? []
 
   const q = (searchParams.q ?? '').trim()
+  const from = (searchParams.from ?? '').trim()
+  const to = (searchParams.to ?? '').trim()
   const needle = q.toLowerCase()
-  const audit = needle
-    ? rows.filter((entry) =>
-        [entry.actor_id, entry.action, entry.entity, entry.entity_id]
-          .map((value) => String(value ?? '').toLowerCase())
-          .some((value) => value.includes(needle))
-      )
-    : rows
+  const audit = rows.filter((entry) => {
+    const matchesText =
+      !needle ||
+      [entry.actor_id, entry.action, entry.entity, entry.entity_id]
+        .map((value) => String(value ?? '').toLowerCase())
+        .some((value) => value.includes(needle))
+    const created = String(entry.created_at ?? '')
+    const matchesFrom = !from || created.slice(0, 10) >= from
+    const matchesTo = !to || created.slice(0, 10) <= to
+    return matchesText && matchesFrom && matchesTo
+  })
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
@@ -69,11 +75,23 @@ export default async function AuditLogPage({
           placeholder="Filter by actor, action or entity"
           className="sm:max-w-sm"
         />
+        <label className="flex items-center gap-2 text-xs text-ink-muted">
+          From
+          <Input name="from" type="date" defaultValue={from} className="w-36" />
+        </label>
+        <label className="flex items-center gap-2 text-xs text-ink-muted">
+          To
+          <Input name="to" type="date" defaultValue={to} className="w-36" />
+        </label>
         <Submit type="submit">Filter</Submit>
       </form>
 
       {audit.length === 0 ? (
-        <Empty description={q ? 'No entries match that filter.' : 'No audit entries yet.'} />
+        <Empty
+          description={
+            q || from || to ? 'No entries match that filter.' : 'No audit entries yet.'
+          }
+        />
       ) : (
         <Table>
           <TableHead>
