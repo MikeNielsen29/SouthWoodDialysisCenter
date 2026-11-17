@@ -4,7 +4,7 @@ import { getSettings } from '@/lib/content'
 export const metadata: Metadata = {
   title: 'Privacy policy',
   description:
-    'How Southwood Dialysis Center collects, uses, and protects your personal and medical information.',
+    'How Southwoods Bicutan Dialysis and Medical Center collects, uses, and protects your personal and medical information.',
   robots: { index: true, follow: true },
 }
 
@@ -19,13 +19,13 @@ export default async function PrivacyPolicyPage() {
           <div className="mb-6">
             <h1 className="display text-[30px] leading-tight">Privacy policy</h1>
             <p className="mt-1 text-sm text-ink-muted">
-              Southwood Dialysis Center · Effective {new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Southwoods Bicutan Dialysis and Medical Center · Effective {new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </div>
 
           <div className="prose prose-sm max-w-none text-ink-soft leading-relaxed space-y-5">
             <p>
-              This privacy policy explains how Southwood Dialysis Center (“Southwood”, “we”, “us”) collects, uses, stores, and protects information about you when you use this website and the patient portal.
+              This privacy policy explains how Southwoods Bicutan Dialysis and Medical Center (“we”, “us”) collects, uses, stores, and protects information about you when you use this website and the patient portal.
             </p>
 
             <h2>1. Information we collect</h2>
@@ -86,7 +86,7 @@ export default async function PrivacyPolicyPage() {
           </div>
 
           <div className="mt-10 border-t border-ink/10 pt-6 text-xs text-ink-muted">
-            <p>Southwood Dialysis Center</p>
+            <p>Southwoods Bicutan Dialysis and Medical Center</p>
           </div>
       </div>
     </main>

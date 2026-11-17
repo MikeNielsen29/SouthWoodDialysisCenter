@@ -54,7 +54,7 @@ export function Header() {
 
       <div className="border-b border-ink/10 bg-sand-50/85 backdrop-blur-md">
         <div className="shell flex h-[68px] items-center justify-between gap-6">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Southwood Dialysis Center home">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Southwoods Bicutan Dialysis and Medical Center home">
             <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-brand-800">
               <Image
                 src="/SBDC.png"
@@ -67,10 +67,10 @@ export function Header() {
             </span>
             <span className="leading-none">
               <span className="block font-display text-[19px] tracking-tight text-ink">
-                Southwood
+                Southwoods Bicutan
               </span>
-              <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-muted">
-                Dialysis Center
+              <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                Dialysis and Medical Center
               </span>
             </span>
           </Link>

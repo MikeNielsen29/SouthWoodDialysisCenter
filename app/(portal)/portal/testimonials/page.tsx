@@ -61,7 +61,7 @@ export default async function PortalTestimonialsPage({
           <div>
             <h1 className="font-display text-2xl text-ink">Share your experience</h1>
             <p className="mt-1 text-sm text-ink-muted">
-              Tell us about your care at Southwood. Every review is read by the clinic
+              Tell us about your care at Southwoods Bicutan. Every review is read by the clinic
               before it appears on the public site.
             </p>
           </div>

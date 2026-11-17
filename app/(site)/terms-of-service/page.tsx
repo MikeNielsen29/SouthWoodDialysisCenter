@@ -4,7 +4,7 @@ import { getSettings } from '@/lib/content'
 export const metadata: Metadata = {
   title: 'Terms of service',
   description:
-    'Terms of use for the Southwood Dialysis Center website and patient portal.',
+    'Terms of use for the Southwoods Bicutan Dialysis and Medical Center website and patient portal.',
   robots: { index: true, follow: true },
 }
 
@@ -19,23 +19,23 @@ export default async function TermsOfServicePage() {
           <div className="mb-6">
             <h1 className="display text-[30px] leading-tight">Terms of service</h1>
             <p className="mt-1 text-sm text-ink-muted">
-              Southwood Dialysis Center · Effective {new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Southwoods Bicutan Dialysis and Medical Center · Effective {new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </div>
 
           <div className="prose prose-sm max-w-none text-ink-soft leading-relaxed space-y-5">
             <p>
-              By accessing or using the Southwood Dialysis Center website and patient portal (together, “the services”), you agree to these terms. If you do not agree, do not use the services.
+              By accessing or using the Southwoods Bicutan Dialysis and Medical Center website and patient portal (together, “the services”), you agree to these terms. If you do not agree, do not use the services.
             </p>
 
             <h2>1. Services we provide</h2>
             <p>
-              Southwood Dialysis Center provides information about our clinic and services, a way to contact us and request appointments, and a private patient portal for authenticated patients to view certain care-related information and documents.
+              Southwoods Bicutan Dialysis and Medical Center provides information about our clinic and services, a way to contact us and request appointments, and a private patient portal for authenticated patients to view certain care-related information and documents.
             </p>
 
             <h2>2. Eligibility</h2>
             <p>
-              The patient portal is intended for patients of Southwood Dialysis Center and their authorized representatives. You are responsible for keeping your account credentials and device secure. If you believe an account has been compromised, contact us immediately.
+              The patient portal is intended for patients of Southwoods Bicutan Dialysis and Medical Center and their authorized representatives. You are responsible for keeping your account credentials and device secure. If you believe an account has been compromised, contact us immediately.
             </p>
 
             <h2>3. Accurate information</h2>
@@ -65,7 +65,7 @@ export default async function TermsOfServicePage() {
 
             <h2>8. Limitation of liability</h2>
             <p>
-              The services are provided on an as-is basis to the extent permitted by law. To the fullest extent permitted, Southwood Dialysis Center is not liable for indirect, incidental, or consequential losses arising from your use of the services, except where liability cannot be excluded under applicable law.
+              The services are provided on an as-is basis to the extent permitted by law. To the fullest extent permitted, Southwoods Bicutan Dialysis and Medical Center is not liable for indirect, incidental, or consequential losses arising from your use of the services, except where liability cannot be excluded under applicable law.
             </p>
 
             <h2>9. Governing law</h2>
@@ -80,7 +80,7 @@ export default async function TermsOfServicePage() {
           </div>
 
           <div className="mt-10 border-t border-ink/10 pt-6 text-xs text-ink-muted">
-            <p>Southwood Dialysis Center</p>
+            <p>Southwoods Bicutan Dialysis and Medical Center</p>
           </div>
       </div>
     </main>

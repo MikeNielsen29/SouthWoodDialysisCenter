@@ -34,12 +34,12 @@ export default async function ServicesPage() {
 }
 
 export const metadata = generateSeoMetadata({
-  title: 'Services | Southwood Dialysis Center',
+  title: 'Services | Southwoods Bicutan Dialysis and Medical Center',
   description:
     'We offer comprehensive dialysis and supportive care services including hemodialysis, peritoneal dialysis, and kidney transplant evaluation.',
   canonical: '/services',
   openGraph: {
-    title: 'Services | Southwood Dialysis Center',
+    title: 'Services | Southwoods Bicutan Dialysis and Medical Center',
     description:
       'We offer comprehensive dialysis and supportive care services including hemodialysis, peritoneal dialysis, and kidney transplant evaluation.',
     images: ['/og-services.jpg'],

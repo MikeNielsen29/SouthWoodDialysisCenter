@@ -39,7 +39,7 @@ export function GallerySection({ content }: { content?: GalleryContent }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={image.src}
-                alt={image.alt || `Southwood Dialysis Center — photo ${index + 1}`}
+                alt={image.alt || `Southwoods Bicutan Dialysis and Medical Center — photo ${index + 1}`}
                 loading="lazy"
                 className="aspect-[4/3] w-full object-cover"
               />

@@ -13,7 +13,7 @@ export function Header() {
             SD
           </span>
           <div>
-            <p className="font-display text-sm text-ink">Southwood Patient Portal</p>
+            <p className="font-display text-sm text-ink">Southwoods Bicutan Patient Portal</p>
             <p className="text-[11px] text-ink-muted">Signed in as a patient</p>
           </div>
         </div>
@@ -32,7 +32,7 @@ export function Footer({ settings }: { settings?: { hotline?: string } }) {
   return (
     <footer className="border-t border-ink/10 bg-white px-4 py-4 text-[11px] text-ink-muted sm:px-6">
       <div className="mx-auto flex max-w-5xl items-center justify-between">
-        <p>Southwood Dialysis Center · Patient portal</p>
+        <p>Southwoods Bicutan Dialysis and Medical Center · Patient portal</p>
         {settings?.hotline && (
           <a
             href={`tel:${settings.hotline}`}
@@ -285,7 +285,7 @@ export function TestimonialForm({
             name="body"
             required
             minLength={10}
-            placeholder="What did Southwood do well? What could improve?"
+            placeholder="What did Southwoods Bicutan do well? What could improve?"
             className="w-full rounded-lg border border-ink/15 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 min-h-[100px] resize-none"
           />
         </div>

@@ -77,7 +77,7 @@ export function AboutSection({
         <div className="grid items-start gap-12 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
           <div>
             <Reveal>
-              <span className="eyebrow">{content?.eyebrow || 'About Southwood'}</span>
+              <span className="eyebrow">{content?.eyebrow || 'About Southwoods Bicutan'}</span>
               <h2 className="display mt-5 text-[32px] leading-[1.1] sm:text-[42px]">
                 {content?.heading || 'A neighbourhood centre with'}
                 <span className="italic text-brand-700">
@@ -97,7 +97,7 @@ export function AboutSection({
               ) : (
                 <>
                   <p className="lead mt-6">
-                    Southwood Dialysis Center opened in 2024 with a simple idea: kidney
+                    Southwoods Bicutan Dialysis and Medical Center opened in 2024 with a simple idea: kidney
                     care should feel calm, familiar, and close to home. Three modern
                     stations, a small clinical team, and schedules built around patients
                     rather than queues.

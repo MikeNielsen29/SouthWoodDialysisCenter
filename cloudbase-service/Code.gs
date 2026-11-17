@@ -1556,7 +1556,7 @@ A.requestReset = function (payload) {
   try {
     MailApp.sendEmail({
       to: row.email,
-      subject: 'Southwood Dialysis Center - password reset',
+      subject: 'Southwoods Bicutan Dialysis and Medical Center - password reset',
       body:
         'Hello ' + (row.name || row.cn) + ',\n\n' +
         'Your temporary password is: ' + temp + '\n\n' +

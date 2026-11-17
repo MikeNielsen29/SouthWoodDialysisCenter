@@ -40,14 +40,14 @@ export default async function ContactPage({
 }
 
 export const metadata = generateSeoMetadata({
-  title: 'Contact Us | Southwood Dialysis Center',
+  title: 'Contact Us | Southwoods Bicutan Dialysis and Medical Center',
   description:
-    'Contact Southwood Dialysis Center for inquiries, appointments, or general information. Visit us at 123 Kidney Avenue.',
+    'Contact Southwoods Bicutan Dialysis and Medical Center for inquiries, appointments, or general information. Visit us at 123 Kidney Avenue.',
   canonical: '/contact',
   openGraph: {
-    title: 'Contact Us | Southwood Dialysis Center',
+    title: 'Contact Us | Southwoods Bicutan Dialysis and Medical Center',
     description:
-      'Contact Southwood Dialysis Center for inquiries, appointments, or general information.',
+      'Contact Southwoods Bicutan Dialysis and Medical Center for inquiries, appointments, or general information.',
     images: ['/og-contact.jpg'],
     url: '/contact',
   },

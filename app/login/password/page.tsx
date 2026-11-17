@@ -21,7 +21,7 @@ export default async function ChangePasswordPage({
     <main className="flex min-h-screen items-center justify-center bg-sand-50 px-5 py-12">
       <div className="w-full max-w-md">
         <Link href="/" className="text-sm text-ink-muted hover:text-brand-700">
-          Southwood Dialysis Center
+          Southwoods Bicutan Dialysis and Medical Center
         </Link>
 
         <h1 className="display mt-6 text-[30px] leading-tight">Choose a new password</h1>

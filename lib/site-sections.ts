@@ -102,11 +102,11 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Photos of the centre, the team and the stations.',
         sort_order: '2',
       }),
-      section('about', 'About Southwood block', 'about', {
-        eyebrow: 'About Southwood',
+      section('about', 'About the center block', 'about', {
+        eyebrow: 'About Southwoods Bicutan',
         heading: 'A neighbourhood centre with',
         emphasis: 'hospital-grade care.',
-        body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        body: 'Southwoods Bicutan Dialysis and Medical Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
         cta_label: 'More about our team',
         cta_href: '/about',
         sort_order: '3',
@@ -183,11 +183,11 @@ export const EDITABLE_PAGES: PageDef[] = [
         body: 'Photos of the centre, the team and the stations.',
         sort_order: '2',
       }),
-      section('about', 'About Southwood block', 'about', {
-        eyebrow: 'About Southwood',
+      section('about', 'About the center block', 'about', {
+        eyebrow: 'About Southwoods Bicutan',
         heading: 'A neighbourhood centre with',
         emphasis: 'hospital-grade care.',
-        body: 'Southwood Dialysis Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
+        body: 'Southwoods Bicutan Dialysis and Medical Center opened in 2024 with a simple idea: kidney care should feel calm, familiar, and close to home. Three modern stations, a small clinical team, and schedules built around patients rather than queues.\n\nFrom your first assessment to your weekly sessions, the same nephrologists and technicians follow your progress — so nothing about your care gets lost between visits.\n\nLeave a blank line between paragraphs.',
         cta_label: 'More about our team',
         cta_href: '/about',
         sort_order: '3',
@@ -278,7 +278,7 @@ export const EDITABLE_PAGES: PageDef[] = [
       section('header', 'Page header', 'header', {
         eyebrow: 'News',
         heading: "What's happening at ",
-        emphasis: 'Southwood.',
+        emphasis: 'Southwoods Bicutan.',
         body: 'Centre updates, patient workshops, and practical health notes from our clinical team.',
         sort_order: '1',
       }),

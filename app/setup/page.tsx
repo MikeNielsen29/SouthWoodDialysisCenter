@@ -39,7 +39,7 @@ export default async function SetupPage({
     <main className="flex min-h-screen items-center justify-center bg-sand-50 px-5 py-12">
       <div className="w-full max-w-lg rounded-2xl border border-ink/10 bg-white p-8 shadow-lift">
         <Link href="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-muted">
-          Southwood Dialysis Center
+          Southwoods Bicutan Dialysis and Medical Center
         </Link>
         <h1 className="display mt-4 text-[28px] leading-tight">First-time setup</h1>
 

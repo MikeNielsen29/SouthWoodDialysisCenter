@@ -39,12 +39,12 @@ export default async function AboutPage() {
 }
 
 export const metadata = generateSeoMetadata({
-  title: 'About Southwood Dialysis Center',
+  title: 'About Southwoods Bicutan Dialysis and Medical Center',
   description:
     'Learn about our mission, values, team, and comprehensive kidney dialysis services.',
   canonical: '/about',
   openGraph: {
-    title: 'About Southwood Dialysis Center',
+    title: 'About Southwoods Bicutan Dialysis and Medical Center',
     description:
       'Learn about our mission, values, team, and comprehensive kidney dialysis services.',
     images: ['/og-about.jpg'],

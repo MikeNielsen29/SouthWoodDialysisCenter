@@ -61,10 +61,10 @@ export function FooterLinks({
           </span>
           <span className="leading-none">
             <span className="block font-display text-[19px] tracking-tight text-sand-50">
-              Southwood
+              Southwoods Bicutan
             </span>
-            <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-sand-100/50">
-              Dialysis Center
+            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.12em] text-sand-100/50">
+              Dialysis and Medical Center
             </span>
           </span>
         </Link>

@@ -59,7 +59,7 @@ export function MediaAdmin({
             <Input name="image" type="file" accept="image/png,image/jpeg,image/webp" required />
           </Field>
           <Field label="Alt text (for accessibility)">
-            <Input name="alt" placeholder="Dialysis station at Southwood" />
+            <Input name="alt" placeholder="Dialysis station at Southwoods Bicutan" />
           </Field>
           <div className="sm:col-span-2">
             <Submit type="submit">Upload image</Submit>

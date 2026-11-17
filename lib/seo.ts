@@ -42,7 +42,7 @@ export function generateSeoMetadata(data: SeoData): Metadata {
       title: openGraph?.title || title,
       description: openGraph?.description || description,
       url: openGraph?.url,
-      siteName: openGraph?.siteName || 'Southwood Dialysis Center',
+      siteName: openGraph?.siteName || 'Southwoods Bicutan Dialysis and Medical Center',
       images: openGraph?.images || [],
     },
     twitter:
@@ -68,29 +68,29 @@ export function generateSeoMetadata(data: SeoData): Metadata {
 
 // Home page SEO
 export const homeSeo = generateSeoMetadata({
-  title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
+  title: 'Southwoods Bicutan Dialysis and Medical Center - Comprehensive Kidney Care',
   description:
     'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024. State-of-art facilities and expert medical team.',
   canonical: '/home',
   openGraph: {
-    title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
+    title: 'Southwoods Bicutan Dialysis and Medical Center - Comprehensive Kidney Care',
     description:
       'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024.',
     images: ['/og-home.jpg'],
     url: '/home',
-    siteName: 'Southwood Dialysis Center',
+    siteName: 'Southwoods Bicutan Dialysis and Medical Center',
   },
   twitterCard: 'summary_large_image',
 })
 
 // About page SEO
 export const aboutSeo = generateSeoMetadata({
-  title: 'About Southwood Dialysis Center',
+  title: 'About Southwoods Bicutan Dialysis and Medical Center',
   description:
     'Learn about our mission, values, team, and comprehensive kidney dialysis services.',
   canonical: '/about',
   openGraph: {
-    title: 'About Southwood Dialysis Center',
+    title: 'About Southwoods Bicutan Dialysis and Medical Center',
     description:
       'Learn about our mission, values, team, and comprehensive kidney dialysis services.',
     images: ['/og-about.jpg'],
@@ -101,12 +101,12 @@ export const aboutSeo = generateSeoMetadata({
 
 // Services page SEO
 export const servicesSeo = generateSeoMetadata({
-  title: 'Services | Southwood Dialysis Center',
+  title: 'Services | Southwoods Bicutan Dialysis and Medical Center',
   description:
     'We offer comprehensive dialysis and supportive care services including hemodialysis, peritoneal dialysis, and kidney transplant evaluation.',
   canonical: '/services',
   openGraph: {
-    title: 'Services | Southwood Dialysis Center',
+    title: 'Services | Southwoods Bicutan Dialysis and Medical Center',
     description:
       'We offer comprehensive dialysis and supportive care services including hemodialysis, peritoneal dialysis, and kidney transplant evaluation.',
     images: ['/og-services.jpg'],
@@ -117,12 +117,12 @@ export const servicesSeo = generateSeoMetadata({
 
 // News page SEO
 export const newsSeo = generateSeoMetadata({
-  title: 'News & Updates | Southwood Dialysis Center',
+  title: 'News & Updates | Southwoods Bicutan Dialysis and Medical Center',
   description:
-    'Stay informed with the latest news, health tips, and center updates from Southwood Dialysis Center.',
+    'Stay informed with the latest news, health tips, and center updates from Southwoods Bicutan Dialysis and Medical Center.',
   canonical: '/news',
   openGraph: {
-    title: 'News & Updates | Southwood Dialysis Center',
+    title: 'News & Updates | Southwoods Bicutan Dialysis and Medical Center',
     description:
       'Stay informed with the latest news, health tips, and center updates.',
     images: ['/og-news.jpg'],
@@ -133,14 +133,14 @@ export const newsSeo = generateSeoMetadata({
 
 // Contact page SEO
 export const contactSeo = generateSeoMetadata({
-  title: 'Contact Us | Southwood Dialysis Center',
+  title: 'Contact Us | Southwoods Bicutan Dialysis and Medical Center',
   description:
-    'Contact Southwood Dialysis Center for inquiries, appointments, or general information. Visit us at 123 Kidney Avenue.',
+    'Contact Southwoods Bicutan Dialysis and Medical Center for inquiries, appointments, or general information. Visit us at 123 Kidney Avenue.',
   canonical: '/contact',
   openGraph: {
-    title: 'Contact Us | Southwood Dialysis Center',
+    title: 'Contact Us | Southwoods Bicutan Dialysis and Medical Center',
     description:
-      'Contact Southwood Dialysis Center for inquiries, appointments, or general information.',
+      'Contact Southwoods Bicutan Dialysis and Medical Center for inquiries, appointments, or general information.',
     images: ['/og-contact.jpg'],
     url: '/contact',
   },

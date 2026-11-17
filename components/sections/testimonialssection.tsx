@@ -4,7 +4,7 @@ import { Reveal } from '@/components/ui/reveal'
 const defaultTestimonials = [
   {
     quote:
-      'Since starting hemodialysis at Southwood my energy has come back. The team explains everything, and the bay is always spotless.',
+      'Since starting hemodialysis at Southwoods Bicutan my energy has come back. The team explains everything, and the bay is always spotless.',
     name: 'Maria S.',
     detail: 'Patient since 2024',
     initials: 'MS',

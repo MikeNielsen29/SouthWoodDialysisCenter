@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { requestPasswordResetAction } from './actions'
 
 export const metadata: Metadata = {
-  title: 'Reset password · Southwood Dialysis Center',
+  title: 'Reset password · Southwoods Bicutan Dialysis and Medical Center',
   robots: { index: false, follow: false },
 }
 

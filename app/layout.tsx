@@ -2,10 +2,11 @@ import './globals.css'
 import { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Southwood Dialysis Center',
-  description: 'Southwood Dialysis Center - Comprehensive dialysis treatment and patient care',
+  title: 'Southwoods Bicutan Dialysis and Medical Center',
+  description:
+    'Southwoods Bicutan Dialysis and Medical Center - Comprehensive dialysis treatment and patient care',
   keywords: 'dialysis, kidney disease, treatment, medical, healthcare',
-  generator: 'Southwood Dialysis Center Website',
+  generator: 'Southwoods Bicutan Dialysis and Medical Center Website',
   icons: {
     icon: '/favicon.png',
   },

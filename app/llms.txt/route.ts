@@ -8,7 +8,7 @@ export async function GET() {
   const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
   const lines: string[] = []
-  lines.push('# Southwood Dialysis Center')
+  lines.push('# Southwoods Bicutan Dialysis and Medical Center')
   lines.push('')
   lines.push('> Kidney care you can trust, since 2024.')
   lines.push('')

@@ -51,17 +51,17 @@ export default async function HomePage() {
 
 // Export metadata for Next.js metadata injector
 export const metadata = generateSeoMetadata({
-  title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
+  title: 'Southwoods Bicutan Dialysis and Medical Center - Comprehensive Kidney Care',
   description:
     'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024. State-of-art facilities and expert medical team.',
   canonical: '/',
   openGraph: {
-    title: 'Southwood Dialysis Center - Comprehensive Kidney Care',
+    title: 'Southwoods Bicutan Dialysis and Medical Center - Comprehensive Kidney Care',
     description:
       'Providing comprehensive dialysis treatment and compassionate care for kidney disease patients since 2024.',
     images: ['/og-home.jpg'],
     url: '/',
-    siteName: 'Southwood Dialysis Center',
+    siteName: 'Southwoods Bicutan Dialysis and Medical Center',
   },
   twitterCard: 'summary_large_image',
 })

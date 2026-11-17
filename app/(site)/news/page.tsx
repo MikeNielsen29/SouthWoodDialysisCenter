@@ -18,7 +18,7 @@ export default async function NewsPage() {
       <PageHeader
         eyebrow={header?.eyebrow || 'News'}
         title={header?.heading || "What's happening at "}
-        emphasis={header?.emphasis || 'Southwood.'}
+        emphasis={header?.emphasis || 'Southwoods Bicutan.'}
         lead={
           header?.body ||
           'Centre updates, patient workshops, and practical health notes from our clinical team.'
@@ -32,12 +32,12 @@ export default async function NewsPage() {
 }
 
 export const metadata = generateSeoMetadata({
-  title: 'News & Updates | Southwood Dialysis Center',
+  title: 'News & Updates | Southwoods Bicutan Dialysis and Medical Center',
   description:
-    'Stay informed with the latest news, health tips, and center updates from Southwood Dialysis Center.',
+    'Stay informed with the latest news, health tips, and center updates from Southwoods Bicutan Dialysis and Medical Center.',
   canonical: '/news',
   openGraph: {
-    title: 'News & Updates | Southwood Dialysis Center',
+    title: 'News & Updates | Southwoods Bicutan Dialysis and Medical Center',
     description:
       'Stay informed with the latest news, health tips, and center updates.',
     images: ['/og-news.jpg'],

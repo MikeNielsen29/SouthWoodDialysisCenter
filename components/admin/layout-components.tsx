@@ -15,7 +15,7 @@ export async function Header() {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-700 text-xs font-semibold">
               SD
             </span>
-            <span className="font-display text-sm text-ink">Southwood Admin</span>
+            <span className="font-display text-sm text-ink">Southwoods Bicutan Admin</span>
           </Link>
           <nav className="flex items-center gap-4 text-sm">
             <Link
@@ -53,7 +53,7 @@ export async function Footer({ settings }: { settings?: Awaited<ReturnType<typeo
   return (
     <footer className="border-t border-ink/10 bg-white px-4 py-4 text-xs text-ink-muted sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p>Southwood Dialysis Center · Admin</p>
+        <p>Southwoods Bicutan Dialysis and Medical Center · Admin</p>
       </div>
     </footer>
   )
