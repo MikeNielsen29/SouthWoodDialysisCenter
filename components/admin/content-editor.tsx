@@ -310,7 +310,7 @@ export function ContentEditor({
                         name="image_url"
                         value={values.image_url}
                         onChange={(event) => update('image_url', event.target.value)}
-                        placeholder="/SBDC.png or /api/media/…"
+                        placeholder="/favicon.png or /api/media/…"
                       />
                       <ImageUploadButton onUploaded={(path) => update('image_url', path)} />
                     </Field>

@@ -57,7 +57,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2.5" aria-label="Southwoods Bicutan Dialysis and Medical Center home">
             <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-brand-800">
               <Image
-                src="/SBDC.png"
+                src="/favicon.png"
                 alt=""
                 width={40}
                 height={40}

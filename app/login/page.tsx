@@ -40,7 +40,7 @@ export default function LoginPage({ searchParams }: Props) {
 
         <Link href="/" className="relative flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-sand-50/10">
-            <Image src="/SBDC.png" alt="" width={44} height={44} className="h-full w-full object-contain" />
+            <Image src="/favicon.png" alt="" width={44} height={44} className="h-full w-full object-contain" />
           </span>
           <span className="leading-none">
             <span className="block font-display text-[19px] tracking-tight">Southwoods Bicutan</span>
