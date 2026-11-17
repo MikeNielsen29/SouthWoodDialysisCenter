@@ -76,6 +76,14 @@
     transform: none;
   }
 
+  /* The editor preview is a scroll box, so its sections must never wait
+     for an intersection that the clipped container cannot report. */
+  .preview-surface .reveal-ready {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal-ready {
       opacity: 1;

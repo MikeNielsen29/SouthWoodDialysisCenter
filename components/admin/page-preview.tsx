@@ -125,14 +125,14 @@ export function PagePreview({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-ink/10 bg-white">
+    <div className="flex max-h-[calc(100vh-7rem)] flex-col overflow-hidden rounded-xl border border-ink/10 bg-white lg:col-span-2 xl:sticky xl:top-4 xl:col-span-1 xl:self-start">
       <div className="flex items-center justify-between border-b border-ink/10 bg-sand-50 px-4 py-2.5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
           Whole page preview
         </p>
         <span className="text-[11px] text-ink-muted">Updates as you type</span>
       </div>
-      <div className="bg-sand-50/40">{body}</div>
+      <div className="preview-surface flex-1 overflow-y-auto bg-sand-50/40">{body}</div>
     </div>
   )
 }
