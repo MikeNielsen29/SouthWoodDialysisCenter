@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { ArrowRight, ExternalLink } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { saveSectionAction } from '@/app/(admin)/admin/actions'
 import { EDITABLE_PAGES, type PageDef, type SectionDef, type SectionFields } from '@/lib/site-sections'
 import { Field, Input, Notice, Select, Submit, Textarea } from '@/components/admin/ui'
@@ -113,7 +113,7 @@ export function ContentEditor({
         </Link>
       </div>
 
-      <div className="grid items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[200px_minmax(0,1fr)_420px]">
+      <div className="grid items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)_420px] xl:grid-cols-[240px_minmax(0,1fr)_480px]">
         <aside className="rounded-xl border border-ink/10 bg-white">
           <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
@@ -360,109 +360,6 @@ export function ContentEditor({
           </div>
         </form>
 
-        <aside className="rounded-xl border border-ink/10 bg-white">
-          <div className="flex items-center justify-between">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-              Section preview
-            </p>
-            <span className="text-[11px] text-brand-700">
-              {values.status === 'draft' ? 'Draft' : 'In sync'}
-            </span>
-          </div>
-
-          <div className="mt-3 overflow-hidden rounded-lg border border-ink/10">
-            {section.kind === 'gallery' ? (
-              <div className="bg-sand-50 px-5 py-6">
-                {(() => {
-                  const paths = values.image_url
-                    .split(/\n+/)
-                    .flatMap((line) => line.split(','))
-                    .map((line) => (line.split('|')[0] ?? '').trim())
-                    .filter((path) => path.startsWith('/') || path.startsWith('https://'))
-                    .slice(0, 6)
-                  if (paths.length === 0) {
-                    return (
-                      <p className="text-[12px] text-ink-muted">
-                        No image paths yet — the section stays hidden on the page.
-                      </p>
-                    )
-                  }
-                  return (
-                    <div className="grid grid-cols-3 gap-2">
-                      {paths.map((path, index) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          key={`${path}-${index}`}
-                          src={path}
-                          alt=""
-                          className="aspect-[4/3] w-full rounded-md border border-ink/10 bg-white object-cover"
-                        />
-                      ))}
-                    </div>
-                  )
-                })()}
-              </div>
-            ) : section.kind === 'cta' ? (
-              <div className="bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-5 py-7 text-center">
-                {values.eyebrow ? (
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ember-400">
-                    {values.eyebrow}
-                  </p>
-                ) : null}
-                <p className="mt-3 font-display text-[20px] leading-tight text-sand-50">
-                  {values.heading}
-                  {values.emphasis ? (
-                    <span className="italic text-ember-400">{values.emphasis}</span>
-                  ) : null}
-                </p>
-                {values.body ? (
-                  <p className="mt-2 text-[12px] leading-relaxed text-sand-100/70">{values.body}</p>
-                ) : null}
-                {values.cta_label ? (
-                  <span className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-ember-500 px-3 py-1.5 text-[12px] font-medium text-white">
-                    {values.cta_label}
-                    <ArrowRight className="h-3 w-3" />
-                  </span>
-                ) : null}
-              </div>
-            ) : (
-              <div className="bg-sand-50 px-5 py-7">
-                {values.eyebrow ? (
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-muted">
-                    {values.eyebrow}
-                  </p>
-                ) : null}
-                <p
-                  className={
-                    section.kind === 'hero'
-                      ? 'mt-3 font-display text-[24px] leading-[1.1] text-ink'
-                      : 'mt-3 font-display text-[19px] leading-[1.15] text-ink'
-                  }
-                >
-                  {values.heading}
-                  {values.emphasis ? <span className="italic text-brand-700">{values.emphasis}</span> : null}
-                </p>
-                {values.body ? (
-                  <p className="mt-2 text-[12px] leading-relaxed text-ink-soft">{values.body}</p>
-                ) : null}
-                {values.cta_label ? (
-                  <span className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-brand-900 px-3 py-1.5 text-[12px] font-medium text-sand-50">
-                    {values.cta_label}
-                    <ArrowRight className="h-3 w-3" />
-                  </span>
-                ) : null}
-                {values.image_url ? (
-                  <p className="mt-3 truncate text-[11px] text-ink-muted">Image: {values.image_url}</p>
-                ) : null}
-              </div>
-            )}
-          </div>
-
-          <p className="mt-3 text-[11px] leading-relaxed text-ink-muted">
-            The published page keeps its own layout; this panel mirrors the copy so you can judge
-            length before saving.
-          </p>
-        </aside>
         <PagePreview slug={page.slug} values={previewValues} data={previewData} />
       </div>
     </div>

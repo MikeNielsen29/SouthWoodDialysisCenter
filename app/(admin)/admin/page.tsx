@@ -4,6 +4,7 @@ import { requireRoleOrRedirect } from '@/lib/auth/session'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import Link from 'next/link'
 import { Stat } from '@/components/admin/ui'
+import { navigationForRole } from '@/components/admin/navigation'
 
 export const metadata: Metadata = {
   title: 'Admin',
@@ -65,80 +66,49 @@ async function loadStats(): Promise<Stats> {
 }
 
 export default async function AdminOverviewPage() {
-  await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
+  const session = await requireRoleOrRedirect(['Super Admin', 'Admin'], '/admin')
   const stats = await loadStats()
+  const shortcutGroups = navigationForRole(session.role)
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => item.href !== '/admin'),
+    }))
+    .filter((group) => group.items.length > 0)
 
 
   return (
     <div className="min-h-screen bg-sand-50">
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-2xl text-ink">Admin overview</h1>
-            <p className="mt-1 text-sm text-ink-muted">Southwoods Bicutan Dialysis and Medical Center</p>
-          </div>
-          <div className="flex gap-2">
-            <Link
-              href="/admin/settings"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
+        <div className="mb-6">
+          <h1 className="font-display text-2xl text-ink">Admin overview</h1>
+          <p className="mt-1 text-sm text-ink-muted">Southwoods Bicutan Dialysis and Medical Center</p>
+        </div>
+
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {shortcutGroups.map((group) => (
+            <section
+              key={group.title}
+              aria-label={group.title}
+              className="rounded-xl border border-ink/10 bg-white p-4"
             >
-              Settings
-            </Link>
-            <Link
-              href="/admin/content"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Content
-            </Link>
-            <Link
-              href="/admin/services"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Services
-            </Link>
-            <Link
-              href="/admin/news"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              News
-            </Link>
-            <Link
-              href="/admin/inquiries"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Inquiries
-            </Link>
-            <Link
-              href="/admin/testimonials"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Testimonials
-            </Link>
-            <Link
-              href="/admin/audit"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Audit
-            </Link>
-            <Link
-              href="/admin/user-management"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Users
-            </Link>
-            <Link
-              href="/admin/operations"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Operations
-            </Link>
-            <Link
-              href="/admin/files"
-              className="rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
-            >
-              Files
-            </Link>
-          </div>
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+                {group.title}
+              </h2>
+              <p className="mt-1 text-xs text-ink-muted">{group.description}</p>
+              <ul className="mt-3 space-y-1.5">
+                {group.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="block rounded-lg border border-transparent px-2.5 py-1.5 text-xs font-medium text-ink-soft transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -2,14 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type { ReactElement } from 'react'
 import type { Role } from '@/lib/auth/jwt'
-
-type Item = {
-  href: string
-  label: string
-  icon: (className?: string) => React.ReactElement
-  roles: Role[]
-}
+import { navigationForRole } from '@/components/admin/navigation'
 
 const LAYOUT_DASHBOARD = () => (
   <svg className={undefined} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -95,51 +90,61 @@ const SCROLL_TEXT = () => (
   </svg>
 )
 
-const ITEMS: Item[] = [
-  { href: '/admin', label: 'Overview', icon: LAYOUT_DASHBOARD, roles: ['Super Admin', 'Admin', 'Page Editor'] },
-  { href: '/admin/content', label: 'Page content', icon: STETHOSCOPE, roles: ['Super Admin', 'Admin', 'Page Editor'] },
-  { href: '/admin/services', label: 'Services', icon: PACKAGE, roles: ['Super Admin', 'Admin', 'Page Editor'] },
-  { href: '/admin/news', label: 'News', icon: NEWSPAPER, roles: ['Super Admin', 'Admin', 'Page Editor'] },
-  { href: '/admin/user-management', label: 'Users', icon: USERS, roles: ['Super Admin'] },
-  { href: '/admin/patients', label: 'Patients', icon: USERS, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/inquiries', label: 'Inquiries', icon: INBOX, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/testimonials', label: 'Testimonials', icon: STAR, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/operations', label: 'Operations', icon: CALENDAR_CLOCK, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/files', label: 'Lab files', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/media', label: 'Media', icon: FILE_STACK, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/settings', label: 'Settings', icon: SETTINGS, roles: ['Super Admin', 'Admin'] },
-  { href: '/admin/audit', label: 'Audit log', icon: SCROLL_TEXT, roles: ['Super Admin'] },
-]
+const ICONS: Record<string, (className?: string) => ReactElement> = {
+  '/admin': LAYOUT_DASHBOARD,
+  '/admin/content': STETHOSCOPE,
+  '/admin/services': PACKAGE,
+  '/admin/news': NEWSPAPER,
+  '/admin/media': FILE_STACK,
+  '/admin/patients': USERS,
+  '/admin/operations': CALENDAR_CLOCK,
+  '/admin/files': FILE_STACK,
+  '/admin/inquiries': INBOX,
+  '/admin/testimonials': STAR,
+  '/admin/user-management': USERS,
+  '/admin/settings': SETTINGS,
+  '/admin/audit': SCROLL_TEXT,
+}
 
 export function AdminNav({ role, name }: { role: Role; name: string }) {
   const pathname = usePathname()
-  const items = ITEMS.filter((item) => item.roles.includes(role))
+  const groups = navigationForRole(role)
 
   return (
     <nav className="sticky top-0 flex h-screen w-16 shrink-0 flex-col overflow-y-auto border-r border-sand-50/10 bg-brand-950 px-2 py-5 lg:w-60 lg:px-3">
       <p className="hidden px-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-sand-100/35 lg:block">Administration</p>
-      <ul className="mt-4 space-y-1">
-        {items.map((item) => {
-          const active = pathname === item.href
-          return (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                title={item.label}
-                aria-current={active ? 'page' : undefined}
-                className={`flex items-center justify-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors lg:justify-start ${
-                  active
-                    ? 'bg-sand-50/10 text-sand-50'
-                    : 'text-sand-100/60 hover:bg-sand-50/5 hover:text-sand-50'
-                }`}
-              >
-                <span className="shrink-0 text-sand-300">{item.icon()}</span>
-                <span className="hidden lg:inline">{item.label}</span>
-              </Link>
-            </li>
-          )
-        })}
-      </ul>
+      <div className="mt-4 space-y-5">
+        {groups.map((group) => (
+          <section key={group.title} aria-label={group.title}>
+            <p className="hidden px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-sand-100/35 lg:block">
+              {group.title}
+            </p>
+            <ul className="mt-1.5 space-y-1">
+              {group.items.map((item) => {
+                const active = pathname === item.href
+                const Icon = ICONS[item.href] ?? LAYOUT_DASHBOARD
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      title={item.label}
+                      aria-current={active ? 'page' : undefined}
+                      className={`flex items-center justify-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors lg:justify-start ${
+                        active
+                          ? 'bg-sand-50/10 text-sand-50'
+                          : 'text-sand-100/60 hover:bg-sand-50/5 hover:text-sand-50'
+                      }`}
+                    >
+                      <span className="shrink-0 text-sand-300">{Icon()}</span>
+                      <span className="hidden lg:inline">{item.label}</span>
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        ))}
+      </div>
       <div className="mt-auto hidden px-3 pt-6 text-[11px] text-sand-100/30 lg:block">
         <p className="truncate">{name}</p>
         <p className="mt-0.5">{role}</p>

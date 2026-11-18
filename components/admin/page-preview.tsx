@@ -150,7 +150,7 @@ export function PagePreview({
   }
 
   return (
-    <div className="flex max-h-[calc(100vh-7rem)] flex-col overflow-hidden rounded-xl border border-ink/10 bg-white lg:col-span-2 xl:sticky xl:top-4 xl:col-span-1 xl:self-start">
+    <div className="flex max-h-[calc(100vh-7rem)] flex-col overflow-hidden rounded-xl border border-ink/10 bg-white lg:sticky lg:top-4 lg:self-start">
       <div className="flex items-center justify-between gap-2 border-b border-ink/10 bg-sand-50 px-4 py-2.5">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
