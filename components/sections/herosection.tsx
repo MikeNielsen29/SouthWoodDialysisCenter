@@ -229,7 +229,7 @@ export function Section({
 
           <Reveal delay={120} className="lg:pl-4">
             {imageUrl ? (
-              <figure className="relative isolate aspect-[4/3] overflow-hidden rounded-4xl border border-ink/10 bg-brand-950 shadow-lift sm:aspect-[16/10] lg:aspect-[4/5]">
+              <figure className="relative isolate aspect-square overflow-hidden rounded-4xl border border-ink/10 bg-brand-950 shadow-lift">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imageUrl}
