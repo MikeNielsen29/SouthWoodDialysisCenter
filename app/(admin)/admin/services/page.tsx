@@ -1,7 +1,8 @@
 import { Card, Empty, Field, Input, Labeled, Notice, Select, Submit, Textarea } from '@/components/admin/ui'
 import { load } from '@/lib/admin/data'
 import { ServiceSchema } from '@/lib/sheets/types'
-import { saveServiceAction, deleteServiceAction } from '../actions'
+import { saveServiceAction, deleteServiceAction, seedDefaultServicesAction } from '../actions'
+import { DEFAULT_SERVICES } from '@/lib/service-defaults'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,7 +47,23 @@ export default async function ServicesPage({ searchParams }: { searchParams: { o
             ))}
           </div>
         ) : (
-          <Empty description="No services yet." />
+          <div className="mt-4 space-y-4">
+            <Empty description="No services saved yet. The public site is showing the six standard services below." />
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {DEFAULT_SERVICES.map((service) => (
+                <li key={service.slug} className="rounded-xl border border-ink/10 p-4">
+                  <p className="text-sm font-medium text-ink">{service.title}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">{service.summary}</p>
+                </li>
+              ))}
+            </ul>
+            <form action={seedDefaultServicesAction} className="flex flex-wrap items-center gap-3">
+              <Submit type="submit">Import the six standard services</Submit>
+              <p className="text-xs text-ink-muted">
+                Copies the shipped copy into the database so you can edit it here.
+              </p>
+            </form>
+          </div>
         )}
       </Card>
 

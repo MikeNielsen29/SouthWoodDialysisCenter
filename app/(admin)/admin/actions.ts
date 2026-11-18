@@ -9,6 +9,7 @@ import { ADMIN_ROLES, STAFF_ROLES } from '@/lib/auth/jwt'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import { getSession } from '@/lib/auth/session'
 import { logAudit } from '@/lib/audit'
+import { DEFAULT_SERVICES } from '@/lib/service-defaults'
 import type { AuditEntry } from '@/lib/sheets/types'
 
 export async function savePageAction(formData: FormData) {
@@ -289,6 +290,36 @@ export async function saveServiceAction(formData: FormData) {
 
   revalidateTag('content')
   redirect('/admin/services?ok=Service%20saved')
+}
+
+export async function seedDefaultServicesAction() {
+  const session = await getSession()
+  if (!session || !STAFF_ROLES.includes(session.role)) {
+    return { ok: false as const, error: 'Not signed in' }
+  }
+  if (!isSheetsConfigured()) {
+    return { ok: false as const, error: 'Backend not configured' }
+  }
+
+  let saved = 0
+  for (const service of DEFAULT_SERVICES) {
+    const row = await callSheets('content.upsertService', {
+      slug: service.slug,
+      title: service.title,
+      summary: service.summary,
+      icon: service.icon,
+      sort_order: service.sort_order,
+      status: 'published',
+    })
+    if (row && typeof row === 'object') saved += 1
+  }
+
+  if (saved === 0) {
+    return { ok: false as const, error: 'Could not import the standard services' }
+  }
+
+  revalidateTag('content')
+  redirect(`/admin/services?ok=${encodeURIComponent(`${saved} services imported`)}`)
 }
 
 export async function deleteServiceAction(formData: FormData) {
