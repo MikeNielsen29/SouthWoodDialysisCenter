@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth/session'
 import { STAFF_ROLES } from '@/lib/auth/jwt'
 import { callSheets, isSheetsConfigured } from '@/lib/sheets/client'
 import { logAdminAction } from '@/lib/audit'
-import { MAX_MEDIA_BYTES, MEDIA_MIME, isMediaConfigured, uploadMedia } from '@/lib/media'
+import { MAX_MEDIA_BYTES, MEDIA_MIME, checkMediaVault, isMediaConfigured, uploadMedia } from '@/lib/media'
 
 async function requireStaff() {
   const session = await getSession()
@@ -69,6 +69,23 @@ export async function uploadSiteImageAction(formData: FormData): Promise<SiteIma
       }
       return { ok: false, error: 'The upload failed. Check the vault credentials.' }
     }
+}
+
+export async function checkMediaVaultAction(): Promise<void> {
+  await requireStaff()
+
+  try {
+    const check = await checkMediaVault()
+    if (check.ok) redirect('/admin/media?checked=1')
+    redirect(`/admin/media?error=${encodeURIComponent(check.error || 'The Media Vault check failed')}`)
+  } catch (error) {
+    const message =
+      error instanceof Error &&
+      /^(The Media Vault|Could not reach the Media Vault)/.test(error.message)
+        ? error.message
+        : 'The Media Vault check failed'
+    redirect(`/admin/media?error=${encodeURIComponent(message)}`)
+  }
 }
 
 export async function uploadMediaAction(formData: FormData): Promise<void> {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { deleteMediaAction, updateMediaAltAction, uploadMediaAction } from './actions'
+import { checkMediaVaultAction, deleteMediaAction, updateMediaAltAction, uploadMediaAction } from './actions'
 import { Field, Input, Notice, Submit } from '@/components/admin/ui'
 
 export type MediaRow = {
@@ -64,6 +64,18 @@ export function MediaAdmin({
           <div className="sm:col-span-2">
             <Submit type="submit">Upload image</Submit>
           </div>
+        </form>
+
+        <form action={checkMediaVaultAction} className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-xs font-medium text-ink-soft transition hover:border-brand-300 hover:text-brand-700"
+          >
+            Check vault connection
+          </button>
+          <p className="text-[11px] text-ink-muted">
+            Tests the bot token and storage chat without uploading an image.
+          </p>
         </form>
       </section>
 

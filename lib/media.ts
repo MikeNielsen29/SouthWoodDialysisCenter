@@ -19,6 +19,68 @@ function api(method: string): string {
   return `https://api.telegram.org/bot${VAULT_TOKEN}/${method}`
 }
 
+interface VaultApiResponse {
+  ok: boolean
+  description: string
+  data: unknown
+}
+
+async function callVault(path: string, init?: RequestInit): Promise<VaultApiResponse> {
+  let response: Response
+  try {
+    response = await fetch(api(path), { cache: 'no-store', ...init })
+  } catch {
+    throw new Error('Could not reach the Media Vault. Check the hosting network access and try again.')
+  }
+
+  let payload: { ok?: unknown; description?: unknown; result?: unknown }
+  try {
+    payload = (await response.json()) as typeof payload
+  } catch {
+    throw new Error('The Media Vault returned an unreadable response.')
+  }
+
+  return {
+    ok: payload.ok === true,
+    description: typeof payload.description === 'string' ? payload.description.trim() : '',
+    data: payload.result ?? null,
+  }
+}
+
+export interface MediaVaultCheck {
+  ok: boolean
+  error?: string
+}
+
+/** Verifies the bot token first, then verifies the storage chat separately. */
+export async function checkMediaVault(): Promise<MediaVaultCheck> {
+  if (!isMediaConfigured()) {
+    return { ok: false, error: 'The Media Vault is not configured. Ask an administrator.' }
+  }
+
+  const bot = await callVault('getMe')
+  if (!bot.ok) {
+    return {
+      ok: false,
+      error: bot.description
+        ? `The Media Vault bot token was rejected: ${bot.description}`
+        : 'The Media Vault bot token was rejected',
+    }
+  }
+
+  const chat = await callVault(`getChat?chat_id=${encodeURIComponent(VAULT_CHAT)}`)
+  if (!chat.ok) {
+    return {
+      ok: false,
+      error: chat.description
+        ? `The Media Vault storage chat was rejected: ${chat.description}`
+        : 'The Media Vault storage chat was rejected',
+    }
+  }
+
+  return { ok: true }
+}
+
 /** Sends the image as a document so the vault keeps the exact bytes. */
 export async function uploadMedia(
   file: Buffer,
@@ -32,29 +94,14 @@ export async function uploadMedia(
   form.append('document', new Blob([new Uint8Array(file)], { type: mime }), filename)
   form.append('caption', `Website media · ${filename}`)
 
-  let response: Response
-  try {
-    response = await fetch(api('sendDocument'), { method: 'POST', body: form })
-  } catch {
-    throw new Error('Could not reach the Media Vault. Check the hosting network access and try again.')
-  }
-
-  let result: {
-    ok?: boolean
-    description?: unknown
-    result?: { document?: { file_id?: string; file_size?: number } }
-  }
-  try {
-    result = (await response.json()) as typeof result
-  } catch {
-    throw new Error('The Media Vault returned an unreadable response.')
-  }
-
-  const document = result.result?.document
-  if (!result.ok || !document?.file_id) {
-    const reason = typeof result.description === 'string' ? result.description.trim() : ''
+  const telegram = await callVault('sendDocument', { method: 'POST', body: form })
+  const document = (telegram.data as { document?: { file_id?: string; file_size?: number } } | null)
+    ?.document
+  if (!telegram.ok || !document?.file_id) {
     throw new Error(
-      reason ? `The Media Vault rejected the image: ${reason}` : 'The Media Vault rejected the image'
+      telegram.description
+        ? `The Media Vault rejected the image: ${telegram.description}`
+        : 'The Media Vault rejected the image'
     )
   }
 
