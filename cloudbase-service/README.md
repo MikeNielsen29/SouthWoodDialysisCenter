@@ -20,8 +20,8 @@ Hindi mo kailangang mag-set ng anumang database ID — ang service mismo ang hah
 5. **Project Settings → Script Properties → Add script property** (lahat kailangan):
    - `GS_SHARED_SECRET` — 64 random characters (`openssl rand -hex 32`)
    - `HASH_PEPPER` — isa pang 64 random characters
-   - `MEDIA_VAULT_TOKEN` — token ng Media Vault
-   - `MEDIA_VAULT_CHAT` — channel/chat ID ng Media Vault
+   - `TELEGRAM_BOT_TOKEN` — token ng Media Vault
+   - `TELEGRAM_CHAT_ID` — channel/chat ID ng Media Vault
 6. **Deploy → New deployment → Web app**
    - Description: `API v1`
    - **Execute as: Me**

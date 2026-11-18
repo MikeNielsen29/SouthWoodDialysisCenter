@@ -5,8 +5,8 @@
  * SERVER ONLY. The vault token never leaves this module.
  */
 
-const VAULT_TOKEN = process.env.MEDIA_VAULT_TOKEN ?? ''
-const VAULT_CHAT = process.env.MEDIA_VAULT_CHAT ?? ''
+const VAULT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? ''
+const VAULT_CHAT = process.env.TELEGRAM_CHAT_ID ?? ''
 
 export const MEDIA_MIME = ['image/png', 'image/jpeg', 'image/webp'] as const
 export const MAX_MEDIA_BYTES = 8 * 1024 * 1024
