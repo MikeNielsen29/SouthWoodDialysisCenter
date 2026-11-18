@@ -219,18 +219,19 @@ export function Section({
             </Reveal>
           </div>
 
-          <Reveal delay={120} className="space-y-6 lg:pl-4">
+          <Reveal delay={120} className="lg:pl-4">
             {imageUrl ? (
-              <figure className="overflow-hidden rounded-3xl border border-ink/10 bg-sand-100 shadow-lift">
+              <figure className="overflow-hidden rounded-4xl border border-ink/10 bg-sand-100 shadow-lift">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imageUrl}
                   alt={imageAlt}
-                  className="aspect-[16/10] w-full object-cover"
+                  className="aspect-[4/3] w-full object-cover sm:aspect-[16/10] lg:aspect-[4/5]"
                 />
               </figure>
-            ) : null}
-            <CarePanel rating={rating} extra={extra} />
+            ) : (
+              <CarePanel rating={rating} extra={extra} />
+            )}
           </Reveal>
         </div>
       </div>
