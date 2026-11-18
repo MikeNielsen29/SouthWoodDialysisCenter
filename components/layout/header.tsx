@@ -15,9 +15,10 @@ const nav = [
   { href: '/contact', label: 'Contact' },
 ]
 
-export function Header() {
+export function Header({ hotline = '(555) 014-2800' }: { hotline?: string }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const telHref = `tel:${hotline.replace(/[^\d+]/g, '')}`
 
   useEffect(() => {
     setOpen(false)
@@ -42,11 +43,11 @@ export function Header() {
           <p className="flex items-center gap-6">
             <span>Kidney care you can trust, since 2024</span>
             <a
-              href="tel:+15550142800"
+              href={telHref}
               className="flex items-center gap-2 font-medium text-sand-50 transition-colors hover:text-ember-400"
             >
               <Phone className="h-3.5 w-3.5" aria-hidden />
-              (555) 014-2800
+              {hotline}
             </a>
           </p>
         </div>
@@ -140,11 +141,11 @@ export function Header() {
             Book Appointment
           </Link>
           <a
-            href="tel:+15550142800"
+            href={telHref}
             className="mt-1 flex items-center justify-center gap-2 py-3 text-sm text-ink-muted"
           >
             <Phone className="h-4 w-4" aria-hidden />
-            (555) 014-2800
+            {hotline}
           </a>
         </nav>
       </div>

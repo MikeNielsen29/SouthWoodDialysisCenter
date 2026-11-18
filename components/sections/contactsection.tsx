@@ -68,7 +68,7 @@ export function ContactSection({
                     {detail.label}
                   </span>
                   {detail.lines.map((line) => (
-                    <span key={line} className="mt-1 block text-sm text-ink-soft">
+                    <span key={line} className="mt-1 block text-sm text-ink-soft [overflow-wrap:anywhere]">
                       {line}
                     </span>
                   ))}
@@ -76,7 +76,7 @@ export function ContactSection({
               )
 
               return (
-                <Reveal key={detail.label} delay={index * 60}>
+                <Reveal key={detail.label} delay={index * 60} className="min-w-0">
                   {detail.href ? (
                     <a
                       href={detail.href}
