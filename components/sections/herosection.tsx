@@ -37,7 +37,7 @@ function CarePanel({
     <div
       className={
         overlay
-          ? 'relative isolate flex h-full flex-col justify-between overflow-y-auto p-8 sm:p-10'
+          ? 'relative isolate flex h-full flex-col justify-between gap-5 p-6 sm:p-8'
           : 'relative isolate overflow-hidden rounded-4xl bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 p-8 shadow-lift sm:p-10'
       }
     >
@@ -79,7 +79,7 @@ function CarePanel({
         </span>
       </div>
 
-      <div className="relative mt-10 flex items-center gap-5">
+      <div className={`relative flex items-center gap-4 ${overlay ? 'mt-0' : 'mt-10'}`}>
         <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-sand-50/10 ring-1 ring-inset ring-sand-50/15">
           <HeartPulse className="h-8 w-8 text-ember-400" aria-hidden />
         </div>
@@ -93,7 +93,7 @@ function CarePanel({
         </div>
       </div>
 
-      <div className="relative mt-10 grid grid-cols-2 gap-4">
+      <div className={`relative grid grid-cols-2 gap-3 sm:gap-4 ${overlay ? 'mt-0' : 'mt-10'}`}>
         <div className="rounded-2xl border border-sand-50/10 bg-sand-50/[0.06] p-4 backdrop-blur-sm">
           <p className="text-[11px] uppercase tracking-[0.16em] text-sand-100/50">
             Satisfaction
