@@ -68,12 +68,22 @@ function iconFor(name: string) {
   return iconMap[name.toLowerCase().replace(/[^a-z]/g, '')] ?? Droplets
 }
 
+function anchorFor(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
 export function ServicesSection({
   items,
   content,
+  basePath = '/services',
 }: {
   items?: { title: string; summary: string; icon: string }[]
   content?: { eyebrow?: string; heading?: string; emphasis?: string; body?: string }
+  basePath?: string
 }) {
   const services =
     items && items.length > 0
@@ -110,11 +120,13 @@ export function ServicesSection({
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             const Icon = service.icon
+            const anchor = anchorFor(service.title)
             return (
               <Reveal key={service.title} delay={index * 60}>
                 <Link
-                  href="/services"
-                  className="group relative flex h-full flex-col rounded-2xl border border-ink/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:bg-white hover:shadow-lift"
+                  id={anchor}
+                  href={`${basePath}#${anchor}`}
+                  className="group relative flex h-full scroll-mt-28 flex-col rounded-2xl border border-ink/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:bg-white hover:shadow-lift target:border-brand-400 target:ring-2 target:ring-brand-400/40"
                 >
                   <div className="flex items-start justify-between">
                     <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-700 group-hover:text-sand-50">
