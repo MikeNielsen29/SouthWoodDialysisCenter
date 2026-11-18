@@ -59,10 +59,16 @@ export async function uploadSiteImageAction(formData: FormData): Promise<SiteIma
     if (!row?.id) {
       return { ok: false, error: 'Uploaded, but the library row could not be saved.' }
     }
-    return { ok: true, path: `/api/media/${uploaded.fileId}` }
-  } catch {
-    return { ok: false, error: 'The upload failed. Check the vault credentials.' }
-  }
+            return { ok: true, path: `/api/media/${uploaded.fileId}` }
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        /^(The Media Vault|Could not reach the Media Vault)/.test(error.message)
+      ) {
+        return { ok: false, error: error.message }
+      }
+      return { ok: false, error: 'The upload failed. Check the vault credentials.' }
+    }
 }
 
 export async function uploadMediaAction(formData: FormData): Promise<void> {
@@ -95,8 +101,13 @@ export async function uploadMediaAction(formData: FormData): Promise<void> {
   let uploaded: { fileId: string; size: number }
   try {
     uploaded = await uploadMedia(Buffer.from(await file.arrayBuffer()), filename, file.type)
-  } catch {
-    redirect('/admin/media?error=The%20Media%20Vault%20rejected%20the%20image')
+  } catch (error) {
+    const message =
+      error instanceof Error &&
+      /^(The Media Vault|Could not reach the Media Vault)/.test(error.message)
+        ? error.message
+        : 'The Media Vault rejected the image'
+    redirect(`/admin/media?error=${encodeURIComponent(message)}`)
   }
 
   try {

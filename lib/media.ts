@@ -5,8 +5,8 @@
  * SERVER ONLY. The vault token never leaves this module.
  */
 
-const VAULT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? ''
-const VAULT_CHAT = process.env.TELEGRAM_CHAT_ID ?? ''
+const VAULT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim() ?? ''
+const VAULT_CHAT = process.env.TELEGRAM_CHAT_ID?.trim() ?? ''
 
 export const MEDIA_MIME = ['image/png', 'image/jpeg', 'image/webp'] as const
 export const MAX_MEDIA_BYTES = 8 * 1024 * 1024
@@ -32,15 +32,30 @@ export async function uploadMedia(
   form.append('document', new Blob([new Uint8Array(file)], { type: mime }), filename)
   form.append('caption', `Website media · ${filename}`)
 
-  const response = await fetch(api('sendDocument'), { method: 'POST', body: form })
-  const result = (await response.json()) as {
+  let response: Response
+  try {
+    response = await fetch(api('sendDocument'), { method: 'POST', body: form })
+  } catch {
+    throw new Error('Could not reach the Media Vault. Check the hosting network access and try again.')
+  }
+
+  let result: {
     ok?: boolean
+    description?: unknown
     result?: { document?: { file_id?: string; file_size?: number } }
+  }
+  try {
+    result = (await response.json()) as typeof result
+  } catch {
+    throw new Error('The Media Vault returned an unreadable response.')
   }
 
   const document = result.result?.document
   if (!result.ok || !document?.file_id) {
-    throw new Error('The Media Vault rejected the image')
+    const reason = typeof result.description === 'string' ? result.description.trim() : ''
+    throw new Error(
+      reason ? `The Media Vault rejected the image: ${reason}` : 'The Media Vault rejected the image'
+    )
   }
 
   return { fileId: document.file_id, size: Number(document.file_size ?? file.length) }

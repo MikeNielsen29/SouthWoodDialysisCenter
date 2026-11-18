@@ -10,8 +10,8 @@ export const ALLOWED_MIME = [
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 const FILE_VAULT_KEY_BASE64 = process.env.FILE_VAULT_KEY ?? ''
-const VAULT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? ''
-const VAULT_CHAT = process.env.TELEGRAM_CHAT_ID ?? ''
+const VAULT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim() ?? ''
+const VAULT_CHAT = process.env.TELEGRAM_CHAT_ID?.trim() ?? ''
 
 export function isVaultConfigured() {
   return Boolean(VAULT_TOKEN && VAULT_CHAT)
