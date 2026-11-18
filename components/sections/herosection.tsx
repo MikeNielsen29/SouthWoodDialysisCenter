@@ -24,15 +24,23 @@ function parseKeyed(body?: string): Record<string, string> {
 function CarePanel({
   rating = 0,
   extra = {},
+  overlay = false,
 }: {
   rating?: number
   extra?: Record<string, string>
+  overlay?: boolean
 }) {
   const stars = Math.round(Math.min(5, Math.max(0, rating)))
   const satisfaction = rating > 0 ? Math.round((rating / 5) * 100) : 98
 
   return (
-    <div className="relative isolate overflow-hidden rounded-4xl bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 p-8 shadow-lift sm:p-10">
+    <div
+      className={
+        overlay
+          ? 'relative isolate flex h-full flex-col justify-between overflow-y-auto p-8 sm:p-10'
+          : 'relative isolate overflow-hidden rounded-4xl bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 p-8 shadow-lift sm:p-10'
+      }
+    >
       {/* Concentric rings */}
       <svg
         aria-hidden
@@ -221,13 +229,20 @@ export function Section({
 
           <Reveal delay={120} className="lg:pl-4">
             {imageUrl ? (
-              <figure className="overflow-hidden rounded-4xl border border-ink/10 bg-sand-100 shadow-lift">
+              <figure className="relative isolate aspect-[4/3] overflow-hidden rounded-4xl border border-ink/10 bg-brand-950 shadow-lift sm:aspect-[16/10] lg:aspect-[4/5]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imageUrl}
                   alt={imageAlt}
-                  className="aspect-[4/3] w-full object-cover sm:aspect-[16/10] lg:aspect-[4/5]"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/75 to-brand-950/35"
+                />
+                <figcaption className="absolute inset-0">
+                  <CarePanel rating={rating} extra={extra} overlay />
+                </figcaption>
               </figure>
             ) : (
               <CarePanel rating={rating} extra={extra} />
