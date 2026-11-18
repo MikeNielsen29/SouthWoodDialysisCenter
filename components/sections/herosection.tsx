@@ -121,6 +121,8 @@ export type HeroContent = {
   heading?: string
   emphasis?: string
   body?: string
+  image_url?: string
+  image_alt?: string
   cta_label?: string
   cta_href?: string
 }
@@ -149,6 +151,8 @@ export function Section({
     'Compassionate, state-of-the-art dialysis treatment in a calm environment. Our nephrologists and certified technicians focus on one thing — helping you feel like yourself again.'
   const ctaLabel = content?.cta_label?.trim() || 'Book an appointment'
   const ctaHref = content?.cta_href?.trim() || '/contact'
+  const imageUrl = content?.image_url?.trim() || ''
+  const imageAlt = content?.image_alt?.trim() || 'Southwoods Bicutan Dialysis and Medical Center'
   return (
     <section className="relative overflow-hidden">
       {/* Soft wash */}
@@ -215,7 +219,17 @@ export function Section({
             </Reveal>
           </div>
 
-          <Reveal delay={120} className="lg:pl-4">
+          <Reveal delay={120} className="space-y-6 lg:pl-4">
+            {imageUrl ? (
+              <figure className="overflow-hidden rounded-3xl border border-ink/10 bg-sand-100 shadow-lift">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={imageUrl}
+                  alt={imageAlt}
+                  className="aspect-[16/10] w-full object-cover"
+                />
+              </figure>
+            ) : null}
             <CarePanel rating={rating} extra={extra} />
           </Reveal>
         </div>
